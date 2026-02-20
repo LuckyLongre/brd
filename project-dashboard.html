@@ -95,83 +95,64 @@
             background: white;
             border-right: 1px solid #E5E7EB;
             overflow-y: auto;
-            width: 300px;
-            flex-shrink: 0;
+            transition: all 0.3s ease;
         }
         
-        .platform-section {
+        .platform-item {
             border-bottom: 1px solid #F3F4F6;
         }
         
         .platform-header {
-            padding: 14px 16px;
+            padding: 12px 16px;
             background-color: #F9FAFB;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s;
         }
         
-        .platform-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            flex-shrink: 0;
-        }
-        
-        .platform-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: #111827;
-            flex: 1;
-        }
-        
-        .status-badge {
-            font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 20px;
+        .platform-header:hover {
             background-color: #F3F4F6;
-            color: #6B7280;
-            font-weight: 500;
-            white-space: nowrap;
         }
         
-        .status-badge.connected {
-            background-color: #E6F7E6;
-            color: #16A34A;
+        .platform-checkbox {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid #D1D5DB;
+            cursor: pointer;
+            accent-color: #2563EB;
         }
         
         .chat-item {
-            padding: 10px 16px 10px 60px;
+            padding: 8px 16px 8px 48px;
             display: flex;
             align-items: center;
             gap: 10px;
             background-color: white;
-            border-top: 1px solid #F9FAFB;
+            transition: background-color 0.2s;
         }
         
-        .chat-item:last-child {
-            border-bottom: 1px solid #F3F4F6;
+        .chat-item:hover {
+            background-color: #F9FAFB;
         }
         
-        .chat-name {
-            font-size: 13px;
-            color: #4B5563;
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .chat-checkbox {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            border: 2px solid #D1D5DB;
+            cursor: pointer;
+            accent-color: #2563EB;
         }
         
-        .message-count {
-            font-size: 11px;
-            padding: 2px 6px;
-            border-radius: 12px;
-            background-color: #F3F4F6;
-            color: #6B7280;
+        .platform-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
         }
         
         /* Main layout with sidebar */
@@ -218,7 +199,6 @@
                 height: calc(100vh - 8rem);
                 z-index: 40;
                 box-shadow: 2px 0 12px rgba(0,0,0,0.1);
-                transition: left 0.3s ease;
             }
             
             .platform-sidebar.open {
@@ -269,16 +249,16 @@
         </div>
     </nav>
 
-    <!-- Main Layout with Platform Sidebar (Read-only mode) -->
+    <!-- Main Layout with Platform Sidebar -->
     <div class="main-with-sidebar">
-        <!-- Platform Sidebar - Read Only -->
+        <!-- Platform Sidebar -->
         <div class="platform-sidebar" id="platformSidebar">
             <div class="p-4 border-b" style="border-color: #E5E7EB; background-color: #F9FAFB;">
                 <h3 class="font-semibold text-sm" style="color: #111827;">DATA SOURCES</h3>
-                <p class="text-xs mt-1" style="color: #6B7280;">Platforms used in this project</p>
+                <p class="text-xs mt-1" style="color: #6B7280;">Select platforms and chats</p>
             </div>
             <div id="platformList" class="divide-y" style="border-color: #F3F4F6;">
-                <!-- Platforms will be loaded dynamically (read-only) -->
+                <!-- Platforms will be loaded dynamically -->
             </div>
         </div>
 
@@ -315,7 +295,13 @@
         let currentProject = null;
         let projectState = null;
         let testUserData = null;
-        let platformStatus = {};
+        let platformSelection = {
+            gmail: { selected: true, threads: {} },
+            whatsapp: { selected: true, groups: {} },
+            slack: { selected: true, channels: {} },
+            meetings: { selected: true, meetings: {} },
+            proposal: { selected: true }
+        };
 
         // Toggle sidebar on mobile
         function toggleSidebar() {
@@ -352,8 +338,8 @@
 
             document.getElementById('projectTitle').textContent = currentProject.name;
 
-            // Initialize platform status (all connected by default)
-            initPlatformStatus();
+            // Initialize platform selection from user data
+            initPlatformSelection();
 
             // If step 1 not started, initialize it
             if (!projectState.extractionData || projectState.extractionData.length === 0) {
@@ -361,23 +347,49 @@
             }
 
             renderSteps();
-            renderPlatformSidebarReadOnly();
+            renderPlatformSidebar();
             renderCurrentStep();
         }
 
-        // Initialize platform status (all connected by default for demo)
-        function initPlatformStatus() {
-            platformStatus = {
-                gmail: true,
-                whatsapp: true,
-                slack: true,
-                meetings: true,
-                proposal: testUserData.data_vault.proposal ? true : false
-            };
+        // Initialize platform selection based on user data
+        function initPlatformSelection() {
+            // Gmail
+            if (testUserData.data_vault.gmail) {
+                testUserData.data_vault.gmail.forEach(email => {
+                    if (email.is_relevant) {
+                        platformSelection.gmail.threads[email.thread_id] = true;
+                    }
+                });
+            }
+
+            // WhatsApp
+            if (testUserData.data_vault.whatsapp) {
+                testUserData.data_vault.whatsapp.forEach(thread => {
+                    if (thread.is_relevant) {
+                        platformSelection.whatsapp.groups[thread.thread_id] = true;
+                    }
+                });
+            }
+
+            // Slack
+            if (testUserData.data_vault.slack) {
+                testUserData.data_vault.slack.forEach(channel => {
+                    if (channel.is_relevant) {
+                        platformSelection.slack.channels[channel.channel_id] = true;
+                    }
+                });
+            }
+
+            // Meetings
+            if (testUserData.data_vault.meetings) {
+                testUserData.data_vault.meetings.forEach(meeting => {
+                    platformSelection.meetings.meetings[meeting.meeting_id] = true;
+                });
+            }
         }
 
-        // Render platform sidebar in read-only mode (no checkboxes, no connect buttons)
-        function renderPlatformSidebarReadOnly() {
+        // Render platform sidebar
+        function renderPlatformSidebar() {
             const platformList = document.getElementById('platformList');
             
             let html = '';
@@ -385,39 +397,37 @@
             // Gmail Section
             if (testUserData.data_vault.gmail) {
                 const relevantGmails = testUserData.data_vault.gmail.filter(g => g.is_relevant);
-                html += renderPlatformSectionReadOnly('gmail', 'Gmail', '📧', '#DC2626', relevantGmails, 'thread_id', 'subject', 'email');
+                html += renderPlatformSection('gmail', 'Gmail', '📧', '#DC2626', relevantGmails, 'threads', 'subject');
             }
 
             // WhatsApp Section
             if (testUserData.data_vault.whatsapp) {
                 const relevantWhatsApps = testUserData.data_vault.whatsapp.filter(w => w.is_relevant);
-                html += renderPlatformSectionReadOnly('whatsapp', 'WhatsApp', '💬', '#16A34A', relevantWhatsApps, 'thread_id', 'name', 'chat');
+                html += renderPlatformSection('whatsapp', 'WhatsApp', '💬', '#16A34A', relevantWhatsApps, 'groups', 'name');
             }
 
             // Slack Section
             if (testUserData.data_vault.slack) {
                 const relevantSlacks = testUserData.data_vault.slack.filter(s => s.is_relevant);
-                html += renderPlatformSectionReadOnly('slack', 'Slack', '💼', '#2563EB', relevantSlacks, 'channel_id', 'name', 'channel');
+                html += renderPlatformSection('slack', 'Slack', '💼', '#2563EB', relevantSlacks, 'channels', 'name');
             }
 
             // Meetings Section
             if (testUserData.data_vault.meetings) {
-                html += renderPlatformSectionReadOnly('meetings', 'Meetings', '🎤', '#EAB308', testUserData.data_vault.meetings, 'meeting_id', 'title', 'meeting');
+                html += renderPlatformSection('meetings', 'Meetings', '🎤', '#EAB308', testUserData.data_vault.meetings, 'meetings', 'title');
             }
 
             // Proposal Section (if exists)
             if (testUserData.data_vault.proposal) {
                 html += `
-                    <div class="platform-section">
-                        <div class="platform-header">
+                    <div class="platform-item">
+                        <div class="platform-header flex items-center gap-3">
+                            <input type="checkbox" class="platform-checkbox" 
+                                   ${platformSelection.proposal.selected ? 'checked' : ''}
+                                   onchange="togglePlatform('proposal')">
                             <div class="platform-icon" style="background-color: #6B728020; color: #6B7280;">📄</div>
-                            <span class="platform-name">Proposal</span>
-                            <span class="status-badge ${platformStatus.proposal ? 'connected' : ''}">
-                                ${platformStatus.proposal ? 'Connected' : 'Connect'}
-                            </span>
-                        </div>
-                        <div class="pl-[60px] p-3 text-xs text-gray-500 border-t border-gray-50">
-                            Vendor proposal document
+                            <span class="text-sm font-medium flex-1" style="color: #111827;">Proposal</span>
+                            <span class="text-xs px-2 py-1 rounded-full" style="background-color: #F3F4F6; color: #6B7280;">1</span>
                         </div>
                     </div>
                 `;
@@ -426,36 +436,120 @@
             platformList.innerHTML = html;
         }
 
-        function renderPlatformSectionReadOnly(platform, name, icon, color, items, idField, nameField, type) {
-            const messageCount = items.reduce((total, item) => {
-                if (item.messages) return total + item.messages.length;
-                if (item.minutes) return total + item.minutes.length;
-                return total + 1;
-            }, 0);
+        function renderPlatformSection(platform, name, icon, color, items, typeKey, nameField) {
+            const allSelected = Object.values(platformSelection[platform][typeKey]).every(v => v === true);
+            const selectedCount = Object.values(platformSelection[platform][typeKey]).filter(v => v === true).length;
             
             return `
-                <div class="platform-section">
-                    <div class="platform-header">
+                <div class="platform-item">
+                    <div class="platform-header flex items-center gap-3" onclick="togglePlatformExpand('${platform}')">
+                        <input type="checkbox" class="platform-checkbox" 
+                               ${platformSelection[platform].selected ? 'checked' : ''}
+                               onclick="event.stopPropagation(); togglePlatform('${platform}')">
                         <div class="platform-icon" style="background-color: ${color}20; color: ${color};">${icon}</div>
-                        <span class="platform-name">${name}</span>
-                        <span class="status-badge ${platformStatus[platform] ? 'connected' : ''}">
-                            ${platformStatus[platform] ? 'Connected' : 'Connect'}
-                        </span>
+                        <span class="text-sm font-medium flex-1" style="color: #111827;">${name}</span>
+                        <span class="text-xs px-2 py-1 rounded-full" style="background-color: #F3F4F6; color: #6B7280;">${items.length}</span>
+                        <svg class="w-4 h-4 transform transition-transform ${platformSelection[platform].expanded ? 'rotate-180' : ''}" 
+                             style="color: #6B7280;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
                     </div>
-                    <div>
+                    <div class="${platformSelection[platform].expanded ? 'block' : 'hidden'}">
                         ${items.map(item => {
+                            const itemId = item.thread_id || item.channel_id || item.meeting_id;
                             const itemName = item[nameField] || 'Untitled';
-                            const itemCount = item.messages ? item.messages.length : (item.minutes ? item.minutes.length : 1);
+                            const isSelected = platformSelection[platform][typeKey][itemId] || false;
                             return `
                                 <div class="chat-item">
-                                    <span class="chat-name">${itemName}</span>
-                                    <span class="message-count">${itemCount}</span>
+                                    <input type="checkbox" class="chat-checkbox" 
+                                           ${isSelected ? 'checked' : ''}
+                                           onchange="toggleChat('${platform}', '${typeKey}', '${itemId}')">
+                                    <span class="text-xs truncate" style="color: #374151;">${itemName}</span>
                                 </div>
                             `;
                         }).join('')}
                     </div>
                 </div>
             `;
+        }
+
+        // Toggle platform expansion
+        function togglePlatformExpand(platform) {
+            platformSelection[platform].expanded = !platformSelection[platform].expanded;
+            renderPlatformSidebar();
+        }
+
+        // Toggle entire platform
+        function togglePlatform(platform) {
+            platformSelection[platform].selected = !platformSelection[platform].selected;
+            
+            // If platform is deselected, deselect all its items
+            if (!platformSelection[platform].selected) {
+                if (platform === 'gmail') {
+                    Object.keys(platformSelection.gmail.threads).forEach(key => {
+                        platformSelection.gmail.threads[key] = false;
+                    });
+                } else if (platform === 'whatsapp') {
+                    Object.keys(platformSelection.whatsapp.groups).forEach(key => {
+                        platformSelection.whatsapp.groups[key] = false;
+                    });
+                } else if (platform === 'slack') {
+                    Object.keys(platformSelection.slack.channels).forEach(key => {
+                        platformSelection.slack.channels[key] = false;
+                    });
+                } else if (platform === 'meetings') {
+                    Object.keys(platformSelection.meetings.meetings).forEach(key => {
+                        platformSelection.meetings.meetings[key] = false;
+                    });
+                }
+            } else {
+                // If platform is selected, select all its items
+                if (platform === 'gmail') {
+                    Object.keys(platformSelection.gmail.threads).forEach(key => {
+                        platformSelection.gmail.threads[key] = true;
+                    });
+                } else if (platform === 'whatsapp') {
+                    Object.keys(platformSelection.whatsapp.groups).forEach(key => {
+                        platformSelection.whatsapp.groups[key] = true;
+                    });
+                } else if (platform === 'slack') {
+                    Object.keys(platformSelection.slack.channels).forEach(key => {
+                        platformSelection.slack.channels[key] = true;
+                    });
+                } else if (platform === 'meetings') {
+                    Object.keys(platformSelection.meetings.meetings).forEach(key => {
+                        platformSelection.meetings.meetings[key] = true;
+                    });
+                }
+            }
+            
+            renderPlatformSidebar();
+        }
+
+        // Toggle individual chat/thread
+        function toggleChat(platform, typeKey, itemId) {
+            platformSelection[platform][typeKey][itemId] = !platformSelection[platform][typeKey][itemId];
+            
+            // Check if all items are selected to update platform checkbox
+            const allSelected = Object.values(platformSelection[platform][typeKey]).every(v => v === true);
+            platformSelection[platform].selected = allSelected;
+            
+            renderPlatformSidebar();
+        }
+
+        // Perform Step 1 Extraction
+        async function performStep1Extraction() {
+            UI.showLoader('Extracting relevant facts from conversations...');
+            
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            const facts = Extraction.extractFacts(testUserData);
+            projectState.extractionData = facts;
+            projectState.completedSteps = [1];
+            projectState.currentStep = 1;
+            
+            saveProjectState();
+            UI.hideLoader();
         }
 
         // Render steps in horizontal navigation
@@ -537,19 +631,14 @@
             }
         }
 
-        // Perform Step 1 Extraction
-        async function performStep1Extraction() {
-            UI.showLoader('Extracting relevant facts from conversations...');
-            
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            const facts = Extraction.extractFacts(testUserData);
-            projectState.extractionData = facts;
-            projectState.completedSteps = [1];
-            projectState.currentStep = 1;
-            
-            saveProjectState();
-            UI.hideLoader();
+        // Preview completed step
+        function previewStep(stepNum) {
+            if (!projectState.completedSteps.includes(stepNum)) {
+                UI.showError('Not Available', 'This step has not been completed yet.');
+                return;
+            }
+            projectState.currentStep = stepNum;
+            renderCurrentStep();
         }
 
         // Render current step content
