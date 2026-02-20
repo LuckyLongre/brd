@@ -90,7 +90,130 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
         
-        /* Mobile Responsive Improvements */
+        /* Platform Sidebar */
+        .platform-sidebar {
+            background: white;
+            border-right: 1px solid #E5E7EB;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+        
+        .platform-item {
+            border-bottom: 1px solid #F3F4F6;
+        }
+        
+        .platform-header {
+            padding: 12px 16px;
+            background-color: #F9FAFB;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+        
+        .platform-header:hover {
+            background-color: #F3F4F6;
+        }
+        
+        .platform-checkbox {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid #D1D5DB;
+            cursor: pointer;
+            accent-color: #2563EB;
+        }
+        
+        .chat-item {
+            padding: 8px 16px 8px 48px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: white;
+            transition: background-color 0.2s;
+        }
+        
+        .chat-item:hover {
+            background-color: #F9FAFB;
+        }
+        
+        .chat-checkbox {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            border: 2px solid #D1D5DB;
+            cursor: pointer;
+            accent-color: #2563EB;
+        }
+        
+        .platform-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        /* Main layout with sidebar */
+        .main-with-sidebar {
+            display: flex;
+            height: calc(100vh - 8rem);
+            overflow: hidden;
+        }
+        
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+        
+        /* Toggle button for mobile */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 50;
+            background: #2563EB;
+            color: white;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            cursor: pointer;
+        }
+        
+        @media (max-width: 1023px) {
+            .main-with-sidebar {
+                position: relative;
+            }
+            
+            .platform-sidebar {
+                position: fixed;
+                left: -300px;
+                top: 8rem;
+                width: 280px;
+                height: calc(100vh - 8rem);
+                z-index: 40;
+                box-shadow: 2px 0 12px rgba(0,0,0,0.1);
+            }
+            
+            .platform-sidebar.open {
+                left: 0;
+            }
+            
+            .sidebar-toggle {
+                display: flex;
+            }
+            
+            .content-area {
+                width: 100%;
+            }
+        }
+        
         @media (max-width: 640px) {
             .summary-section {
                 padding: 16px;
@@ -116,7 +239,7 @@
             </a>
         </div>
         
-        <!-- Horizontal Steps Navigation (Moved from Sidebar) -->
+        <!-- Horizontal Steps Navigation -->
         <div class="border-t" style="border-color: #E5E7EB;">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div class="flex items-center justify-between gap-2 sm:gap-4" id="stepsList">
@@ -126,12 +249,36 @@
         </div>
     </nav>
 
-    <!-- Main Content Area -->
-    <div class="h-[calc(100vh-8rem)] overflow-hidden">
-        <div id="stepContent" class="h-full overflow-y-auto p-4 lg:p-8">
-            <!-- Step content will be loaded here -->
+    <!-- Main Layout with Platform Sidebar -->
+    <div class="main-with-sidebar">
+        <!-- Platform Sidebar -->
+        <div class="platform-sidebar" id="platformSidebar">
+            <div class="p-4 border-b" style="border-color: #E5E7EB; background-color: #F9FAFB;">
+                <h3 class="font-semibold text-sm" style="color: #111827;">DATA SOURCES</h3>
+                <p class="text-xs mt-1" style="color: #6B7280;">Select platforms and chats</p>
+            </div>
+            <div id="platformList" class="divide-y" style="border-color: #F3F4F6;">
+                <!-- Platforms will be loaded dynamically -->
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content-area" id="contentArea">
+            <div id="stepContent">
+                <!-- Step content will be loaded here -->
+            </div>
         </div>
     </div>
+
+    <!-- Mobile Sidebar Toggle -->
+    <div class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </div>
+
+    <!-- Overlay for mobile -->
+    <div id="sidebarOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden" onclick="toggleSidebar()"></div>
 
     <!-- Scripts -->
     <script src="js/storage.js"></script>
@@ -148,6 +295,21 @@
         let currentProject = null;
         let projectState = null;
         let testUserData = null;
+        let platformSelection = {
+            gmail: { selected: true, threads: {} },
+            whatsapp: { selected: true, groups: {} },
+            slack: { selected: true, channels: {} },
+            meetings: { selected: true, meetings: {} },
+            proposal: { selected: true }
+        };
+
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('platformSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('hidden');
+        }
 
         // Initialize
         async function init() {
@@ -176,13 +338,203 @@
 
             document.getElementById('projectTitle').textContent = currentProject.name;
 
+            // Initialize platform selection from user data
+            initPlatformSelection();
+
             // If step 1 not started, initialize it
             if (!projectState.extractionData || projectState.extractionData.length === 0) {
                 await performStep1Extraction();
             }
 
             renderSteps();
+            renderPlatformSidebar();
             renderCurrentStep();
+        }
+
+        // Initialize platform selection based on user data
+        function initPlatformSelection() {
+            // Gmail
+            if (testUserData.data_vault.gmail) {
+                testUserData.data_vault.gmail.forEach(email => {
+                    if (email.is_relevant) {
+                        platformSelection.gmail.threads[email.thread_id] = true;
+                    }
+                });
+            }
+
+            // WhatsApp
+            if (testUserData.data_vault.whatsapp) {
+                testUserData.data_vault.whatsapp.forEach(thread => {
+                    if (thread.is_relevant) {
+                        platformSelection.whatsapp.groups[thread.thread_id] = true;
+                    }
+                });
+            }
+
+            // Slack
+            if (testUserData.data_vault.slack) {
+                testUserData.data_vault.slack.forEach(channel => {
+                    if (channel.is_relevant) {
+                        platformSelection.slack.channels[channel.channel_id] = true;
+                    }
+                });
+            }
+
+            // Meetings
+            if (testUserData.data_vault.meetings) {
+                testUserData.data_vault.meetings.forEach(meeting => {
+                    platformSelection.meetings.meetings[meeting.meeting_id] = true;
+                });
+            }
+        }
+
+        // Render platform sidebar
+        function renderPlatformSidebar() {
+            const platformList = document.getElementById('platformList');
+            
+            let html = '';
+
+            // Gmail Section
+            if (testUserData.data_vault.gmail) {
+                const relevantGmails = testUserData.data_vault.gmail.filter(g => g.is_relevant);
+                html += renderPlatformSection('gmail', 'Gmail', '📧', '#DC2626', relevantGmails, 'threads', 'subject');
+            }
+
+            // WhatsApp Section
+            if (testUserData.data_vault.whatsapp) {
+                const relevantWhatsApps = testUserData.data_vault.whatsapp.filter(w => w.is_relevant);
+                html += renderPlatformSection('whatsapp', 'WhatsApp', '💬', '#16A34A', relevantWhatsApps, 'groups', 'name');
+            }
+
+            // Slack Section
+            if (testUserData.data_vault.slack) {
+                const relevantSlacks = testUserData.data_vault.slack.filter(s => s.is_relevant);
+                html += renderPlatformSection('slack', 'Slack', '💼', '#2563EB', relevantSlacks, 'channels', 'name');
+            }
+
+            // Meetings Section
+            if (testUserData.data_vault.meetings) {
+                html += renderPlatformSection('meetings', 'Meetings', '🎤', '#EAB308', testUserData.data_vault.meetings, 'meetings', 'title');
+            }
+
+            // Proposal Section (if exists)
+            if (testUserData.data_vault.proposal) {
+                html += `
+                    <div class="platform-item">
+                        <div class="platform-header flex items-center gap-3">
+                            <input type="checkbox" class="platform-checkbox" 
+                                   ${platformSelection.proposal.selected ? 'checked' : ''}
+                                   onchange="togglePlatform('proposal')">
+                            <div class="platform-icon" style="background-color: #6B728020; color: #6B7280;">📄</div>
+                            <span class="text-sm font-medium flex-1" style="color: #111827;">Proposal</span>
+                            <span class="text-xs px-2 py-1 rounded-full" style="background-color: #F3F4F6; color: #6B7280;">1</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            platformList.innerHTML = html;
+        }
+
+        function renderPlatformSection(platform, name, icon, color, items, typeKey, nameField) {
+            const allSelected = Object.values(platformSelection[platform][typeKey]).every(v => v === true);
+            const selectedCount = Object.values(platformSelection[platform][typeKey]).filter(v => v === true).length;
+            
+            return `
+                <div class="platform-item">
+                    <div class="platform-header flex items-center gap-3" onclick="togglePlatformExpand('${platform}')">
+                        <input type="checkbox" class="platform-checkbox" 
+                               ${platformSelection[platform].selected ? 'checked' : ''}
+                               onclick="event.stopPropagation(); togglePlatform('${platform}')">
+                        <div class="platform-icon" style="background-color: ${color}20; color: ${color};">${icon}</div>
+                        <span class="text-sm font-medium flex-1" style="color: #111827;">${name}</span>
+                        <span class="text-xs px-2 py-1 rounded-full" style="background-color: #F3F4F6; color: #6B7280;">${items.length}</span>
+                        <svg class="w-4 h-4 transform transition-transform ${platformSelection[platform].expanded ? 'rotate-180' : ''}" 
+                             style="color: #6B7280;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div class="${platformSelection[platform].expanded ? 'block' : 'hidden'}">
+                        ${items.map(item => {
+                            const itemId = item.thread_id || item.channel_id || item.meeting_id;
+                            const itemName = item[nameField] || 'Untitled';
+                            const isSelected = platformSelection[platform][typeKey][itemId] || false;
+                            return `
+                                <div class="chat-item">
+                                    <input type="checkbox" class="chat-checkbox" 
+                                           ${isSelected ? 'checked' : ''}
+                                           onchange="toggleChat('${platform}', '${typeKey}', '${itemId}')">
+                                    <span class="text-xs truncate" style="color: #374151;">${itemName}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Toggle platform expansion
+        function togglePlatformExpand(platform) {
+            platformSelection[platform].expanded = !platformSelection[platform].expanded;
+            renderPlatformSidebar();
+        }
+
+        // Toggle entire platform
+        function togglePlatform(platform) {
+            platformSelection[platform].selected = !platformSelection[platform].selected;
+            
+            // If platform is deselected, deselect all its items
+            if (!platformSelection[platform].selected) {
+                if (platform === 'gmail') {
+                    Object.keys(platformSelection.gmail.threads).forEach(key => {
+                        platformSelection.gmail.threads[key] = false;
+                    });
+                } else if (platform === 'whatsapp') {
+                    Object.keys(platformSelection.whatsapp.groups).forEach(key => {
+                        platformSelection.whatsapp.groups[key] = false;
+                    });
+                } else if (platform === 'slack') {
+                    Object.keys(platformSelection.slack.channels).forEach(key => {
+                        platformSelection.slack.channels[key] = false;
+                    });
+                } else if (platform === 'meetings') {
+                    Object.keys(platformSelection.meetings.meetings).forEach(key => {
+                        platformSelection.meetings.meetings[key] = false;
+                    });
+                }
+            } else {
+                // If platform is selected, select all its items
+                if (platform === 'gmail') {
+                    Object.keys(platformSelection.gmail.threads).forEach(key => {
+                        platformSelection.gmail.threads[key] = true;
+                    });
+                } else if (platform === 'whatsapp') {
+                    Object.keys(platformSelection.whatsapp.groups).forEach(key => {
+                        platformSelection.whatsapp.groups[key] = true;
+                    });
+                } else if (platform === 'slack') {
+                    Object.keys(platformSelection.slack.channels).forEach(key => {
+                        platformSelection.slack.channels[key] = true;
+                    });
+                } else if (platform === 'meetings') {
+                    Object.keys(platformSelection.meetings.meetings).forEach(key => {
+                        platformSelection.meetings.meetings[key] = true;
+                    });
+                }
+            }
+            
+            renderPlatformSidebar();
+        }
+
+        // Toggle individual chat/thread
+        function toggleChat(platform, typeKey, itemId) {
+            platformSelection[platform][typeKey][itemId] = !platformSelection[platform][typeKey][itemId];
+            
+            // Check if all items are selected to update platform checkbox
+            const allSelected = Object.values(platformSelection[platform][typeKey]).every(v => v === true);
+            platformSelection[platform].selected = allSelected;
+            
+            renderPlatformSidebar();
         }
 
         // Perform Step 1 Extraction
