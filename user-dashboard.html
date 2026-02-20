@@ -3,101 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Project - BRD Generator</title>
+    <title>My Projects - BRD Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
         
-        /* Platform Section Styles */
-        .platform-section {
+        .platform-card {
             border: 1px solid #E5E7EB;
-            border-radius: 12px;
-            margin-bottom: 16px;
-            overflow: hidden;
+            border-radius: 8px;
+            background: white;
+            margin-bottom: 8px;
         }
         
         .platform-header {
-            padding: 16px;
-            background-color: #F9FAFB;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
             gap: 12px;
             cursor: pointer;
+            user-select: none;
+        }
+        
+        .platform-header:hover {
+            background-color: #F9FAFB;
         }
         
         .platform-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
+            font-size: 14px;
         }
         
-        .platform-checkbox {
-            width: 18px;
-            height: 18px;
-            border-radius: 4px;
-            border: 2px solid #D1D5DB;
-            cursor: pointer;
-            accent-color: #2563EB;
-        }
-        
-        .platform-name {
-            font-size: 15px;
-            font-weight: 600;
-            color: #111827;
-            flex: 1;
-        }
-        
-        .status-badge {
+        .connect-btn {
             font-size: 12px;
             padding: 4px 12px;
-            border-radius: 20px;
+            border-radius: 16px;
+            font-weight: 500;
             background-color: #F3F4F6;
             color: #6B7280;
-            font-weight: 500;
+            border: 1px solid #E5E7EB;
+            cursor: pointer;
+            transition: all 0.2s;
         }
         
-        .status-badge.connected {
-            background-color: #E6F7E6;
-            color: #16A34A;
+        .connect-btn.connected {
+            background-color: #D1FAE5;
+            color: #065F46;
+            border-color: #A7F3D0;
+            cursor: default;
+        }
+        
+        .connect-btn:hover:not(.connected) {
+            background-color: #E5E7EB;
+            color: #374151;
         }
         
         .chat-item {
-            padding: 12px 16px 12px 84px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background-color: white;
+            padding: 8px 16px 8px 56px;
+            font-size: 13px;
+            color: #4B5563;
             border-top: 1px solid #F3F4F6;
-        }
-        
-        .chat-checkbox {
-            width: 16px;
-            height: 16px;
-            border-radius: 3px;
-            border: 2px solid #D1D5DB;
-            cursor: pointer;
-            accent-color: #2563EB;
-        }
-        
-        .chat-name {
-            font-size: 14px;
-            color: #374151;
-            flex: 1;
-        }
-        
-        .message-count {
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 12px;
-            background-color: #F3F4F6;
-            color: #6B7280;
         }
     </style>
 </head>
@@ -106,419 +77,168 @@
     <nav class="bg-white border-b" style="border-color: #E5E7EB;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
+                <h1 class="text-xl font-bold" style="color: #2563EB;">BRD Generator</h1>
                 <div class="flex items-center gap-4">
-                    <a href="user-dashboard.html" style="color: #6B7280;">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                        </svg>
-                    </a>
-                    <h1 class="text-2xl font-bold" style="color: #2563EB;">BRD Generator</h1>
+                    <span id="userName" style="color: #6B7280;"></span>
+                    <button onclick="Auth.logout()" class="px-3 py-1.5 text-sm border rounded" style="border-color: #E5E7EB; color: #6B7280;">
+                        Sign Out
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="min-h-screen bg-gray-50 px-4 py-8">
-        <div class="max-w-6xl mx-auto">
-            <!-- Header -->
-            <div class="mb-8">
-                <h2 class="text-3xl font-bold mb-2" style="color: #111827;">Create New Project</h2>
-                <p style="color: #6B7280;">Select a test user, name your project, and choose data sources</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Left Column: Project Details Form -->
-                <div>
-                    <div class="bg-white rounded-xl shadow-sm p-6 border" style="border-color: #E5E7EB;">
-                        <h3 class="text-lg font-semibold mb-4" style="color: #111827;">Project Details</h3>
-                        
-                        <form id="newProjectForm">
-                            <div class="mb-6">
-                                <label for="projectName" class="block text-sm font-medium mb-2" style="color: #111827;">Project Name *</label>
-                                <input 
-                                    type="text" 
-                                    id="projectName" 
-                                    name="projectName"
-                                    placeholder="Enter project name"
-                                    class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-200" 
-                                    style="border-color: #E5E7EB; color: #111827;"
-                                    required
-                                >
-                            </div>
-
-                            <div class="mb-6">
-                                <label for="testUser" class="block text-sm font-medium mb-2" style="color: #111827;">Test User Data *</label>
-                                <select 
-                                    id="testUser" 
-                                    name="testUser"
-                                    class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-200" 
-                                    style="border-color: #E5E7EB; color: #111827;"
-                                    required
-                                >
-                                    <option value="">Select a test user</option>
-                                </select>
-                                <p class="mt-2 text-sm" style="color: #6B7280;">Choose which test user's conversation data to analyze</p>
-                            </div>
-
-                            <div class="mb-6 p-4 rounded-lg" style="background-color: #F8FAFC; border: 1px solid #E5E7EB;" id="userPreview">
-                                <p class="text-sm" style="color: #6B7280;">Select a user to see their project details</p>
-                            </div>
-
-                            <div class="flex gap-3">
-                                <a href="user-dashboard.html" class="flex-1 px-6 py-3 rounded-lg border font-medium text-center" style="border-color: #E5E7EB; color: #6B7280;">
-                                    Cancel
-                                </a>
-                                <button 
-                                    type="submit" 
-                                    class="flex-1 px-6 py-3 rounded-lg text-white font-medium" 
-                                    style="background-color: #2563EB;"
-                                >
-                                    Create Project
-                                </button>
-                            </div>
-                        </form>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Left Column - Platforms -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-sm border p-4" style="border-color: #E5E7EB;">
+                    <h3 class="text-sm font-semibold mb-3" style="color: #111827;">Connected Platforms</h3>
+                    <div id="platformsList">
+                        <!-- Platforms will be loaded here -->
                     </div>
                 </div>
+            </div>
 
-                <!-- Right Column: Data Sources Selection (with checkboxes) -->
-                <div>
-                    <div class="bg-white rounded-xl shadow-sm p-6 border" style="border-color: #E5E7EB;">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-semibold" style="color: #111827;">Select Data Sources</h3>
-                            <span class="text-xs px-3 py-1 rounded-full bg-gray-100 text-gray-600">Check to include</span>
-                        </div>
-                        
-                        <div id="platformSelectionArea">
-                            <!-- Platforms will be loaded here with checkboxes -->
-                            <p class="text-sm text-gray-500 text-center py-8">Select a test user to view available data sources</p>
-                        </div>
-                    </div>
+            <!-- Right Column - Projects -->
+            <div class="lg:col-span-3">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold" style="color: #111827;">My Projects</h2>
+                    <a href="new-project.html" class="px-4 py-2 rounded-lg text-white text-sm font-medium" style="background-color: #2563EB;">
+                        + New Project
+                    </a>
+                </div>
+
+                <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Projects will be loaded here -->
+                </div>
+
+                <div id="emptyState" class="hidden text-center py-12">
+                    <p style="color: #6B7280;">No projects yet. Create your first project to get started.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="js/storage.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/dummyData.js"></script>
     <script src="js/ui.js"></script>
-    <script src="js/router.js"></script>
-    <script src="js/main.js"></script>
     <script>
-        let currentUser = null;
-        let selectedUserId = null;
-        let platformSelection = {};
-
-        // Populate test users dropdown
-        const testUsers = DummyData.getUserList();
-        const select = document.getElementById('testUser');
-        
-        testUsers.forEach(user => {
-            const option = document.createElement('option');
-            option.value = user.user_id;
-            option.textContent = `${user.name} (${user.role}) - ${user.project}`;
-            select.appendChild(option);
-        });
-
-        // Show user preview and platforms on selection
-        select.addEventListener('change', function() {
-            const userId = this.value;
-            const preview = document.getElementById('userPreview');
-            const platformArea = document.getElementById('platformSelectionArea');
-            
-            if (!userId) {
-                preview.innerHTML = '<p class="text-sm" style="color: #6B7280;">Select a user to see their project details</p>';
-                platformArea.innerHTML = '<p class="text-sm text-gray-500 text-center py-8">Select a test user to view available data sources</p>';
-                return;
-            }
-
-            selectedUserId = userId;
-            const user = testUsers.find(u => u.user_id === userId);
-            const userData = DummyData.getUserData(userId);
-            
-            if (user) {
-                preview.innerHTML = `
-                    <div class="space-y-2">
-                        <p class="text-sm font-medium" style="color: #111827;">${user.name}</p>
-                        <p class="text-sm" style="color: #6B7280;"><span class="font-medium">Role:</span> ${user.role}</p>
-                        <p class="text-sm" style="color: #6B7280;"><span class="font-medium">Project:</span> ${user.project}</p>
-                    </div>
-                `;
-                
-                // Initialize platform selection (all selected by default)
-                initPlatformSelection(userData);
-                
-                // Render platforms with checkboxes
-                renderPlatformsWithCheckboxes(userData);
-            }
-        });
-
-        // Initialize platform selection
-        function initPlatformSelection(userData) {
-            platformSelection = {
-                gmail: { selected: true, threads: {} },
-                whatsapp: { selected: true, groups: {} },
-                slack: { selected: true, channels: {} },
-                meetings: { selected: true, meetings: {} },
-                proposal: { selected: true }
-            };
-
-            // Gmail
-            if (userData.data_vault.gmail) {
-                userData.data_vault.gmail.forEach(email => {
-                    if (email.is_relevant) {
-                        platformSelection.gmail.threads[email.thread_id] = true;
-                    }
-                });
-            }
-
-            // WhatsApp
-            if (userData.data_vault.whatsapp) {
-                userData.data_vault.whatsapp.forEach(thread => {
-                    if (thread.is_relevant) {
-                        platformSelection.whatsapp.groups[thread.thread_id] = true;
-                    }
-                });
-            }
-
-            // Slack
-            if (userData.data_vault.slack) {
-                userData.data_vault.slack.forEach(channel => {
-                    if (channel.is_relevant) {
-                        platformSelection.slack.channels[channel.channel_id] = true;
-                    }
-                });
-            }
-
-            // Meetings
-            if (userData.data_vault.meetings) {
-                userData.data_vault.meetings.forEach(meeting => {
-                    platformSelection.meetings.meetings[meeting.meeting_id] = true;
-                });
-            }
+        const user = Auth.getCurrentUser();
+        if (user) {
+            document.getElementById('userName').textContent = user.name;
         }
 
-        // Render platforms with checkboxes
-        function renderPlatformsWithCheckboxes(userData) {
-            const platformArea = document.getElementById('platformSelectionArea');
-            
+        // Platform connection state
+        const platformConnections = {
+            gmail: { connected: true, expanded: false },
+            whatsapp: { connected: true, expanded: false },
+            slack: { connected: true, expanded: false },
+            meetings: { connected: true, expanded: false },
+            proposal: { connected: false, expanded: false }
+        };
+
+        // Render platforms with connect buttons
+        function renderPlatforms() {
+            const platforms = [
+                { id: 'gmail', name: 'Gmail', icon: '📧', color: '#DC2626', items: ['Inbox', 'Sent', 'Drafts'] },
+                { id: 'whatsapp', name: 'WhatsApp', icon: '💬', color: '#16A34A', items: ['Executive Sync', 'Team Chat', 'General'] },
+                { id: 'slack', name: 'Slack', icon: '💼', color: '#2563EB', items: ['#general', '#random', '#dev'] },
+                { id: 'meetings', name: 'Meetings', icon: '🎤', color: '#EAB308', items: ['Weekly Sync', 'Planning', 'Review'] },
+                { id: 'proposal', name: 'Proposal', icon: '📄', color: '#6B7280', items: [] }
+            ];
+
+            const list = document.getElementById('platformsList');
             let html = '';
 
-            // Gmail Section
-            if (userData.data_vault.gmail) {
-                const relevantGmails = userData.data_vault.gmail.filter(g => g.is_relevant);
-                html += renderPlatformCheckboxSection('gmail', 'Gmail', '📧', '#DC2626', relevantGmails, 'threads', 'thread_id', 'subject');
-            }
-
-            // WhatsApp Section
-            if (userData.data_vault.whatsapp) {
-                const relevantWhatsApps = userData.data_vault.whatsapp.filter(w => w.is_relevant);
-                html += renderPlatformCheckboxSection('whatsapp', 'WhatsApp', '💬', '#16A34A', relevantWhatsApps, 'groups', 'thread_id', 'name');
-            }
-
-            // Slack Section
-            if (userData.data_vault.slack) {
-                const relevantSlacks = userData.data_vault.slack.filter(s => s.is_relevant);
-                html += renderPlatformCheckboxSection('slack', 'Slack', '💼', '#2563EB', relevantSlacks, 'channels', 'channel_id', 'name');
-            }
-
-            // Meetings Section
-            if (userData.data_vault.meetings) {
-                html += renderPlatformCheckboxSection('meetings', 'Meetings', '🎤', '#EAB308', userData.data_vault.meetings, 'meetings', 'meeting_id', 'title');
-            }
-
-            // Proposal Section (if exists)
-            if (userData.data_vault.proposal) {
+            platforms.forEach(p => {
+                const connection = platformConnections[p.id];
                 html += `
-                    <div class="platform-section">
-                        <div class="platform-header" onclick="togglePlatformExpand('proposal')">
-                            <input type="checkbox" class="platform-checkbox" 
-                                   ${platformSelection.proposal.selected ? 'checked' : ''}
-                                   onclick="event.stopPropagation(); togglePlatformCheckbox('proposal')">
-                            <div class="platform-icon" style="background-color: #6B728020; color: #6B7280;">📄</div>
-                            <span class="platform-name">Proposal</span>
-                            <span class="status-badge">Document</span>
-                            <svg class="w-4 h-4 transform transition-transform ${platformSelection.proposal.expanded ? 'rotate-180' : ''}" 
-                                 style="color: #6B7280;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="platform-card">
+                        <div class="platform-header" onclick="togglePlatform('${p.id}')">
+                            <div class="platform-icon" style="background-color: ${p.color}20; color: ${p.color};">${p.icon}</div>
+                            <span class="text-sm font-medium flex-1" style="color: #111827;">${p.name}</span>
+                            <span class="connect-btn ${connection.connected ? 'connected' : ''}" 
+                                  onclick="event.stopPropagation(); toggleConnection('${p.id}')">
+                                ${connection.connected ? 'Connected' : 'Connect'}
+                            </span>
+                            <svg class="w-4 h-4 transform transition-transform ${connection.expanded ? 'rotate-180' : ''}" 
+                                 style="color: #9CA3AF;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </div>
-                        <div class="${platformSelection.proposal.expanded ? 'block' : 'hidden'}">
-                            <div class="pl-[84px] p-3 text-sm text-gray-600 border-t border-gray-100">
-                                Vendor proposal document with compliance details
+                        ${connection.expanded ? `
+                            <div>
+                                ${p.items.map(item => `
+                                    <div class="chat-item">${item}</div>
+                                `).join('')}
                             </div>
-                        </div>
+                        ` : ''}
                     </div>
                 `;
-            }
-
-            platformArea.innerHTML = html;
-        }
-
-        function renderPlatformCheckboxSection(platform, name, icon, color, items, typeKey, idField, nameField) {
-            const allSelected = Object.values(platformSelection[platform][typeKey]).every(v => v === true);
-            
-            // Update platform selected status based on individual selections
-            platformSelection[platform].selected = allSelected;
-            
-            return `
-                <div class="platform-section">
-                    <div class="platform-header" onclick="togglePlatformExpand('${platform}')">
-                        <input type="checkbox" class="platform-checkbox" 
-                               ${platformSelection[platform].selected ? 'checked' : ''}
-                               onclick="event.stopPropagation(); togglePlatformCheckbox('${platform}')">
-                        <div class="platform-icon" style="background-color: ${color}20; color: ${color};">${icon}</div>
-                        <span class="platform-name">${name}</span>
-                        <span class="status-badge">${items.length}</span>
-                        <svg class="w-4 h-4 transform transition-transform ${platformSelection[platform].expanded ? 'rotate-180' : ''}" 
-                             style="color: #6B7280;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </div>
-                    <div class="${platformSelection[platform].expanded ? 'block' : 'hidden'}">
-                        ${items.map(item => {
-                            const itemId = item[idField];
-                            const itemName = item[nameField] || 'Untitled';
-                            const isSelected = platformSelection[platform][typeKey][itemId] || false;
-                            const itemCount = item.messages ? item.messages.length : (item.minutes ? item.minutes.length : 1);
-                            return `
-                                <div class="chat-item">
-                                    <input type="checkbox" class="chat-checkbox" 
-                                           ${isSelected ? 'checked' : ''}
-                                           onchange="toggleChatCheckbox('${platform}', '${typeKey}', '${itemId}')">
-                                    <span class="chat-name">${itemName}</span>
-                                    <span class="message-count">${itemCount}</span>
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        // Toggle platform expansion
-        function togglePlatformExpand(platform) {
-            if (!platformSelection[platform].expanded) {
-                platformSelection[platform].expanded = true;
-            } else {
-                platformSelection[platform].expanded = false;
-            }
-            const userData = DummyData.getUserData(selectedUserId);
-            renderPlatformsWithCheckboxes(userData);
-        }
-
-        // Toggle platform checkbox (select/deselect all)
-        function togglePlatformCheckbox(platform) {
-            platformSelection[platform].selected = !platformSelection[platform].selected;
-            
-            // Update all individual items
-            if (platform === 'gmail') {
-                Object.keys(platformSelection.gmail.threads).forEach(key => {
-                    platformSelection.gmail.threads[key] = platformSelection.gmail.selected;
-                });
-            } else if (platform === 'whatsapp') {
-                Object.keys(platformSelection.whatsapp.groups).forEach(key => {
-                    platformSelection.whatsapp.groups[key] = platformSelection.whatsapp.selected;
-                });
-            } else if (platform === 'slack') {
-                Object.keys(platformSelection.slack.channels).forEach(key => {
-                    platformSelection.slack.channels[key] = platformSelection.slack.selected;
-                });
-            } else if (platform === 'meetings') {
-                Object.keys(platformSelection.meetings.meetings).forEach(key => {
-                    platformSelection.meetings.meetings[key] = platformSelection.meetings.selected;
-                });
-            }
-            
-            const userData = DummyData.getUserData(selectedUserId);
-            renderPlatformsWithCheckboxes(userData);
-        }
-
-        // Toggle individual chat checkbox
-        function toggleChatCheckbox(platform, typeKey, itemId) {
-            platformSelection[platform][typeKey][itemId] = !platformSelection[platform][typeKey][itemId];
-            
-            // Check if all items are selected
-            const allSelected = Object.values(platformSelection[platform][typeKey]).every(v => v === true);
-            platformSelection[platform].selected = allSelected;
-            
-            const userData = DummyData.getUserData(selectedUserId);
-            renderPlatformsWithCheckboxes(userData);
-        }
-
-        // Handle form submission
-        document.getElementById('newProjectForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const projectName = document.getElementById('projectName').value.trim();
-            const testUserId = document.getElementById('testUser').value;
-            
-            if (!projectName) {
-                UI.showError('Validation Error', 'Please enter a project name.');
-                return;
-            }
-            
-            if (!testUserId) {
-                UI.showError('Validation Error', 'Please select a test user.');
-                return;
-            }
-
-            // Check if at least one platform is selected
-            const hasSelection = Object.keys(platformSelection).some(platform => {
-                if (platform === 'proposal') return platformSelection[platform].selected;
-                return Object.values(platformSelection[platform][Object.keys(platformSelection[platform])[1]]).some(v => v === true);
             });
 
-            if (!hasSelection) {
-                UI.showError('Selection Required', 'Please select at least one data source.');
+            list.innerHTML = html;
+        }
+
+        function togglePlatform(id) {
+            platformConnections[id].expanded = !platformConnections[id].expanded;
+            renderPlatforms();
+        }
+
+        function toggleConnection(id) {
+            if (id === 'proposal') {
+                platformConnections[id].connected = !platformConnections[id].connected;
+                renderPlatforms();
+            }
+        }
+
+        // Load projects
+        function loadProjects() {
+            const projects = Storage.get(Storage.KEYS.USER_PROJECTS) || [];
+            
+            if (projects.length === 0) {
+                document.getElementById('emptyState').classList.remove('hidden');
                 return;
             }
 
-            // Create project
-            const projectId = 'proj_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            const user = testUsers.find(u => u.user_id === testUserId);
-            
-            const project = {
-                id: projectId,
-                name: projectName,
-                testUserId: testUserId,
-                testUserName: user.name,
-                testUserProject: user.project,
-                createdAt: new Date().toISOString(),
-                lastModified: new Date().toISOString(),
-                userId: Storage.get(Storage.KEYS.CURRENT_USER_ID),
-                currentStep: 1,
-                completedSteps: [],
-                platformSelection: platformSelection // Save platform selection
-            };
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = projects.map(project => `
+                <div class="bg-white rounded-lg shadow-sm border p-4" style="border-color: #E5E7EB;">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-medium" style="color: #111827;">${project.name}</h3>
+                        <span class="text-xs px-2 py-1 rounded-full" style="background-color: ${project.currentStep >= 4 ? '#D1FAE5' : '#FEF3C7'}; color: ${project.currentStep >= 4 ? '#065F46' : '#92400E'};">
+                            ${project.currentStep >= 4 ? 'Completed' : 'Step ' + project.currentStep + '/4'}
+                        </span>
+                    </div>
+                    <p class="text-xs mb-3" style="color: #6B7280;">Created: ${new Date(project.createdAt).toLocaleDateString()}</p>
+                    <div class="flex gap-2">
+                        <a href="project-dashboard.html?id=${project.id}" class="flex-1 px-3 py-1.5 text-xs text-white rounded text-center" style="background-color: #2563EB;">
+                            Open
+                        </a>
+                        <button onclick="deleteProject('${project.id}')" class="px-3 py-1.5 text-xs border rounded" style="border-color: #E5E7EB; color: #DC2626;">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-            // Save to projects list
-            let projects = Storage.get(Storage.KEYS.USER_PROJECTS) || [];
-            projects.push(project);
-            Storage.set(Storage.KEYS.USER_PROJECTS, projects);
+        function deleteProject(projectId) {
+            if (confirm('Delete this project?')) {
+                let projects = Storage.get(Storage.KEYS.USER_PROJECTS) || [];
+                projects = projects.filter(p => p.id !== projectId);
+                Storage.set(Storage.KEYS.USER_PROJECTS, projects);
+                Storage.remove(Storage.KEYS.PROJECT_PREFIX + projectId);
+                location.reload();
+            }
+        }
 
-            // Initialize project state
-            const projectState = {
-                metadata: project,
-                currentStep: 1,
-                completedSteps: [],
-                extractionData: [],
-                conflictsData: [],
-                summaryData: {},
-                brdData: {},
-                editCount: 0,
-                platformSelection: platformSelection
-            };
-            Storage.set(Storage.KEYS.PROJECT_PREFIX + projectId, projectState);
-
-            // Redirect to project dashboard
-            UI.showSuccess('Project Created', 'Redirecting to your project...');
-            setTimeout(() => {
-                window.location.href = `project-dashboard.html?id=${projectId}`;
-            }, 1000);
-        });
+        // Initialize
+        renderPlatforms();
+        loadProjects();
     </script>
 </body>
 </html>
