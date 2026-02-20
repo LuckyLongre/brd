@@ -12,150 +12,111 @@
         
         /* Conflict Option Cards */
         .conflict-option {
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             cursor: pointer;
         }
         .conflict-option:hover {
             background-color: #F9FAFB;
-            transform: scale(1.01);
         }
         .conflict-option.selected {
-            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            background-color: #EFF6FF;
             border-color: #2563EB !important;
-            border-width: 3px !important;
+            border-width: 2px !important;
         }
         
         /* Editable Fields */
         .editable-field {
-            padding: 12px 16px;
-            border: 2px solid transparent;
-            border-radius: 10px;
+            padding: 10px 14px;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
             transition: all 0.2s ease;
             background-color: white;
             font-size: 14px;
         }
         .editable-field:hover {
-            border-color: #E5E7EB;
+            border-color: #D1D5DB;
             background-color: #F9FAFB;
         }
         .editable-field:focus {
             outline: none;
             border-color: #2563EB;
             background-color: white;
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
         
-        /* Tab Navigation */
-        .tab-button {
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .tab-active {
-            background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-        .tab-inactive {
-            background-color: #F3F4F6;
-            color: #6B7280;
-        }
-        .tab-inactive:hover {
-            background-color: #E5E7EB;
-            color: #374151;
-        }
-        
-        /* Summary Section Cards */
-        .summary-section {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border: 1px solid #E5E7EB;
-            margin-bottom: 20px;
-        }
-        
-        .summary-item {
-            background: #F9FAFB;
-            border-radius: 12px;
-            padding: 16px;
-            border: 1px solid #E5E7EB;
-            transition: all 0.2s ease;
-        }
-        .summary-item:hover {
-            background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        
-        /* Platform Sidebar */
+        /* Platform Sidebar - Read Only */
         .platform-sidebar {
+            width: 280px;
             background: white;
             border-right: 1px solid #E5E7EB;
             overflow-y: auto;
-            transition: all 0.3s ease;
+            flex-shrink: 0;
         }
         
-        .platform-item {
+        .platform-section {
             border-bottom: 1px solid #F3F4F6;
         }
         
         .platform-header {
-            padding: 12px 16px;
+            padding: 14px 16px;
             background-color: #F9FAFB;
-            cursor: pointer;
-            user-select: none;
-            transition: background-color 0.2s;
-        }
-        
-        .platform-header:hover {
-            background-color: #F3F4F6;
-        }
-        
-        .platform-checkbox {
-            width: 18px;
-            height: 18px;
-            border-radius: 4px;
-            border: 2px solid #D1D5DB;
-            cursor: pointer;
-            accent-color: #2563EB;
-        }
-        
-        .chat-item {
-            padding: 8px 16px 8px 48px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            background-color: white;
-            transition: background-color 0.2s;
-        }
-        
-        .chat-item:hover {
-            background-color: #F9FAFB;
-        }
-        
-        .chat-checkbox {
-            width: 16px;
-            height: 16px;
-            border-radius: 3px;
-            border: 2px solid #D1D5DB;
-            cursor: pointer;
-            accent-color: #2563EB;
+            gap: 12px;
+            cursor: default;
         }
         
         .platform-icon {
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
+            flex-shrink: 0;
         }
         
-        /* Main layout with sidebar */
+        .platform-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #111827;
+            flex: 1;
+        }
+        
+        .status-badge {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            background-color: #F3F4F6;
+            color: #6B7280;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        
+        .status-badge.connected {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+        
+        .chat-item-readonly {
+            padding: 10px 16px 10px 56px;
+            font-size: 13px;
+            color: #4B5563;
+            border-bottom: 1px solid #F9FAFB;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .chat-icon {
+            width: 16px;
+            color: #9CA3AF;
+            font-size: 12px;
+        }
+        
+        /* Main layout */
         .main-with-sidebar {
             display: flex;
             height: calc(100vh - 8rem);
@@ -168,60 +129,17 @@
             padding: 24px;
         }
         
-        /* Toggle button for mobile */
-        .sidebar-toggle {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 50;
-            background: #2563EB;
-            color: white;
-            border-radius: 50%;
-            width: 56px;
-            height: 56px;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-            cursor: pointer;
-        }
-        
         @media (max-width: 1023px) {
             .main-with-sidebar {
-                position: relative;
+                flex-direction: column;
             }
             
             .platform-sidebar {
-                position: fixed;
-                left: -300px;
-                top: 8rem;
-                width: 280px;
-                height: calc(100vh - 8rem);
-                z-index: 40;
-                box-shadow: 2px 0 12px rgba(0,0,0,0.1);
-            }
-            
-            .platform-sidebar.open {
-                left: 0;
-            }
-            
-            .sidebar-toggle {
-                display: flex;
-            }
-            
-            .content-area {
                 width: 100%;
-            }
-        }
-        
-        @media (max-width: 640px) {
-            .summary-section {
-                padding: 16px;
-                border-radius: 12px;
-            }
-            .tab-button {
-                padding: 10px 16px;
-                font-size: 13px;
+                height: auto;
+                max-height: 300px;
+                border-right: none;
+                border-bottom: 1px solid #E5E7EB;
             }
         }
     </style>
@@ -251,13 +169,13 @@
 
     <!-- Main Layout with Platform Sidebar -->
     <div class="main-with-sidebar">
-        <!-- Platform Sidebar -->
+        <!-- Platform Sidebar - Read Only -->
         <div class="platform-sidebar" id="platformSidebar">
             <div class="p-4 border-b" style="border-color: #E5E7EB; background-color: #F9FAFB;">
-                <h3 class="font-semibold text-sm" style="color: #111827;">DATA SOURCES</h3>
-                <p class="text-xs mt-1" style="color: #6B7280;">Select platforms and chats</p>
+                <h3 class="text-xs font-semibold uppercase tracking-wider" style="color: #6B7280;">DATA SOURCES</h3>
+                <p class="text-xs mt-1" style="color: #9CA3AF;">Connected platforms used in this project</p>
             </div>
-            <div id="platformList" class="divide-y" style="border-color: #F3F4F6;">
+            <div id="platformList">
                 <!-- Platforms will be loaded dynamically -->
             </div>
         </div>
@@ -270,16 +188,6 @@
         </div>
     </div>
 
-    <!-- Mobile Sidebar Toggle -->
-    <div class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-    </div>
-
-    <!-- Overlay for mobile -->
-    <div id="sidebarOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden" onclick="toggleSidebar()"></div>
-
     <!-- Scripts -->
     <script src="js/storage.js"></script>
     <script src="js/auth.js"></script>
@@ -291,25 +199,11 @@
     <script src="js/ui.js"></script>
     <script src="js/router.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/platforms.js"></script>
     <script>
         let currentProject = null;
         let projectState = null;
         let testUserData = null;
-        let platformSelection = {
-            gmail: { selected: true, threads: {} },
-            whatsapp: { selected: true, groups: {} },
-            slack: { selected: true, channels: {} },
-            meetings: { selected: true, meetings: {} },
-            proposal: { selected: true }
-        };
-
-        // Toggle sidebar on mobile
-        function toggleSidebar() {
-            const sidebar = document.getElementById('platformSidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('hidden');
-        }
 
         // Initialize
         async function init() {
@@ -338,58 +232,18 @@
 
             document.getElementById('projectTitle').textContent = currentProject.name;
 
-            // Initialize platform selection from user data
-            initPlatformSelection();
-
             // If step 1 not started, initialize it
             if (!projectState.extractionData || projectState.extractionData.length === 0) {
                 await performStep1Extraction();
             }
 
             renderSteps();
-            renderPlatformSidebar();
+            renderReadOnlyPlatformSidebar();
             renderCurrentStep();
         }
 
-        // Initialize platform selection based on user data
-        function initPlatformSelection() {
-            // Gmail
-            if (testUserData.data_vault.gmail) {
-                testUserData.data_vault.gmail.forEach(email => {
-                    if (email.is_relevant) {
-                        platformSelection.gmail.threads[email.thread_id] = true;
-                    }
-                });
-            }
-
-            // WhatsApp
-            if (testUserData.data_vault.whatsapp) {
-                testUserData.data_vault.whatsapp.forEach(thread => {
-                    if (thread.is_relevant) {
-                        platformSelection.whatsapp.groups[thread.thread_id] = true;
-                    }
-                });
-            }
-
-            // Slack
-            if (testUserData.data_vault.slack) {
-                testUserData.data_vault.slack.forEach(channel => {
-                    if (channel.is_relevant) {
-                        platformSelection.slack.channels[channel.channel_id] = true;
-                    }
-                });
-            }
-
-            // Meetings
-            if (testUserData.data_vault.meetings) {
-                testUserData.data_vault.meetings.forEach(meeting => {
-                    platformSelection.meetings.meetings[meeting.meeting_id] = true;
-                });
-            }
-        }
-
-        // Render platform sidebar
-        function renderPlatformSidebar() {
+        // Render read-only platform sidebar for project dashboard
+        function renderReadOnlyPlatformSidebar() {
             const platformList = document.getElementById('platformList');
             
             let html = '';
@@ -397,37 +251,34 @@
             // Gmail Section
             if (testUserData.data_vault.gmail) {
                 const relevantGmails = testUserData.data_vault.gmail.filter(g => g.is_relevant);
-                html += renderPlatformSection('gmail', 'Gmail', '📧', '#DC2626', relevantGmails, 'threads', 'subject');
+                html += renderReadOnlyPlatformSection('gmail', 'Gmail', '📧', '#DC2626', relevantGmails, 'thread_id', 'subject', true);
             }
 
             // WhatsApp Section
             if (testUserData.data_vault.whatsapp) {
                 const relevantWhatsApps = testUserData.data_vault.whatsapp.filter(w => w.is_relevant);
-                html += renderPlatformSection('whatsapp', 'WhatsApp', '💬', '#16A34A', relevantWhatsApps, 'groups', 'name');
+                html += renderReadOnlyPlatformSection('whatsapp', 'WhatsApp', '💬', '#16A34A', relevantWhatsApps, 'thread_id', 'name', true);
             }
 
             // Slack Section
             if (testUserData.data_vault.slack) {
                 const relevantSlacks = testUserData.data_vault.slack.filter(s => s.is_relevant);
-                html += renderPlatformSection('slack', 'Slack', '💼', '#2563EB', relevantSlacks, 'channels', 'name');
+                html += renderReadOnlyPlatformSection('slack', 'Slack', '💼', '#2563EB', relevantSlacks, 'channel_id', 'name', true);
             }
 
             // Meetings Section
             if (testUserData.data_vault.meetings) {
-                html += renderPlatformSection('meetings', 'Meetings', '🎤', '#EAB308', testUserData.data_vault.meetings, 'meetings', 'title');
+                html += renderReadOnlyPlatformSection('meetings', 'Meetings', '🎤', '#EAB308', testUserData.data_vault.meetings, 'meeting_id', 'title', true);
             }
 
             // Proposal Section (if exists)
             if (testUserData.data_vault.proposal) {
                 html += `
-                    <div class="platform-item">
-                        <div class="platform-header flex items-center gap-3">
-                            <input type="checkbox" class="platform-checkbox" 
-                                   ${platformSelection.proposal.selected ? 'checked' : ''}
-                                   onchange="togglePlatform('proposal')">
+                    <div class="platform-section">
+                        <div class="platform-header">
                             <div class="platform-icon" style="background-color: #6B728020; color: #6B7280;">📄</div>
-                            <span class="text-sm font-medium flex-1" style="color: #111827;">Proposal</span>
-                            <span class="text-xs px-2 py-1 rounded-full" style="background-color: #F3F4F6; color: #6B7280;">1</span>
+                            <span class="platform-name">Proposal</span>
+                            <span class="status-badge connected">Connected</span>
                         </div>
                     </div>
                 `;
@@ -436,105 +287,24 @@
             platformList.innerHTML = html;
         }
 
-        function renderPlatformSection(platform, name, icon, color, items, typeKey, nameField) {
-            const allSelected = Object.values(platformSelection[platform][typeKey]).every(v => v === true);
-            const selectedCount = Object.values(platformSelection[platform][typeKey]).filter(v => v === true).length;
-            
+        function renderReadOnlyPlatformSection(platform, name, icon, color, items, idField, nameField, isConnected) {
             return `
-                <div class="platform-item">
-                    <div class="platform-header flex items-center gap-3" onclick="togglePlatformExpand('${platform}')">
-                        <input type="checkbox" class="platform-checkbox" 
-                               ${platformSelection[platform].selected ? 'checked' : ''}
-                               onclick="event.stopPropagation(); togglePlatform('${platform}')">
+                <div class="platform-section">
+                    <div class="platform-header">
                         <div class="platform-icon" style="background-color: ${color}20; color: ${color};">${icon}</div>
-                        <span class="text-sm font-medium flex-1" style="color: #111827;">${name}</span>
-                        <span class="text-xs px-2 py-1 rounded-full" style="background-color: #F3F4F6; color: #6B7280;">${items.length}</span>
-                        <svg class="w-4 h-4 transform transition-transform ${platformSelection[platform].expanded ? 'rotate-180' : ''}" 
-                             style="color: #6B7280;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
+                        <span class="platform-name">${name}</span>
+                        <span class="status-badge ${isConnected ? 'connected' : ''}">${isConnected ? 'Connected' : 'Not connected'}</span>
                     </div>
-                    <div class="${platformSelection[platform].expanded ? 'block' : 'hidden'}">
-                        ${items.map(item => {
-                            const itemId = item.thread_id || item.channel_id || item.meeting_id;
-                            const itemName = item[nameField] || 'Untitled';
-                            const isSelected = platformSelection[platform][typeKey][itemId] || false;
-                            return `
-                                <div class="chat-item">
-                                    <input type="checkbox" class="chat-checkbox" 
-                                           ${isSelected ? 'checked' : ''}
-                                           onchange="toggleChat('${platform}', '${typeKey}', '${itemId}')">
-                                    <span class="text-xs truncate" style="color: #374151;">${itemName}</span>
-                                </div>
-                            `;
-                        }).join('')}
+                    <div>
+                        ${items.map(item => `
+                            <div class="chat-item-readonly">
+                                <span class="chat-icon">●</span>
+                                <span class="truncate">${item[nameField] || 'Untitled'}</span>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
             `;
-        }
-
-        // Toggle platform expansion
-        function togglePlatformExpand(platform) {
-            platformSelection[platform].expanded = !platformSelection[platform].expanded;
-            renderPlatformSidebar();
-        }
-
-        // Toggle entire platform
-        function togglePlatform(platform) {
-            platformSelection[platform].selected = !platformSelection[platform].selected;
-            
-            // If platform is deselected, deselect all its items
-            if (!platformSelection[platform].selected) {
-                if (platform === 'gmail') {
-                    Object.keys(platformSelection.gmail.threads).forEach(key => {
-                        platformSelection.gmail.threads[key] = false;
-                    });
-                } else if (platform === 'whatsapp') {
-                    Object.keys(platformSelection.whatsapp.groups).forEach(key => {
-                        platformSelection.whatsapp.groups[key] = false;
-                    });
-                } else if (platform === 'slack') {
-                    Object.keys(platformSelection.slack.channels).forEach(key => {
-                        platformSelection.slack.channels[key] = false;
-                    });
-                } else if (platform === 'meetings') {
-                    Object.keys(platformSelection.meetings.meetings).forEach(key => {
-                        platformSelection.meetings.meetings[key] = false;
-                    });
-                }
-            } else {
-                // If platform is selected, select all its items
-                if (platform === 'gmail') {
-                    Object.keys(platformSelection.gmail.threads).forEach(key => {
-                        platformSelection.gmail.threads[key] = true;
-                    });
-                } else if (platform === 'whatsapp') {
-                    Object.keys(platformSelection.whatsapp.groups).forEach(key => {
-                        platformSelection.whatsapp.groups[key] = true;
-                    });
-                } else if (platform === 'slack') {
-                    Object.keys(platformSelection.slack.channels).forEach(key => {
-                        platformSelection.slack.channels[key] = true;
-                    });
-                } else if (platform === 'meetings') {
-                    Object.keys(platformSelection.meetings.meetings).forEach(key => {
-                        platformSelection.meetings.meetings[key] = true;
-                    });
-                }
-            }
-            
-            renderPlatformSidebar();
-        }
-
-        // Toggle individual chat/thread
-        function toggleChat(platform, typeKey, itemId) {
-            platformSelection[platform][typeKey][itemId] = !platformSelection[platform][typeKey][itemId];
-            
-            // Check if all items are selected to update platform checkbox
-            const allSelected = Object.values(platformSelection[platform][typeKey]).every(v => v === true);
-            platformSelection[platform].selected = allSelected;
-            
-            renderPlatformSidebar();
         }
 
         // Perform Step 1 Extraction
@@ -568,12 +338,12 @@
                 const isCompleted = projectState.completedSteps.includes(step.num);
                 const isPending = !isActive && !isCompleted;
                 
-                let stepClass = 'flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full text-sm sm:text-base font-semibold flex-shrink-0 transition-all';
+                let stepClass = 'flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full text-sm sm:text-base font-semibold flex-shrink-0';
                 let textClass = 'text-xs sm:text-sm font-medium';
-                let connectorClass = 'flex-1 h-0.5 mx-1 sm:mx-2 transition-all';
+                let connectorClass = 'flex-1 h-0.5 mx-1 sm:mx-2';
                 
                 if (isActive) {
-                    stepClass += ' bg-blue-600 text-white shadow-lg shadow-blue-200';
+                    stepClass += ' bg-blue-600 text-white';
                     textClass += ' text-blue-600';
                     connectorClass += ' bg-gray-200';
                 } else if (isCompleted) {
@@ -581,13 +351,13 @@
                     textClass += ' text-green-600';
                     connectorClass += ' bg-green-500';
                 } else {
-                    stepClass += ' bg-gray-100 text-gray-400 border-2 border-gray-200';
+                    stepClass += ' bg-gray-100 text-gray-400 border border-gray-200';
                     textClass += ' text-gray-400';
                     connectorClass += ' bg-gray-200';
                 }
                 
                 return `
-                    <div class="flex items-center flex-1 ${isActive ? 'active-step' : ''}" onclick="viewStep(${step.num})" style="cursor: ${isPending ? 'not-allowed' : 'pointer'}; opacity: ${isPending ? '0.7' : '1'};">
+                    <div class="flex items-center flex-1" onclick="viewStep(${step.num})" style="cursor: ${isPending ? 'not-allowed' : 'pointer'}; opacity: ${isPending ? '0.6' : '1'};">
                         <div class="flex flex-col items-center w-full">
                             <div class="flex items-center w-full">
                                 <div class="${stepClass}">
@@ -615,7 +385,6 @@
             }
             
             if (stepNum > projectState.currentStep && projectState.completedSteps.includes(stepNum - 1)) {
-                // Allow moving to next step if previous is completed
                 projectState.currentStep = stepNum;
                 saveProjectState();
                 renderSteps();
@@ -629,16 +398,6 @@
                 renderSteps();
                 renderCurrentStep();
             }
-        }
-
-        // Preview completed step
-        function previewStep(stepNum) {
-            if (!projectState.completedSteps.includes(stepNum)) {
-                UI.showError('Not Available', 'This step has not been completed yet.');
-                return;
-            }
-            projectState.currentStep = stepNum;
-            renderCurrentStep();
         }
 
         // Render current step content
@@ -669,27 +428,26 @@
                 <div class="max-w-4xl mx-auto">
                     <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Step 1: Data Extraction</h2>
                     <p class="mb-6" style="color: #6B7280;">
-                        ${facts.length} relevant facts extracted from ${testUserData.name}'s conversations across WhatsApp, Slack, Gmail, and Meetings. 
-                        Review and delete any incorrect facts.
+                        ${facts.length} relevant facts extracted from conversations. Review and delete any incorrect facts.
                     </p>
                     
                     <div class="space-y-4" id="factsList">
                         ${facts.map(fact => `
-                            <div class="bg-white rounded-xl shadow-sm p-6 border" style="border-color: #E5E7EB;">
-                                <div class="flex justify-between items-start mb-3">
-                                    <span class="px-3 py-1 rounded-full text-xs font-medium" style="background-color: ${Extraction.getSourceColor(fact.source)}20; color: ${Extraction.getSourceColor(fact.source)};">
+                            <div class="bg-white rounded-lg shadow-sm p-5 border" style="border-color: #E5E7EB;">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-xs px-2 py-1 rounded-full" style="background-color: ${Extraction.getSourceColor(fact.source)}20; color: ${Extraction.getSourceColor(fact.source)};">
                                         ${Extraction.getSourceIcon(fact.source)} ${fact.sourceLabel}
                                     </span>
-                                    <button onclick="deleteFact('${fact.id}')" class="text-sm" style="color: #DC2626;">Delete</button>
+                                    <button onclick="deleteFact('${fact.id}')" class="text-xs" style="color: #DC2626;">Delete</button>
                                 </div>
-                                <p class="mb-2 break-words" style="color: #111827;">${UI.escapeHtml(fact.content)}</p>
-                                <p class="text-sm" style="color: #6B7280;">${fact.speaker}</p>
+                                <p class="mb-2 text-sm" style="color: #111827;">${UI.escapeHtml(fact.content)}</p>
+                                <p class="text-xs" style="color: #6B7280;">— ${fact.speaker}</p>
                             </div>
                         `).join('')}
                     </div>
 
                     <div class="mt-8 flex justify-end">
-                        <button onclick="completeStep1()" class="px-8 py-3 rounded-xl text-white font-medium shadow-sm" style="background-color: #2563EB;">
+                        <button onclick="completeStep1()" class="px-6 py-2.5 rounded-lg text-white text-sm font-medium" style="background-color: #2563EB;">
                             Continue to Conflict Detection →
                         </button>
                     </div>
@@ -702,7 +460,7 @@
         function deleteFact(factId) {
             UI.showConfirmation(
                 'Delete Fact',
-                'Are you sure you want to delete this fact? This will affect conflict detection.',
+                'Are you sure you want to delete this fact?',
                 () => {
                     projectState.extractionData = Extraction.deleteFact(projectState.extractionData, factId);
                     saveProjectState();
@@ -715,9 +473,8 @@
         async function completeStep1() {
             UI.showLoader('Analyzing conversations and detecting conflicts...');
             
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            await new Promise(resolve => setTimeout(resolve, 1500));
             
-            // Detect conflicts
             const conflicts = Conflicts.detectConflicts(projectState.extractionData);
             projectState.conflictsData = conflicts;
             
@@ -737,101 +494,76 @@
             const conflicts = projectState.conflictsData || [];
             
             if (conflicts.length === 0) {
-                UI.showSuccess('No Conflicts', 'No conflicts detected in the data. Moving to summary...');
+                UI.showSuccess('No Conflicts', 'No conflicts detected. Moving to summary...');
                 setTimeout(() => completeStep2(), 1500);
                 return;
             }
 
             const allSelected = conflicts.every(c => c.selectedFactId !== null);
-            const unselectedCount = conflicts.filter(c => !c.selectedFactId).length;
             
             const html = `
                 <div class="max-w-4xl mx-auto">
                     <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Step 2: Conflict Detection</h2>
                     <p class="mb-6" style="color: #6B7280;">
-                        ${conflicts.length} conflict${conflicts.length !== 1 ? 's' : ''} detected in your conversations. 
-                        Please select your preferred option for each conflict and provide reasoning.
+                        ${conflicts.length} conflict${conflicts.length !== 1 ? 's' : ''} detected. Select your preferred option for each.
                     </p>
                     
-                    <div class="space-y-6" id="conflictsList">
+                    <div class="space-y-5" id="conflictsList">
                         ${conflicts.map((conflict, index) => `
-                            <div class="bg-white rounded-xl shadow-sm p-6 border" style="border-color: #E5E7EB;">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div>
-                                        <span class="px-3 py-1 rounded-full text-xs font-medium" style="background-color: ${Conflicts.getConflictTypeColor(conflict.type)}20; color: ${Conflicts.getConflictTypeColor(conflict.type)};">
-                                            ${conflict.description}
-                                        </span>
-                                    </div>
-                                    <span class="text-sm font-medium" style="color: #6B7280;">Conflict ${index + 1} of ${conflicts.length}</span>
+                            <div class="bg-white rounded-lg shadow-sm p-5 border" style="border-color: #E5E7EB;">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-xs px-2 py-1 rounded-full" style="background-color: ${Conflicts.getConflictTypeColor(conflict.type)}20; color: ${Conflicts.getConflictTypeColor(conflict.type)};">
+                                        ${conflict.description}
+                                    </span>
+                                    <span class="text-xs" style="color: #6B7280;">${index + 1}/${conflicts.length}</span>
                                 </div>
 
                                 <!-- Option A -->
-                                <div class="conflict-option mb-4 p-4 sm:p-5 rounded-xl border-2 ${conflict.selectedFactId === conflict.factA.id ? 'selected' : ''}" 
+                                <div class="border rounded-lg p-4 mb-3 ${conflict.selectedFactId === conflict.factA.id ? 'selected' : ''}" 
                                      style="border-color: ${conflict.selectedFactId === conflict.factA.id ? '#2563EB' : '#E5E7EB'}; background-color: ${conflict.selectedFactId === conflict.factA.id ? '#EFF6FF' : 'white'};"
                                      onclick="selectConflictOption('${conflict.id}', '${conflict.factA.id}')">
-                                    <div class="flex items-start gap-3">
-                                        <input type="radio" name="conflict_${conflict.id}" value="A" 
-                                               ${conflict.selectedFactId === conflict.factA.id ? 'checked' : ''}
-                                               class="mt-1 w-4 h-4">
-                                        <div class="flex-1 min-w-0">
-                                            <div class="text-sm font-medium mb-3" style="color: #6B7280;">
-                                                <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold" style="background-color: ${Extraction.getSourceColor(conflict.factA.source)}20; color: ${Extraction.getSourceColor(conflict.factA.source)};">
-                                                    ${Extraction.getSourceIcon(conflict.factA.source)} ${conflict.factA.sourceLabel}
-                                                </span>
+                                    <div class="flex gap-3">
+                                        <input type="radio" name="conflict_${conflict.id}" ${conflict.selectedFactId === conflict.factA.id ? 'checked' : ''} class="mt-1">
+                                        <div>
+                                            <div class="text-xs mb-2" style="color: ${Extraction.getSourceColor(conflict.factA.source)};">
+                                                ${Extraction.getSourceIcon(conflict.factA.source)} ${conflict.factA.sourceLabel}
                                             </div>
-                                            <p class="break-words font-medium mb-2 leading-relaxed text-sm sm:text-base" style="color: #111827;">${UI.escapeHtml(conflict.factA.content)}</p>
-                                            <p class="text-xs sm:text-sm" style="color: #6B7280;">— ${conflict.factA.speaker}</p>
+                                            <p class="text-sm mb-1" style="color: #111827;">${UI.escapeHtml(conflict.factA.content)}</p>
+                                            <p class="text-xs" style="color: #6B7280;">— ${conflict.factA.speaker}</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Option B -->
-                                <div class="conflict-option mb-4 p-4 sm:p-5 rounded-xl border-2 ${conflict.selectedFactId === conflict.factB.id ? 'selected' : ''}" 
+                                <div class="border rounded-lg p-4 mb-3 ${conflict.selectedFactId === conflict.factB.id ? 'selected' : ''}" 
                                      style="border-color: ${conflict.selectedFactId === conflict.factB.id ? '#2563EB' : '#E5E7EB'}; background-color: ${conflict.selectedFactId === conflict.factB.id ? '#EFF6FF' : 'white'};"
                                      onclick="selectConflictOption('${conflict.id}', '${conflict.factB.id}')">
-                                    <div class="flex items-start gap-3">
-                                        <input type="radio" name="conflict_${conflict.id}" value="B" 
-                                               ${conflict.selectedFactId === conflict.factB.id ? 'checked' : ''}
-                                               class="mt-1 w-4 h-4">
-                                        <div class="flex-1 min-w-0">
-                                            <div class="text-sm font-medium mb-3" style="color: #6B7280;">
-                                                <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold" style="background-color: ${Extraction.getSourceColor(conflict.factB.source)}20; color: ${Extraction.getSourceColor(conflict.factB.source)};">
-                                                    ${Extraction.getSourceIcon(conflict.factB.source)} ${conflict.factB.sourceLabel}
-                                                </span>
+                                    <div class="flex gap-3">
+                                        <input type="radio" name="conflict_${conflict.id}" ${conflict.selectedFactId === conflict.factB.id ? 'checked' : ''} class="mt-1">
+                                        <div>
+                                            <div class="text-xs mb-2" style="color: ${Extraction.getSourceColor(conflict.factB.source)};">
+                                                ${Extraction.getSourceIcon(conflict.factB.source)} ${conflict.factB.sourceLabel}
                                             </div>
-                                            <p class="break-words font-medium mb-2 leading-relaxed text-sm sm:text-base" style="color: #111827;">${UI.escapeHtml(conflict.factB.content)}</p>
-                                            <p class="text-xs sm:text-sm" style="color: #6B7280;">— ${conflict.factB.speaker}</p>
+                                            <p class="text-sm mb-1" style="color: #111827;">${UI.escapeHtml(conflict.factB.content)}</p>
+                                            <p class="text-xs" style="color: #6B7280;">— ${conflict.factB.speaker}</p>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Comment for this conflict -->
                                 <div>
-                                    <label class="block text-sm font-medium mb-2" style="color: #111827;">Decision Reasoning (Optional)</label>
-                                    <textarea id="comment_${conflict.id}" rows="2" class="w-full px-4 py-2 rounded-lg border" style="border-color: #E5E7EB;" placeholder="Why did you choose this option? This will be included in the BRD...">${conflict.comment || ''}</textarea>
+                                    <textarea id="comment_${conflict.id}" rows="2" class="w-full px-3 py-2 text-sm border rounded-lg" style="border-color: #E5E7EB;" placeholder="Add reasoning (optional)">${conflict.comment || ''}</textarea>
                                 </div>
                             </div>
                         `).join('')}
                     </div>
 
-                    <!-- Single Resolve Button (Better Mobile) -->
-                    <div class="mt-8 bg-white rounded-xl shadow-lg border" style="border-color: #E5E7EB; position: sticky; bottom: 1rem; z-index: 10;">
-                        <div class="p-4 sm:p-6">
-                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                                <div class="flex-1">
-                                    <p class="font-semibold text-sm sm:text-base mb-1" style="color: #111827;">
-                                        ${allSelected ? '✅ All conflicts have selections' : `⚠️ ${unselectedCount} conflict${unselectedCount !== 1 ? 's' : ''} need${unselectedCount === 1 ? 's' : ''} selection`}
-                                    </p>
-                                    <p class="text-xs sm:text-sm" style="color: #6B7280;">Your decisions will be incorporated into the summary and final BRD</p>
-                                </div>
-                                <button onclick="resolveAllConflicts()" 
-                                        ${!allSelected ? 'disabled' : ''}
-                                        class="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-xl text-white font-semibold shadow-sm transition-all text-sm sm:text-base whitespace-nowrap" 
-                                        style="background: ${allSelected ? 'linear-gradient(135deg, #16A34A 0%, #15803D 100%)' : '#9CA3AF'}; opacity: ${allSelected ? '1' : '0.6'}; cursor: ${allSelected ? 'pointer' : 'not-allowed'};">
-                                    ${allSelected ? '✓ Resolve All & Continue →' : 'Select All Options First'}
-                                </button>
-                            </div>
-                        </div>
+                    <div class="mt-8 flex justify-end">
+                        <button onclick="resolveAllConflicts()" 
+                                ${!allSelected ? 'disabled' : ''}
+                                class="px-6 py-2.5 rounded-lg text-white text-sm font-medium" 
+                                style="background-color: ${allSelected ? '#16A34A' : '#9CA3AF'}; opacity: ${allSelected ? '1' : '0.6'}; cursor: ${allSelected ? 'pointer' : 'not-allowed'};">
+                            ${allSelected ? 'Resolve All & Continue →' : 'Select All Options First'}
+                        </button>
                     </div>
                 </div>
             `;
@@ -844,39 +576,29 @@
             if (conflict) {
                 conflict.selectedFactId = factId;
                 saveProjectState();
-                renderStep2(); // Re-render to update button state
+                renderStep2();
             }
         }
 
         function resolveAllConflicts() {
-            const allSelected = projectState.conflictsData.every(c => c.selectedFactId !== null);
-            
-            if (!allSelected) {
-                UI.showError('Incomplete Selection', 'Please select an option for each conflict before continuing.');
-                return;
-            }
-
-            // Get comments from textareas
             projectState.conflictsData.forEach(conflict => {
                 const commentEl = document.getElementById(`comment_${conflict.id}`);
                 if (commentEl) {
                     conflict.comment = commentEl.value.trim();
                 }
                 conflict.resolved = true;
-                conflict.resolvedAt = new Date().toISOString();
             });
 
             saveProjectState();
-            UI.showSuccess('Conflicts Resolved', 'All conflicts have been resolved successfully!');
+            UI.showSuccess('Conflicts Resolved', 'All conflicts resolved successfully!');
             setTimeout(() => completeStep2(), 1000);
         }
 
         async function completeStep2() {
-            UI.showLoader('Generating structured summary from your decisions...');
+            UI.showLoader('Generating structured summary...');
             
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            await new Promise(resolve => setTimeout(resolve, 1500));
             
-            // Generate summary
             const summary = Summary.generateSummary(projectState.extractionData, projectState.conflictsData);
             projectState.summaryData = summary;
             
@@ -897,135 +619,135 @@
             
             const html = `
                 <div class="max-w-4xl mx-auto">
-                    <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Step 3: Summary Review & Edit</h2>
-                    <p class="mb-6" style="color: #6B7280;">
-                        Review the structured summary generated from your conversation data and resolved conflicts. 
-                        <strong>Click any text to edit it</strong> before generating the final BRD.
-                    </p>
+                    <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Step 3: Summary Review</h2>
+                    <p class="mb-6" style="color: #6B7280;">Review and edit the structured summary.</p>
                     
                     <!-- Key Decisions -->
-                    <div class="bg-white rounded-xl shadow-sm p-6 border mb-6" style="border-color: #E5E7EB;">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-bold" style="color: #111827;">Key Decisions</h3>
-                            <button onclick="addKeyDecision()" class="text-sm px-3 py-1 rounded-lg border" style="border-color: #E5E7EB; color: #2563EB;">+ Add Decision</button>
+                    <div class="bg-white rounded-lg shadow-sm p-5 border mb-5" style="border-color: #E5E7EB;">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold" style="color: #111827;">Key Decisions</h3>
+                            <button onclick="addKeyDecision()" class="text-xs px-2 py-1 border rounded" style="border-color: #E5E7EB; color: #2563EB;">+ Add</button>
                         </div>
-                        <div class="space-y-3" id="keyDecisionsList">
+                        <div class="space-y-3">
                             ${(summary.keyDecisions || []).map((d, idx) => `
-                                <div class="p-4 rounded-lg" style="background-color: #F8FAFC;">
+                                <div class="p-3 rounded" style="background-color: #F9FAFB;">
                                     <div class="flex justify-between items-start mb-2">
                                         <input type="text" value="${UI.escapeHtml(d.title)}" 
                                                onchange="updateDecision(${idx}, 'title', this.value)"
-                                               class="editable-field flex-1 font-medium" style="color: #111827;" 
-                                               placeholder="Decision title...">
-                                        <button onclick="removeDecision(${idx})" class="ml-2 text-sm" style="color: #DC2626;">×</button>
+                                               class="text-sm font-medium bg-transparent border-0 p-0 w-full focus:ring-0" 
+                                               style="color: #111827;">
+                                        <button onclick="removeDecision(${idx})" class="text-xs" style="color: #DC2626;">×</button>
                                     </div>
                                     <textarea onchange="updateDecision(${idx}, 'description', this.value)"
-                                              class="editable-field w-full text-sm" style="color: #6B7280;" 
-                                              rows="2" placeholder="Decision description...">${UI.escapeHtml(d.description)}</textarea>
+                                              class="text-sm bg-transparent border-0 p-0 w-full focus:ring-0" 
+                                              style="color: #6B7280;" 
+                                              rows="2">${UI.escapeHtml(d.description)}</textarea>
                                 </div>
                             `).join('')}
                         </div>
                     </div>
 
                     <!-- Risks -->
-                    <div class="bg-white rounded-xl shadow-sm p-6 border mb-6" style="border-color: #E5E7EB;">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-bold" style="color: #111827;">Identified Risks</h3>
-                            <button onclick="addRisk()" class="text-sm px-3 py-1 rounded-lg border" style="border-color: #E5E7EB; color: #2563EB;">+ Add Risk</button>
+                    <div class="bg-white rounded-lg shadow-sm p-5 border mb-5" style="border-color: #E5E7EB;">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold" style="color: #111827;">Risks</h3>
+                            <button onclick="addRisk()" class="text-xs px-2 py-1 border rounded" style="border-color: #E5E7EB; color: #2563EB;">+ Add</button>
                         </div>
-                        <div class="space-y-3" id="risksList">
+                        <div class="space-y-3">
                             ${(summary.risks || []).map((r, idx) => `
-                                <div class="p-4 rounded-lg" style="background-color: #F8FAFC;">
+                                <div class="p-3 rounded" style="background-color: #F9FAFB;">
                                     <div class="flex justify-between items-start gap-2 mb-2">
                                         <input type="text" value="${UI.escapeHtml(r.title)}" 
                                                onchange="updateRisk(${idx}, 'title', this.value)"
-                                               class="editable-field flex-1 font-medium" style="color: #111827;"
-                                               placeholder="Risk title...">
+                                               class="text-sm font-medium bg-transparent border-0 p-0 flex-1" 
+                                               style="color: #111827;">
                                         <select onchange="updateRisk(${idx}, 'severity', this.value)" 
-                                                class="px-2 py-1 rounded text-xs font-medium" 
-                                                style="background-color: ${r.severity === 'High' ? '#FEE2E2' : r.severity === 'Medium' ? '#FEF3C7' : '#E5E7EB'}; color: ${r.severity === 'High' ? '#DC2626' : r.severity === 'Medium' ? '#EAB308' : '#6B7280'};">
+                                                class="text-xs border-0 bg-transparent p-0" 
+                                                style="color: ${r.severity === 'High' ? '#DC2626' : r.severity === 'Medium' ? '#EAB308' : '#6B7280'};">
                                             <option value="High" ${r.severity === 'High' ? 'selected' : ''}>High</option>
                                             <option value="Medium" ${r.severity === 'Medium' ? 'selected' : ''}>Medium</option>
                                             <option value="Low" ${r.severity === 'Low' ? 'selected' : ''}>Low</option>
                                         </select>
-                                        <button onclick="removeRisk(${idx})" class="text-sm" style="color: #DC2626;">×</button>
+                                        <button onclick="removeRisk(${idx})" class="text-xs" style="color: #DC2626;">×</button>
                                     </div>
                                     <textarea onchange="updateRisk(${idx}, 'description', this.value)"
-                                              class="editable-field w-full text-sm mb-2" style="color: #6B7280;" 
-                                              rows="2" placeholder="Risk description...">${UI.escapeHtml(r.description)}</textarea>
+                                              class="text-sm bg-transparent border-0 p-0 w-full mb-2" 
+                                              style="color: #6B7280;" 
+                                              rows="2">${UI.escapeHtml(r.description)}</textarea>
                                     <textarea onchange="updateRisk(${idx}, 'mitigation', this.value)"
-                                              class="editable-field w-full text-sm" style="color: #6B7280;" 
-                                              rows="1" placeholder="Mitigation strategy...">${UI.escapeHtml(r.mitigation)}</textarea>
+                                              class="text-sm bg-transparent border-0 p-0 w-full" 
+                                              style="color: #6B7280;" 
+                                              rows="1">${UI.escapeHtml(r.mitigation)}</textarea>
                                 </div>
                             `).join('')}
                         </div>
                     </div>
 
                     <!-- Requirements -->
-                    <div class="bg-white rounded-xl shadow-sm p-6 border mb-6" style="border-color: #E5E7EB;">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-bold" style="color: #111827;">Requirements</h3>
-                            <button onclick="addRequirement()" class="text-sm px-3 py-1 rounded-lg border" style="border-color: #E5E7EB; color: #2563EB;">+ Add Requirement</button>
+                    <div class="bg-white rounded-lg shadow-sm p-5 border mb-5" style="border-color: #E5E7EB;">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold" style="color: #111827;">Requirements</h3>
+                            <button onclick="addRequirement()" class="text-xs px-2 py-1 border rounded" style="border-color: #E5E7EB; color: #2563EB;">+ Add</button>
                         </div>
-                        <div class="space-y-3" id="requirementsList">
+                        <div class="space-y-3">
                             ${(summary.requirements || []).map((r, idx) => `
-                                <div class="p-4 rounded-lg" style="background-color: #F8FAFC;">
+                                <div class="p-3 rounded" style="background-color: #F9FAFB;">
                                     <div class="flex items-center gap-2 mb-2">
                                         <select onchange="updateRequirement(${idx}, 'type', this.value)" 
-                                                class="px-2 py-1 rounded text-xs font-medium" style="background-color: #E5E7EB; color: #6B7280;">
+                                                class="text-xs border-0 bg-transparent p-0" style="color: #6B7280;">
                                             <option value="Functional" ${r.type === 'Functional' ? 'selected' : ''}>Functional</option>
                                             <option value="Security" ${r.type === 'Security' ? 'selected' : ''}>Security</option>
                                             <option value="Compliance" ${r.type === 'Compliance' ? 'selected' : ''}>Compliance</option>
-                                            <option value="Business" ${r.type === 'Business' ? 'selected' : ''}>Business</option>
                                         </select>
                                         <select onchange="updateRequirement(${idx}, 'priority', this.value)" 
-                                                class="px-2 py-1 rounded text-xs font-medium" 
-                                                style="background-color: ${r.priority === 'High' ? '#FEE2E2' : r.priority === 'Medium' ? '#FEF3C7' : '#E5E7EB'}; color: ${r.priority === 'High' ? '#DC2626' : r.priority === 'Medium' ? '#EAB308' : '#6B7280'};">
+                                                class="text-xs border-0 bg-transparent p-0" 
+                                                style="color: ${r.priority === 'High' ? '#DC2626' : r.priority === 'Medium' ? '#EAB308' : '#6B7280'};">
                                             <option value="High" ${r.priority === 'High' ? 'selected' : ''}>High</option>
                                             <option value="Medium" ${r.priority === 'Medium' ? 'selected' : ''}>Medium</option>
                                             <option value="Low" ${r.priority === 'Low' ? 'selected' : ''}>Low</option>
                                         </select>
-                                        <button onclick="removeRequirement(${idx})" class="ml-auto text-sm" style="color: #DC2626;">×</button>
+                                        <button onclick="removeRequirement(${idx})" class="ml-auto text-xs" style="color: #DC2626;">×</button>
                                     </div>
                                     <textarea onchange="updateRequirement(${idx}, 'description', this.value)"
-                                              class="editable-field w-full text-sm" style="color: #6B7280;" 
-                                              rows="2" placeholder="Requirement description...">${UI.escapeHtml(r.description)}</textarea>
+                                              class="text-sm bg-transparent border-0 p-0 w-full" 
+                                              style="color: #6B7280;" 
+                                              rows="2">${UI.escapeHtml(r.description)}</textarea>
                                 </div>
                             `).join('')}
                         </div>
                     </div>
 
                     <!-- Stakeholders -->
-                    <div class="bg-white rounded-xl shadow-sm p-6 border mb-6" style="border-color: #E5E7EB;">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-bold" style="color: #111827;">Stakeholders</h3>
-                            <button onclick="addStakeholder()" class="text-sm px-3 py-1 rounded-lg border" style="border-color: #E5E7EB; color: #2563EB;">+ Add Stakeholder</button>
+                    <div class="bg-white rounded-lg shadow-sm p-5 border mb-5" style="border-color: #E5E7EB;">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="font-semibold" style="color: #111827;">Stakeholders</h3>
+                            <button onclick="addStakeholder()" class="text-xs px-2 py-1 border rounded" style="border-color: #E5E7EB; color: #2563EB;">+ Add</button>
                         </div>
-                        <div class="space-y-3" id="stakeholdersList">
+                        <div class="space-y-3">
                             ${(summary.stakeholders || []).map((s, idx) => `
-                                <div class="p-4 rounded-lg" style="background-color: #F8FAFC;">
+                                <div class="p-3 rounded" style="background-color: #F9FAFB;">
                                     <div class="flex justify-between items-start mb-2">
                                         <input type="text" value="${UI.escapeHtml(s.name)}" 
                                                onchange="updateStakeholder(${idx}, 'name', this.value)"
-                                               class="editable-field flex-1 font-medium" style="color: #111827;"
-                                               placeholder="Stakeholder name...">
-                                        <button onclick="removeStakeholder(${idx})" class="ml-2 text-sm" style="color: #DC2626;">×</button>
+                                               class="text-sm font-medium bg-transparent border-0 p-0 flex-1" 
+                                               style="color: #111827;">
+                                        <button onclick="removeStakeholder(${idx})" class="text-xs" style="color: #DC2626;">×</button>
                                     </div>
                                     <input type="text" value="${UI.escapeHtml(s.role)}" 
                                            onchange="updateStakeholder(${idx}, 'role', this.value)"
-                                           class="editable-field w-full text-sm mb-1" style="color: #6B7280;"
-                                           placeholder="Role...">
+                                           class="text-sm bg-transparent border-0 p-0 w-full mb-1" 
+                                           style="color: #6B7280;">
                                     <textarea onchange="updateStakeholder(${idx}, 'responsibility', this.value)"
-                                              class="editable-field w-full text-sm" style="color: #6B7280;" 
-                                              rows="1" placeholder="Responsibility...">${UI.escapeHtml(s.responsibility)}</textarea>
+                                              class="text-sm bg-transparent border-0 p-0 w-full" 
+                                              style="color: #6B7280;" 
+                                              rows="1">${UI.escapeHtml(s.responsibility)}</textarea>
                                 </div>
                             `).join('')}
                         </div>
                     </div>
 
-                    <div class="mt-8 flex justify-between items-center">
-                        <p class="text-sm" style="color: #6B7280;">💡 Tip: All your edits will be reflected in the final BRD</p>
-                        <button onclick="completeStep3()" class="px-8 py-3 rounded-xl text-white font-medium shadow-sm" style="background-color: #2563EB;">
+                    <div class="mt-8 flex justify-end">
+                        <button onclick="completeStep3()" class="px-6 py-2.5 rounded-lg text-white text-sm font-medium" style="background-color: #2563EB;">
                             Generate BRD →
                         </button>
                     </div>
@@ -1035,7 +757,7 @@
             document.getElementById('stepContent').innerHTML = html;
         }
 
-        // Edit functions for Step 3
+        // Edit functions
         function updateDecision(idx, field, value) {
             projectState.summaryData.keyDecisions[idx][field] = value;
             saveProjectState();
@@ -1047,9 +769,9 @@
         }
         function addKeyDecision() {
             projectState.summaryData.keyDecisions.push({ 
-                id: 'decision_new_' + Date.now(), 
+                id: 'decision_' + Date.now(), 
                 title: 'New Decision', 
-                description: 'Add description here' 
+                description: 'Add description' 
             });
             saveProjectState();
             renderStep3();
@@ -1058,7 +780,6 @@
         function updateRisk(idx, field, value) {
             projectState.summaryData.risks[idx][field] = value;
             saveProjectState();
-            if (field === 'severity') renderStep3(); // Re-render for color update
         }
         function removeRisk(idx) {
             projectState.summaryData.risks.splice(idx, 1);
@@ -1067,11 +788,11 @@
         }
         function addRisk() {
             projectState.summaryData.risks.push({ 
-                id: 'risk_new_' + Date.now(), 
+                id: 'risk_' + Date.now(), 
                 title: 'New Risk', 
                 severity: 'Medium',
-                description: 'Add description here',
-                mitigation: 'Add mitigation strategy'
+                description: 'Add description',
+                mitigation: 'Add mitigation'
             });
             saveProjectState();
             renderStep3();
@@ -1080,7 +801,6 @@
         function updateRequirement(idx, field, value) {
             projectState.summaryData.requirements[idx][field] = value;
             saveProjectState();
-            if (field === 'type' || field === 'priority') renderStep3(); // Re-render for color update
         }
         function removeRequirement(idx) {
             projectState.summaryData.requirements.splice(idx, 1);
@@ -1089,10 +809,10 @@
         }
         function addRequirement() {
             projectState.summaryData.requirements.push({ 
-                id: 'req_new_' + Date.now(), 
+                id: 'req_' + Date.now(), 
                 type: 'Functional',
                 priority: 'Medium',
-                description: 'Add requirement description here'
+                description: 'Add requirement description'
             });
             saveProjectState();
             renderStep3();
@@ -1109,21 +829,20 @@
         }
         function addStakeholder() {
             projectState.summaryData.stakeholders.push({ 
-                id: 'stakeholder_new_' + Date.now(), 
+                id: 'stakeholder_' + Date.now(), 
                 name: 'New Stakeholder',
                 role: 'Role',
-                responsibility: 'Responsibility description'
+                responsibility: 'Responsibility'
             });
             saveProjectState();
             renderStep3();
         }
 
         async function completeStep3() {
-            UI.showLoader('Generating Business Requirements Document...');
+            UI.showLoader('Generating BRD...');
             
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            await new Promise(resolve => setTimeout(resolve, 1500));
             
-            // Generate BRD using edited summary
             const brd = BRD.generateBRD(projectState.summaryData, currentProject.name, testUserData);
             projectState.brdData = brd;
             
@@ -1143,227 +862,36 @@
             const brd = projectState.brdData;
             
             const html = `
-                <div class="max-w-5xl mx-auto">
-                    <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Step 4: Business Requirements Document</h2>
-                    <p class="mb-6" style="color: #6B7280;">
-                        Your comprehensive, professional BRD has been generated based on your conversation data and decisions.
-                    </p>
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Step 4: BRD Document</h2>
+                    <p class="mb-6" style="color: #6B7280;">Your Business Requirements Document is ready.</p>
                     
-                    <!-- Edit Controls -->
-                    <div class="bg-white rounded-xl shadow-sm p-6 border mb-6" style="border-color: #E5E7EB;">
-                        <h3 class="text-lg font-bold mb-4" style="color: #111827;">Natural Language Edit</h3>
-                        <div class="flex flex-col sm:flex-row gap-3 items-start mb-3">
-                            <input type="text" id="editInstruction" placeholder="e.g., Add more detail to security requirements" 
-                                   class="flex-1 px-4 py-3 rounded-lg border" style="border-color: #E5E7EB;"
-                                   ${projectState.editCount >= 3 ? 'disabled' : ''}>
-                            <button onclick="regenerateBRD()" ${projectState.editCount >= 3 ? 'disabled' : ''} 
-                                    class="px-6 py-3 rounded-lg text-white font-medium whitespace-nowrap" 
-                                    style="background-color: ${projectState.editCount >= 3 ? '#6B7280' : '#2563EB'}; opacity: ${projectState.editCount >= 3 ? '0.5' : '1'}; cursor: ${projectState.editCount >= 3 ? 'not-allowed' : 'pointer'};">
-                                Regenerate BRD
-                            </button>
-                        </div>
-                        <div class="text-sm" style="color: ${projectState.editCount >= 3 ? '#DC2626' : '#6B7280'};">
-                            ${projectState.editCount >= 3 ? '❌ Maximum edits reached (3/3)' : `✏️ ${3 - projectState.editCount} edit${3 - projectState.editCount !== 1 ? 's' : ''} remaining (${projectState.editCount}/3 used)`}
-                        </div>
-                    </div>
-
-                    <!-- BRD Document -->
-                    <div class="bg-white rounded-xl shadow-sm p-8 lg:p-12 border" style="border-color: #E5E7EB;">
-                        <!-- Document Header -->
-                        <div class="border-b pb-6 mb-8" style="border-color: #E5E7EB;">
-                            <h1 class="text-4xl font-bold mb-4" style="color: #111827;">Business Requirements Document</h1>
-                            <div class="grid grid-cols-2 gap-4 text-sm" style="color: #6B7280;">
-                                <div><strong style="color: #111827;">Project:</strong> ${UI.escapeHtml(brd.metadata.projectName)}</div>
-                                <div><strong style="color: #111827;">Version:</strong> ${brd.metadata.version}</div>
-                                <div><strong style="color: #111827;">Author:</strong> ${UI.escapeHtml(brd.metadata.author)}</div>
-                                <div><strong style="color: #111827;">Date:</strong> ${UI.formatDate(brd.metadata.generatedDate)}</div>
-                                <div><strong style="color: #111827;">Role:</strong> ${UI.escapeHtml(brd.metadata.role)}</div>
-                                <div><strong style="color: #111827;">Status:</strong> <span class="px-2 py-1 rounded text-xs" style="background-color: #D1FAE5; color: #16A34A;">Final</span></div>
+                    <div class="bg-white rounded-lg shadow-sm p-6 border" style="border-color: #E5E7EB;">
+                        <div class="border-b pb-4 mb-4" style="border-color: #E5E7EB;">
+                            <h1 class="text-2xl font-bold mb-3" style="color: #111827;">${brd.metadata.projectName}</h1>
+                            <div class="grid grid-cols-2 gap-3 text-sm">
+                                <div><span style="color: #6B7280;">Author:</span> ${brd.metadata.author}</div>
+                                <div><span style="color: #6B7280;">Date:</span> ${UI.formatDate(brd.metadata.generatedDate)}</div>
                             </div>
                         </div>
 
-                        <!-- 1. Executive Summary -->
-                        <section class="mb-10">
-                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
-                                1. ${brd.executiveSummary.title}
-                            </h2>
-                            <p class="whitespace-pre-line leading-relaxed" style="color: #374151;">${UI.escapeHtml(brd.executiveSummary.content)}</p>
-                        </section>
-
-                        <!-- 2. Business Objectives -->
-                        <section class="mb-10">
-                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
-                                2. ${brd.businessObjectives.title}
-                            </h2>
-                            
-                            <h3 class="text-xl font-bold mb-3 mt-6" style="color: #111827;">2.1 Primary Goals</h3>
-                            <div class="space-y-4">
-                                ${brd.businessObjectives.primaryGoals.map((g, i) => `
-                                    <div class="pl-6">
-                                        <div class="font-semibold mb-1" style="color: #111827;">${i + 1}. ${UI.escapeHtml(g.goal)}</div>
-                                        <p class="leading-relaxed" style="color: #374151;">${UI.escapeHtml(g.description)}</p>
-                                        <div class="mt-1 inline-block px-2 py-1 rounded text-xs" style="background-color: ${g.priority === 'Critical' ? '#FEE2E2' : '#FEF3C7'}; color: ${g.priority === 'Critical' ? '#DC2626' : '#EAB308'};">
-                                            Priority: ${g.priority}
-                                        </div>
-                                    </div>
-                                `).join('')}
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="font-semibold mb-2" style="color: #111827;">Executive Summary</h3>
+                                <p class="text-sm" style="color: #374151;">${brd.executiveSummary.content}</p>
                             </div>
-                            
-                            <h3 class="text-xl font-bold mb-3 mt-6" style="color: #111827;">2.2 Success Criteria</h3>
-                            <ul class="list-disc pl-10 space-y-2">
-                                ${brd.businessObjectives.successCriteria.map(c => `
-                                    <li class="leading-relaxed" style="color: #374151;">${UI.escapeHtml(c)}</li>
-                                `).join('')}
-                            </ul>
-                        </section>
 
-                        <!-- 3. Stakeholder Analysis -->
-                        <section class="mb-10">
-                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
-                                3. ${brd.stakeholderAnalysis.title}
-                            </h2>
-                            <div class="overflow-x-auto">
-                                <table class="w-full border-collapse">
-                                    <thead>
-                                        <tr style="background-color: #F9FAFB;">
-                                            <th class="border px-4 py-3 text-left font-bold" style="border-color: #E5E7EB; color: #111827;">Name</th>
-                                            <th class="border px-4 py-3 text-left font-bold" style="border-color: #E5E7EB; color: #111827;">Role</th>
-                                            <th class="border px-4 py-3 text-left font-bold" style="border-color: #E5E7EB; color: #111827;">Responsibility</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${brd.stakeholderAnalysis.stakeholders.map((s, i) => `
-                                            <tr style="background-color: ${i % 2 === 0 ? 'white' : '#F9FAFB'};">
-                                                <td class="border px-4 py-3" style="border-color: #E5E7EB; color: #374151;">${UI.escapeHtml(s.name)}</td>
-                                                <td class="border px-4 py-3" style="border-color: #E5E7EB; color: #374151;">${UI.escapeHtml(s.role)}</td>
-                                                <td class="border px-4 py-3" style="border-color: #E5E7EB; color: #374151;">${UI.escapeHtml(s.responsibility)}</td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <!-- 4. Functional Requirements -->
-                        <section class="mb-10">
-                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
-                                4. ${brd.functionalRequirements.title}
-                            </h2>
-                            <div class="space-y-4">
-                                ${brd.functionalRequirements.requirements.map(r => `
-                                    <div class="pl-6 border-l-4" style="border-color: ${r.priority === 'High' ? '#DC2626' : '#EAB308'};">
-                                        <div class="flex items-center gap-2 mb-1">
-                                            <span class="font-mono font-bold text-sm" style="color: #2563EB;">${r.id}</span>
-                                            <span class="px-2 py-1 rounded text-xs font-medium" style="background-color: ${r.priority === 'High' ? '#FEE2E2' : '#FEF3C7'}; color: ${r.priority === 'High' ? '#DC2626' : '#EAB308'};">
-                                                ${r.priority} Priority
-                                            </span>
-                                        </div>
-                                        <p class="leading-relaxed" style="color: #374151;">${UI.escapeHtml(r.description)}</p>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </section>
-
-                        <!-- 5. Non-Functional Requirements -->
-                        <section class="mb-10">
-                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
-                                5. ${brd.nonFunctionalRequirements.title}
-                            </h2>
-                            
-                            ${brd.nonFunctionalRequirements.security.length > 0 ? `
-                                <h3 class="text-xl font-bold mb-3 mt-6" style="color: #111827;">5.1 Security Requirements</h3>
-                                <ul class="list-disc pl-10 space-y-2">
-                                    ${brd.nonFunctionalRequirements.security.map(s => `
-                                        <li class="leading-relaxed" style="color: #374151;">${UI.escapeHtml(s)}</li>
-                                    `).join('')}
+                            <div>
+                                <h3 class="font-semibold mb-2" style="color: #111827;">Business Objectives</h3>
+                                <ul class="list-disc pl-5 text-sm space-y-1" style="color: #374151;">
+                                    ${brd.businessObjectives.primaryGoals.map(g => `<li>${g.goal}</li>`).join('')}
                                 </ul>
-                            ` : ''}
-                            
-                            ${brd.nonFunctionalRequirements.compliance.length > 0 ? `
-                                <h3 class="text-xl font-bold mb-3 mt-6" style="color: #111827;">5.2 Compliance Requirements</h3>
-                                <ul class="list-disc pl-10 space-y-2">
-                                    ${brd.nonFunctionalRequirements.compliance.map(c => `
-                                        <li class="leading-relaxed" style="color: #374151;">${UI.escapeHtml(c)}</li>
-                                    `).join('')}
-                                </ul>
-                            ` : ''}
-                        </section>
-
-                        <!-- 6. Risk Management -->
-                        <section class="mb-10">
-                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
-                                6. ${brd.riskManagement.title}
-                            </h2>
-                            <div class="space-y-4">
-                                ${brd.riskManagement.risks.map(r => `
-                                    <div class="p-4 rounded-lg border" style="border-color: ${r.severity === 'High' ? '#FEE2E2' : '#FEF3C7'}; background-color: ${r.severity === 'High' ? '#FEF2F2' : '#FFFBEB'};">
-                                        <div class="flex items-center gap-2 mb-2">
-                                            <span class="font-mono text-sm font-bold" style="color: #DC2626;">${r.id}</span>
-                                            <span class="px-2 py-1 rounded text-xs font-medium" style="background-color: ${r.severity === 'High' ? '#DC2626' : '#EAB308'}; color: white;">
-                                                ${r.severity} Severity
-                                            </span>
-                                        </div>
-                                        <div class="font-semibold mb-2" style="color: #111827;">${UI.escapeHtml(r.title)}</div>
-                                        <p class="text-sm mb-2 leading-relaxed" style="color: #374151;"><strong>Description:</strong> ${UI.escapeHtml(r.description)}</p>
-                                        <p class="text-sm leading-relaxed" style="color: #374151;"><strong>Mitigation:</strong> ${UI.escapeHtml(r.mitigation)}</p>
-                                    </div>
-                                `).join('')}
                             </div>
-                        </section>
+                        </div>
 
-                        <!-- 7. Timeline -->
-                        <section class="mb-10">
-                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
-                                7. ${brd.timeline.title}
-                            </h2>
-                            <div class="space-y-6">
-                                ${brd.timeline.phases.map((p, i) => `
-                                    <div class="pl-6 border-l-4" style="border-color: #2563EB;">
-                                        <div class="font-bold text-lg mb-1" style="color: #111827;">${UI.escapeHtml(p.phase)}</div>
-                                        <div class="text-sm mb-2" style="color: #6B7280;">Duration: <strong>${p.duration}</strong></div>
-                                        <div class="font-medium mb-2" style="color: #111827;">Deliverables:</div>
-                                        <ul class="list-disc pl-6 space-y-1">
-                                            ${p.deliverables.map(d => `<li style="color: #374151;">${UI.escapeHtml(d)}</li>`).join('')}
-                                        </ul>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </section>
-
-                        <!-- 8. Success Metrics -->
-                        <section class="mb-10">
-                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
-                                8. ${brd.successMetrics.title}
-                            </h2>
-                            <div class="overflow-x-auto">
-                                <table class="w-full border-collapse">
-                                    <thead>
-                                        <tr style="background-color: #F9FAFB;">
-                                            <th class="border px-4 py-3 text-left font-bold" style="border-color: #E5E7EB; color: #111827;">Metric</th>
-                                            <th class="border px-4 py-3 text-left font-bold" style="border-color: #E5E7EB; color: #111827;">Target</th>
-                                            <th class="border px-4 py-3 text-left font-bold" style="border-color: #E5E7EB; color: #111827;">Measurement Method</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${brd.successMetrics.kpis.map((k, i) => `
-                                            <tr style="background-color: ${i % 2 === 0 ? 'white' : '#F9FAFB'};">
-                                                <td class="border px-4 py-3 font-medium" style="border-color: #E5E7EB; color: #111827;">${UI.escapeHtml(k.metric)}</td>
-                                                <td class="border px-4 py-3" style="border-color: #E5E7EB; color: #374151;">${UI.escapeHtml(k.target)}</td>
-                                                <td class="border px-4 py-3" style="border-color: #E5E7EB; color: #374151;">${UI.escapeHtml(k.measurement)}</td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <!-- Export Button -->
-                        <div class="mt-12 pt-8 border-t flex justify-center gap-4" style="border-color: #E5E7EB;">
-                            <button onclick="exportBRD()" class="px-8 py-3 rounded-xl text-white font-medium shadow-sm" style="background-color: #16A34A;">
-                                📥 Export BRD as PDF
-                            </button>
-                            <button onclick="window.print()" class="px-8 py-3 rounded-xl border font-medium" style="border-color: #E5E7EB; color: #6B7280;">
-                                🖨️ Print Document
+                        <div class="mt-8 pt-4 border-t flex justify-center gap-3" style="border-color: #E5E7EB;">
+                            <button onclick="exportBRD()" class="px-5 py-2 rounded-lg text-white text-sm font-medium" style="background-color: #16A34A;">
+                                Export as PDF
                             </button>
                         </div>
                     </div>
@@ -1373,33 +901,8 @@
             document.getElementById('stepContent').innerHTML = html;
         }
 
-        async function regenerateBRD() {
-            const instruction = document.getElementById('editInstruction').value.trim();
-            
-            if (!instruction) {
-                UI.showError('Input Required', 'Please enter an editing instruction.');
-                return;
-            }
-
-            if (projectState.editCount >= 3) {
-                UI.showError('Limit Reached', 'Maximum edits reached (3/3).');
-                return;
-            }
-
-            UI.showLoader('Regenerating BRD with your changes...');
-            
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            projectState.editCount++;
-            saveProjectState();
-            
-            UI.hideLoader();
-            UI.showSuccess('BRD Updated', 'Your changes have been applied (simulated for demo).');
-            renderStep4();
-        }
-
         function exportBRD() {
-            UI.showSuccess('Export Initiated', 'BRD export has been simulated. In production, this would download a PDF or DOCX file with your complete Business Requirements Document.');
+            UI.showSuccess('Export Initiated', 'BRD export simulated successfully.');
         }
 
         // Save project state
@@ -1411,7 +914,6 @@
             projectState.metadata = currentProject;
             Storage.set(Storage.KEYS.PROJECT_PREFIX + currentProject.id, projectState);
             
-            // Update in projects list
             let projects = Storage.get(Storage.KEYS.USER_PROJECTS) || [];
             const index = projects.findIndex(p => p.id === currentProject.id);
             if (index >= 0) {
