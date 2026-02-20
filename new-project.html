@@ -9,6 +9,58 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
+        
+        .platform-card {
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            background: white;
+            margin-bottom: 12px;
+        }
+        
+        .platform-header {
+            padding: 14px 16px;
+            background-color: #F9FAFB;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .platform-checkbox {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid #D1D5DB;
+            accent-color: #2563EB;
+            cursor: pointer;
+        }
+        
+        .platform-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .chat-item {
+            padding: 10px 16px 10px 56px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        
+        .chat-checkbox {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            border: 2px solid #D1D5DB;
+            accent-color: #2563EB;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -17,87 +69,62 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center gap-4">
-                    <a href="user-dashboard.html" style="color: #6B7280;">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                        </svg>
-                    </a>
-                    <h1 class="text-2xl font-bold" style="color: #2563EB;">BRD Generator</h1>
+                    <a href="user-dashboard.html" style="color: #6B7280;">←</a>
+                    <h1 class="text-xl font-bold" style="color: #2563EB;">BRD Generator</h1>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="min-h-screen flex items-center justify-center px-4 py-12">
-        <div class="max-w-2xl w-full">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold mb-2" style="color: #111827;">Create New Project</h2>
-                <p style="color: #6B7280;">Select a test user and name your project</p>
-            </div>
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Create New Project</h2>
+        <p class="mb-8" style="color: #6B7280;">Select data sources and create your project</p>
 
-            <div class="bg-white rounded-xl shadow-sm p-8 border" style="border-color: #E5E7EB;">
-                <form id="newProjectForm">
-                    <div class="mb-6">
-                        <label for="projectName" class="block text-sm font-medium mb-2" style="color: #111827;">Project Name *</label>
-                        <input 
-                            type="text" 
-                            id="projectName" 
-                            name="projectName"
-                            placeholder="Enter project name"
-                            class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2" 
-                            style="border-color: #E5E7EB; color: #111827;"
-                            required
-                        >
-                    </div>
+        <div class="bg-white rounded-lg shadow-sm p-6 border mb-6" style="border-color: #E5E7EB;">
+            <form id="newProjectForm">
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2" style="color: #111827;">Project Name</label>
+                    <input type="text" id="projectName" placeholder="Enter project name"
+                           class="w-full px-4 py-2.5 border rounded-lg text-sm" style="border-color: #E5E7EB;" required>
+                </div>
 
-                    <div class="mb-6">
-                        <label for="testUser" class="block text-sm font-medium mb-2" style="color: #111827;">Test User Data *</label>
-                        <select 
-                            id="testUser" 
-                            name="testUser"
-                            class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2" 
-                            style="border-color: #E5E7EB; color: #111827;"
-                            required
-                        >
-                            <option value="">Select a test user</option>
-                        </select>
-                        <p class="mt-2 text-sm" style="color: #6B7280;">Choose which test user's conversation data to analyze</p>
-                    </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2" style="color: #111827;">Test User</label>
+                    <select id="testUser" class="w-full px-4 py-2.5 border rounded-lg text-sm" style="border-color: #E5E7EB;" required>
+                        <option value="">Select a test user</option>
+                    </select>
+                </div>
 
-                    <div class="mb-6 p-4 rounded-lg" style="background-color: #F8FAFC; border: 1px solid #E5E7EB;" id="userPreview">
-                        <p class="text-sm" style="color: #6B7280;">Select a user to see their project details</p>
+                <!-- Platform Selection Section -->
+                <div class="mb-6">
+                    <h3 class="text-sm font-medium mb-3" style="color: #111827;">Select Data Sources</h3>
+                    <div id="platformSelection">
+                        <!-- Platforms will be loaded here -->
                     </div>
+                </div>
 
-                    <div class="flex gap-3">
-                        <a href="user-dashboard.html" class="flex-1 px-6 py-3 rounded-lg border font-medium text-center" style="border-color: #E5E7EB; color: #6B7280;">
-                            Cancel
-                        </a>
-                        <button 
-                            type="submit" 
-                            class="flex-1 px-6 py-3 rounded-lg text-white font-medium" 
-                            style="background-color: #2563EB;"
-                        >
-                            Create Project
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <div class="flex gap-3 pt-4 border-t" style="border-color: #E5E7EB;">
+                    <a href="user-dashboard.html" class="flex-1 px-4 py-2.5 border rounded-lg text-center text-sm" style="border-color: #E5E7EB; color: #6B7280;">
+                        Cancel
+                    </a>
+                    <button type="submit" class="flex-1 px-4 py-2.5 rounded-lg text-white text-sm font-medium" style="background-color: #2563EB;">
+                        Create Project
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="js/storage.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/dummyData.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/router.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/platforms.js"></script>
     <script>
-        // Populate test users dropdown
         const testUsers = DummyData.getUserList();
         const select = document.getElementById('testUser');
-        
+        let platformSelections = {};
+
         testUsers.forEach(user => {
             const option = document.createElement('option');
             option.value = user.user_id;
@@ -105,27 +132,152 @@
             select.appendChild(option);
         });
 
-        // Show user preview on selection
+        // Load platforms when user is selected
         select.addEventListener('change', function() {
             const userId = this.value;
-            const preview = document.getElementById('userPreview');
-            
-            if (!userId) {
-                preview.innerHTML = '<p class="text-sm" style="color: #6B7280;">Select a user to see their project details</p>';
-                return;
+            if (userId) {
+                loadPlatformsForUser(userId);
+            }
+        });
+
+        function loadPlatformsForUser(userId) {
+            const user = DummyData.getUserData(userId);
+            if (!user) return;
+
+            platformSelections = {
+                gmail: { selected: true, items: {} },
+                whatsapp: { selected: true, items: {} },
+                slack: { selected: true, items: {} },
+                meetings: { selected: true, items: {} }
+            };
+
+            // Initialize selections
+            if (user.data_vault.gmail) {
+                user.data_vault.gmail.forEach(item => {
+                    if (item.is_relevant) {
+                        platformSelections.gmail.items[item.thread_id] = true;
+                    }
+                });
+            }
+            if (user.data_vault.whatsapp) {
+                user.data_vault.whatsapp.forEach(item => {
+                    if (item.is_relevant) {
+                        platformSelections.whatsapp.items[item.thread_id] = true;
+                    }
+                });
+            }
+            if (user.data_vault.slack) {
+                user.data_vault.slack.forEach(item => {
+                    if (item.is_relevant) {
+                        platformSelections.slack.items[item.channel_id] = true;
+                    }
+                });
+            }
+            if (user.data_vault.meetings) {
+                user.data_vault.meetings.forEach(item => {
+                    platformSelections.meetings.items[item.meeting_id] = true;
+                });
             }
 
-            const user = testUsers.find(u => u.user_id === userId);
-            if (user) {
-                preview.innerHTML = `
-                    <div class="space-y-2">
-                        <p class="text-sm font-medium" style="color: #111827;">${user.name}</p>
-                        <p class="text-sm" style="color: #6B7280;"><span class="font-medium">Role:</span> ${user.role}</p>
-                        <p class="text-sm" style="color: #6B7280;"><span class="font-medium">Project:</span> ${user.project}</p>
+            renderPlatformSelection(user);
+        }
+
+        function renderPlatformSelection(user) {
+            const container = document.getElementById('platformSelection');
+            let html = '';
+
+            // Gmail
+            if (user.data_vault.gmail) {
+                const items = user.data_vault.gmail.filter(g => g.is_relevant);
+                html += renderPlatformWithCheckboxes('gmail', 'Gmail', '📧', '#DC2626', items, 'thread_id', 'subject');
+            }
+
+            // WhatsApp
+            if (user.data_vault.whatsapp) {
+                const items = user.data_vault.whatsapp.filter(w => w.is_relevant);
+                html += renderPlatformWithCheckboxes('whatsapp', 'WhatsApp', '💬', '#16A34A', items, 'thread_id', 'name');
+            }
+
+            // Slack
+            if (user.data_vault.slack) {
+                const items = user.data_vault.slack.filter(s => s.is_relevant);
+                html += renderPlatformWithCheckboxes('slack', 'Slack', '💼', '#2563EB', items, 'channel_id', 'name');
+            }
+
+            // Meetings
+            if (user.data_vault.meetings) {
+                html += renderPlatformWithCheckboxes('meetings', 'Meetings', '🎤', '#EAB308', user.data_vault.meetings, 'meeting_id', 'title');
+            }
+
+            // Proposal
+            if (user.data_vault.proposal) {
+                html += `
+                    <div class="platform-card">
+                        <div class="platform-header">
+                            <input type="checkbox" class="platform-checkbox" checked disabled>
+                            <div class="platform-icon" style="background-color: #6B728020; color: #6B7280;">📄</div>
+                            <span class="text-sm font-medium" style="color: #111827;">Proposal</span>
+                        </div>
                     </div>
                 `;
             }
-        });
+
+            container.innerHTML = html;
+        }
+
+        function renderPlatformWithCheckboxes(platform, name, icon, color, items, idField, nameField) {
+            const allSelected = Object.values(platformSelections[platform].items).every(v => v === true);
+            
+            return `
+                <div class="platform-card">
+                    <div class="platform-header">
+                        <input type="checkbox" class="platform-checkbox" 
+                               ${allSelected ? 'checked' : ''}
+                               onchange="togglePlatform('${platform}')">
+                        <div class="platform-icon" style="background-color: ${color}20; color: ${color};">${icon}</div>
+                        <span class="text-sm font-medium flex-1" style="color: #111827;">${name}</span>
+                        <span class="text-xs px-2 py-1 rounded-full" style="background-color: #F3F4F6; color: #6B7280;">${items.length}</span>
+                    </div>
+                    <div>
+                        ${items.map(item => {
+                            const itemId = item[idField];
+                            return `
+                                <div class="chat-item">
+                                    <input type="checkbox" class="chat-checkbox" 
+                                           ${platformSelections[platform].items[itemId] ? 'checked' : ''}
+                                           onchange="toggleChat('${platform}', '${itemId}')">
+                                    <span class="text-xs truncate" style="color: #374151;">${item[nameField] || 'Untitled'}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function togglePlatform(platform) {
+            const currentValue = platformSelections[platform].selected;
+            platformSelections[platform].selected = !currentValue;
+            
+            Object.keys(platformSelections[platform].items).forEach(key => {
+                platformSelections[platform].items[key] = !currentValue;
+            });
+            
+            const userId = document.getElementById('testUser').value;
+            const user = DummyData.getUserData(userId);
+            renderPlatformSelection(user);
+        }
+
+        function toggleChat(platform, itemId) {
+            platformSelections[platform].items[itemId] = !platformSelections[platform].items[itemId];
+            
+            const allSelected = Object.values(platformSelections[platform].items).every(v => v === true);
+            platformSelections[platform].selected = allSelected;
+            
+            const userId = document.getElementById('testUser').value;
+            const user = DummyData.getUserData(userId);
+            renderPlatformSelection(user);
+        }
 
         // Handle form submission
         document.getElementById('newProjectForm').addEventListener('submit', function(e) {
@@ -134,18 +286,12 @@
             const projectName = document.getElementById('projectName').value.trim();
             const testUserId = document.getElementById('testUser').value;
             
-            if (!projectName) {
-                UI.showError('Validation Error', 'Please enter a project name.');
-                return;
-            }
-            
-            if (!testUserId) {
-                UI.showError('Validation Error', 'Please select a test user.');
+            if (!projectName || !testUserId) {
+                alert('Please fill in all fields');
                 return;
             }
 
-            // Create project
-            const projectId = 'proj_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            const projectId = 'proj_' + Date.now();
             const user = testUsers.find(u => u.user_id === testUserId);
             
             const project = {
@@ -156,17 +302,14 @@
                 testUserProject: user.project,
                 createdAt: new Date().toISOString(),
                 lastModified: new Date().toISOString(),
-                userId: Storage.get(Storage.KEYS.CURRENT_USER_ID),
                 currentStep: 1,
                 completedSteps: []
             };
 
-            // Save to projects list
             let projects = Storage.get(Storage.KEYS.USER_PROJECTS) || [];
             projects.push(project);
             Storage.set(Storage.KEYS.USER_PROJECTS, projects);
 
-            // Initialize project state
             const projectState = {
                 metadata: project,
                 currentStep: 1,
@@ -179,11 +322,7 @@
             };
             Storage.set(Storage.KEYS.PROJECT_PREFIX + projectId, projectState);
 
-            // Redirect to project dashboard
-            UI.showSuccess('Project Created', 'Redirecting to your project...');
-            setTimeout(() => {
-                window.location.href = `project-dashboard.html?id=${projectId}`;
-            }, 1000);
+            window.location.href = `project-dashboard.html?id=${projectId}`;
         });
     </script>
 </body>
