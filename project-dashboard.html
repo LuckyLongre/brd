@@ -10,69 +10,6 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
         
-        /* Enhanced Step Indicator */
-        .step-indicator {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        .step-active {
-            background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
-            color: white;
-            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
-            transform: scale(1.05);
-        }
-        .step-completed {
-            background: linear-gradient(135deg, #16A34A 0%, #15803D 100%);
-            color: white;
-            box-shadow: 0 4px 16px rgba(22, 163, 74, 0.35);
-        }
-        .step-pending {
-            background-color: #F9FAFB;
-            color: #9CA3AF;
-            border: 2px dashed #E5E7EB;
-            box-shadow: none;
-        }
-        
-        /* Step Card Hover Effect */
-        .step-card {
-            transition: all 0.3s ease;
-            border-radius: 16px;
-            cursor: pointer;
-            padding: 16px;
-        }
-        .step-card:hover {
-            background-color: #F9FAFB;
-            transform: translateX(6px);
-        }
-        .step-card.active {
-            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
-            border-left: 4px solid #2563EB;
-        }
-        
-        /* Sidebar Improvements */
-        #sidebar {
-            background: linear-gradient(180deg, #FFFFFF 0%, #F9FAFB 100%);
-        }
-        
-        @media (max-width: 1023px) {
-            #sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                box-shadow: 2px 0 24px rgba(0,0,0,0.12);
-            }
-            #sidebar.open {
-                transform: translateX(0);
-            }
-        }
-        
         /* Conflict Option Cards */
         .conflict-option {
             transition: all 0.3s ease;
@@ -155,15 +92,6 @@
         
         /* Mobile Responsive Improvements */
         @media (max-width: 640px) {
-            .step-indicator {
-                width: 42px;
-                height: 42px;
-                font-size: 16px;
-                border-radius: 10px;
-            }
-            .step-card {
-                padding: 12px;
-            }
             .summary-section {
                 padding: 16px;
                 border-radius: 12px;
@@ -177,14 +105,9 @@
 </head>
 <body class="bg-gray-50 h-screen overflow-hidden">
     <!-- Top Navigation -->
-    <nav class="bg-white border-b h-16 flex-shrink-0" style="border-color: #E5E7EB;">
-        <div class="h-full px-4 flex items-center justify-between">
+    <nav class="bg-white border-b flex-shrink-0" style="border-color: #E5E7EB;">
+        <div class="px-4 py-3 flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <button id="menuToggle" class="lg:hidden p-2" style="color: #6B7280;">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
                 <h1 class="text-xl font-bold" style="color: #2563EB;">BRD Generator</h1>
                 <span class="text-sm hidden sm:inline" style="color: #6B7280;" id="projectTitle">Loading...</span>
             </div>
@@ -192,28 +115,21 @@
                 ← Back
             </a>
         </div>
-    </nav>
-
-    <!-- Main Layout -->
-    <div class="flex h-[calc(100vh-4rem)]">
-        <!-- Sidebar (Left) -->
-        <div id="sidebar" class="fixed lg:relative inset-0 lg:inset-auto w-64 bg-white border-r flex-shrink-0 z-40" style="border-color: #E5E7EB;">
-            <div class="h-full overflow-y-auto p-6">
-                <h3 class="font-bold mb-4" style="color: #111827;">Project Steps</h3>
-                <div id="stepsList" class="space-y-4">
-                    <!-- Steps will be loaded here -->
+        
+        <!-- Horizontal Steps Navigation (Moved from Sidebar) -->
+        <div class="border-t" style="border-color: #E5E7EB;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex items-center justify-between gap-2 sm:gap-4" id="stepsList">
+                    <!-- Steps will be loaded here dynamically -->
                 </div>
             </div>
         </div>
+    </nav>
 
-        <!-- Overlay for mobile sidebar -->
-        <div id="overlay" class="hidden lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"></div>
-
-        <!-- Main Content Area -->
-        <div class="flex-1 overflow-hidden flex flex-col">
-            <div id="stepContent" class="flex-1 overflow-y-auto p-4 lg:p-8">
-                <!-- Step content will be loaded here -->
-            </div>
+    <!-- Main Content Area -->
+    <div class="h-[calc(100vh-8rem)] overflow-hidden">
+        <div id="stepContent" class="h-full overflow-y-auto p-4 lg:p-8">
+            <!-- Step content will be loaded here -->
         </div>
     </div>
 
@@ -267,24 +183,6 @@
 
             renderSteps();
             renderCurrentStep();
-            setupMobileMenu();
-        }
-
-        // Setup mobile menu
-        function setupMobileMenu() {
-            const menuToggle = document.getElementById('menuToggle');
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-
-            menuToggle.addEventListener('click', () => {
-                sidebar.classList.add('open');
-                overlay.classList.remove('hidden');
-            });
-
-            overlay.addEventListener('click', () => {
-                sidebar.classList.remove('open');
-                overlay.classList.add('hidden');
-            });
         }
 
         // Perform Step 1 Extraction
@@ -302,60 +200,83 @@
             UI.hideLoader();
         }
 
-        // Render steps sidebar
+        // Render steps in horizontal navigation
         function renderSteps() {
             const steps = [
-                { num: 1, title: 'Data Extraction', desc: 'Extract relevant facts', icon: '📊' },
-                { num: 2, title: 'Conflict Detection', desc: 'Resolve contradictions', icon: '⚔️' },
-                { num: 3, title: 'Summary Review', desc: 'Review and edit summary', icon: '📝' },
-                { num: 4, title: 'BRD Document', desc: 'Generate final BRD', icon: '📄' }
+                { num: 1, title: 'Extraction', desc: 'Data Extraction', icon: '📊' },
+                { num: 2, title: 'Conflicts', desc: 'Conflict Detection', icon: '⚔️' },
+                { num: 3, title: 'Summary', desc: 'Summary Review', icon: '📝' },
+                { num: 4, title: 'BRD', desc: 'BRD Document', icon: '📄' }
             ];
 
-            const html = steps.map(step => {
+            const stepsList = document.getElementById('stepsList');
+            
+            const html = steps.map((step, index) => {
                 const isActive = projectState.currentStep === step.num;
                 const isCompleted = projectState.completedSteps.includes(step.num);
                 const isPending = !isActive && !isCompleted;
-
+                
+                let stepClass = 'flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full text-sm sm:text-base font-semibold flex-shrink-0 transition-all';
+                let textClass = 'text-xs sm:text-sm font-medium';
+                let connectorClass = 'flex-1 h-0.5 mx-1 sm:mx-2 transition-all';
+                
+                if (isActive) {
+                    stepClass += ' bg-blue-600 text-white shadow-lg shadow-blue-200';
+                    textClass += ' text-blue-600';
+                    connectorClass += ' bg-gray-200';
+                } else if (isCompleted) {
+                    stepClass += ' bg-green-500 text-white';
+                    textClass += ' text-green-600';
+                    connectorClass += ' bg-green-500';
+                } else {
+                    stepClass += ' bg-gray-100 text-gray-400 border-2 border-gray-200';
+                    textClass += ' text-gray-400';
+                    connectorClass += ' bg-gray-200';
+                }
+                
                 return `
-                    <div class="step-card ${isActive ? 'active' : ''}" onclick="viewStep(${step.num})">
-                        <div class="flex items-start gap-4">
-                            <div class="step-indicator ${isActive ? 'step-active' : isCompleted ? 'step-completed' : 'step-pending'}">
-                                ${isCompleted ? '✓' : step.num}
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="font-semibold mb-1" style="color: ${isActive ? '#2563EB' : '#111827'};">
-                                    ${step.icon} ${step.title}
+                    <div class="flex items-center flex-1 ${isActive ? 'active-step' : ''}" onclick="viewStep(${step.num})" style="cursor: ${isPending ? 'not-allowed' : 'pointer'}; opacity: ${isPending ? '0.7' : '1'};">
+                        <div class="flex flex-col items-center w-full">
+                            <div class="flex items-center w-full">
+                                <div class="${stepClass}">
+                                    ${isCompleted ? '✓' : step.icon}
                                 </div>
-                                <div class="text-xs leading-relaxed" style="color: #6B7280;">${step.desc}</div>
-                                ${isCompleted ? `
-                                    <button onclick="event.stopPropagation(); previewStep(${step.num})" 
-                                            class="text-xs mt-2 px-2 py-1 rounded-md transition-colors" 
-                                            style="color: #2563EB; background-color: #EFF6FF;"
-                                            onmouseover="this.style.backgroundColor='#DBEAFE'"
-                                            onmouseout="this.style.backgroundColor='#EFF6FF'">
-                                        👁️ Preview
-                                    </button>
-                                ` : ''}
+                                ${index < steps.length - 1 ? `<div class="${connectorClass}"></div>` : ''}
+                            </div>
+                            <div class="mt-2 text-center w-full">
+                                <div class="${textClass} hidden sm:block">${step.desc}</div>
+                                <div class="${textClass} sm:hidden">${step.title}</div>
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
 
-            document.getElementById('stepsList').innerHTML = html;
+            stepsList.innerHTML = html;
         }
 
         // View step (if allowed)
         function viewStep(stepNum) {
-            if (stepNum > projectState.currentStep && !projectState.completedSteps.includes(stepNum)) {
+            if (stepNum > projectState.currentStep && !projectState.completedSteps.includes(stepNum - 1)) {
                 UI.showError('Step Locked', 'Please complete previous steps first.');
                 return;
             }
             
-            projectState.currentStep = stepNum;
-            saveProjectState();
-            renderSteps();
-            renderCurrentStep();
+            if (stepNum > projectState.currentStep && projectState.completedSteps.includes(stepNum - 1)) {
+                // Allow moving to next step if previous is completed
+                projectState.currentStep = stepNum;
+                saveProjectState();
+                renderSteps();
+                renderCurrentStep();
+                return;
+            }
+            
+            if (stepNum <= projectState.currentStep) {
+                projectState.currentStep = stepNum;
+                saveProjectState();
+                renderSteps();
+                renderCurrentStep();
+            }
         }
 
         // Preview completed step
@@ -393,7 +314,7 @@
             const facts = projectState.extractionData || [];
             
             const html = `
-                <div class="max-w-4xl">
+                <div class="max-w-4xl mx-auto">
                     <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Step 1: Data Extraction</h2>
                     <p class="mb-6" style="color: #6B7280;">
                         ${facts.length} relevant facts extracted from ${testUserData.name}'s conversations across WhatsApp, Slack, Gmail, and Meetings. 
@@ -473,7 +394,7 @@
             const unselectedCount = conflicts.filter(c => !c.selectedFactId).length;
             
             const html = `
-                <div class="max-w-4xl">
+                <div class="max-w-4xl mx-auto">
                     <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Step 2: Conflict Detection</h2>
                     <p class="mb-6" style="color: #6B7280;">
                         ${conflicts.length} conflict${conflicts.length !== 1 ? 's' : ''} detected in your conversations. 
@@ -623,7 +544,7 @@
             const summary = projectState.summaryData;
             
             const html = `
-                <div class="max-w-4xl">
+                <div class="max-w-4xl mx-auto">
                     <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Step 3: Summary Review & Edit</h2>
                     <p class="mb-6" style="color: #6B7280;">
                         Review the structured summary generated from your conversation data and resolved conflicts. 
