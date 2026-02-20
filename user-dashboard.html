@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects - BRD Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white border-b" style="border-color: #E5E7EB;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold" style="color: #2563EB;">BRD Generator</h1>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span id="userName" style="color: #6B7280;"></span>
+                    <button onclick="Auth.logout()" class="px-4 py-2 rounded-lg text-sm font-medium" style="color: #6B7280; border: 1px solid #E5E7EB;">
+                        Sign Out
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+            <div>
+                <h2 class="text-3xl font-bold" style="color: #111827;">My Projects</h2>
+                <p class="mt-1" style="color: #6B7280;">Manage your BRD projects</p>
+            </div>
+            <a href="new-project.html" class="px-6 py-3 rounded-xl text-white font-medium shadow-sm w-full sm:w-auto text-center" style="background-color: #2563EB;">
+                + New Project
+            </a>
+        </div>
+
+        <!-- Projects Grid -->
+        <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Projects will be loaded here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16">
+            <div class="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center" style="background-color: #F8FAFC;">
+                <svg class="w-12 h-12" style="color: #6B7280;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-2" style="color: #111827;">No projects yet</h3>
+            <p class="mb-6" style="color: #6B7280;">Create your first project to get started</p>
+            <a href="new-project.html" class="inline-block px-6 py-3 rounded-xl text-white font-medium shadow-sm" style="background-color: #2563EB;">
+                Create Project
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Load user info
+        const user = Auth.getCurrentUser();
+        if (user) {
+            document.getElementById('userName').textContent = user.name;
+        }
+
+        // Load projects
+        function loadProjects() {
+            const projects = Storage.get(Storage.KEYS.USER_PROJECTS) || [];
+            
+            if (projects.length === 0) {
+                document.getElementById('emptyState').classList.remove('hidden');
+                return;
+            }
+
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = projects.map(project => `
+                <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow" style="border-color: #E5E7EB;">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-lg font-bold break-words" style="color: #111827;">${UI.escapeHtml(project.name)}</h3>
+                        <span class="px-3 py-1 rounded-full text-xs font-medium flex-shrink-0 ml-2" style="background-color: ${project.currentStep >= 4 ? '#D1FAE5' : '#FEF3C7'}; color: ${project.currentStep >= 4 ? '#16A34A' : '#EAB308'};">
+                            ${project.currentStep >= 4 ? 'Completed' : 'In Progress'}
+                        </span>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <p class="text-sm" style="color: #6B7280;">
+                            <span class="font-medium">Test User:</span> ${UI.escapeHtml(project.testUserName || 'N/A')}
+                        </p>
+                        <p class="text-sm" style="color: #6B7280;">
+                            <span class="font-medium">Created:</span> ${UI.formatDate(project.createdAt)}
+                        </p>
+                        <p class="text-sm" style="color: #6B7280;">
+                            <span class="font-medium">Progress:</span> Step ${project.currentStep} of 4
+                        </p>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="project-dashboard.html?id=${project.id}" class="flex-1 px-4 py-2 rounded-lg text-white font-medium text-center text-sm" style="background-color: #2563EB;">
+                            Open Project
+                        </a>
+                        <button onclick="deleteProject('${project.id}')" class="px-4 py-2 rounded-lg border font-medium text-sm" style="border-color: #E5E7EB; color: #DC2626;">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Delete project with confirmation
+        function deleteProject(projectId) {
+            UI.showConfirmation(
+                'Delete Project',
+                'Are you sure you want to delete this project? This action cannot be undone.',
+                () => {
+                    let projects = Storage.get(Storage.KEYS.USER_PROJECTS) || [];
+                    projects = projects.filter(p => p.id !== projectId);
+                    Storage.set(Storage.KEYS.USER_PROJECTS, projects);
+                    
+                    // Also delete project data
+                    Storage.remove(Storage.KEYS.PROJECT_PREFIX + projectId);
+                    
+                    UI.showSuccess('Project Deleted', 'The project has been successfully deleted.');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+            );
+        }
+
+        // Initialize
+        loadProjects();
+    </script>
+</body>
+</html>

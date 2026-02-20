@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Dashboard - BRD Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        /* Enhanced Step Indicator */
+        .step-indicator {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .step-active {
+            background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+            transform: scale(1.05);
+        }
+        .step-completed {
+            background: linear-gradient(135deg, #16A34A 0%, #15803D 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(22, 163, 74, 0.35);
+        }
+        .step-pending {
+            background-color: #F9FAFB;
+            color: #9CA3AF;
+            border: 2px dashed #E5E7EB;
+            box-shadow: none;
+        }
+        
+        /* Step Card Hover Effect */
+        .step-card {
+            transition: all 0.3s ease;
+            border-radius: 16px;
+            cursor: pointer;
+            padding: 16px;
+        }
+        .step-card:hover {
+            background-color: #F9FAFB;
+            transform: translateX(6px);
+        }
+        .step-card.active {
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            border-left: 4px solid #2563EB;
+        }
+        
+        /* Sidebar Improvements */
+        #sidebar {
+            background: linear-gradient(180deg, #FFFFFF 0%, #F9FAFB 100%);
+        }
+        
+        @media (max-width: 1023px) {
+            #sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 2px 0 24px rgba(0,0,0,0.12);
+            }
+            #sidebar.open {
+                transform: translateX(0);
+            }
+        }
+        
+        /* Conflict Option Cards */
+        .conflict-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .conflict-option:hover {
+            background-color: #F9FAFB;
+            transform: scale(1.01);
+        }
+        .conflict-option.selected {
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+            border-color: #2563EB !important;
+            border-width: 3px !important;
+        }
+        
+        /* Editable Fields */
+        .editable-field {
+            padding: 12px 16px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            background-color: white;
+            font-size: 14px;
+        }
+        .editable-field:hover {
+            border-color: #E5E7EB;
+            background-color: #F9FAFB;
+        }
+        .editable-field:focus {
+            outline: none;
+            border-color: #2563EB;
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+        
+        /* Tab Navigation */
+        .tab-button {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .tab-active {
+            background: linear-gradient(135deg, #2563EB 0%, #1E40AF 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .tab-inactive {
+            background-color: #F3F4F6;
+            color: #6B7280;
+        }
+        .tab-inactive:hover {
+            background-color: #E5E7EB;
+            color: #374151;
+        }
+        
+        /* Summary Section Cards */
+        .summary-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #E5E7EB;
+            margin-bottom: 20px;
+        }
+        
+        .summary-item {
+            background: #F9FAFB;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #E5E7EB;
+            transition: all 0.2s ease;
+        }
+        .summary-item:hover {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        /* Mobile Responsive Improvements */
+        @media (max-width: 640px) {
+            .step-indicator {
+                width: 42px;
+                height: 42px;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+            .step-card {
+                padding: 12px;
+            }
+            .summary-section {
+                padding: 16px;
+                border-radius: 12px;
+            }
+            .tab-button {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 h-screen overflow-hidden">
+    <!-- Top Navigation -->
+    <nav class="bg-white border-b h-16 flex-shrink-0" style="border-color: #E5E7EB;">
+        <div class="h-full px-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button id="menuToggle" class="lg:hidden p-2" style="color: #6B7280;">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                <h1 class="text-xl font-bold" style="color: #2563EB;">BRD Generator</h1>
+                <span class="text-sm hidden sm:inline" style="color: #6B7280;" id="projectTitle">Loading...</span>
+            </div>
+            <a href="user-dashboard.html" class="text-sm px-4 py-2 rounded-lg border" style="border-color: #E5E7EB; color: #6B7280;">
+                ← Back
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Layout -->
+    <div class="flex h-[calc(100vh-4rem)]">
+        <!-- Sidebar (Left) -->
+        <div id="sidebar" class="fixed lg:relative inset-0 lg:inset-auto w-64 bg-white border-r flex-shrink-0 z-40" style="border-color: #E5E7EB;">
+            <div class="h-full overflow-y-auto p-6">
+                <h3 class="font-bold mb-4" style="color: #111827;">Project Steps</h3>
+                <div id="stepsList" class="space-y-4">
+                    <!-- Steps will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Overlay for mobile sidebar -->
+        <div id="overlay" class="hidden lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"></div>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 overflow-hidden flex flex-col">
+            <div id="stepContent" class="flex-1 overflow-y-auto p-4 lg:p-8">
+                <!-- Step content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dummyData.js"></script>
+    <script src="js/extraction.js"></script>
+    <script src="js/conflicts.js"></script>
+    <script src="js/summary.js"></script>
+    <script src="js/brd.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        let currentProject = null;
+        let projectState = null;
+        let testUserData = null;
+
+        // Initialize
+        async function init() {
+            const projectId = Router.getParam('id');
+            if (!projectId) {
+                UI.showError('Error', 'Project ID not found');
+                setTimeout(() => window.location.href = 'user-dashboard.html', 2000);
+                return;
+            }
+
+            // Load project
+            projectState = Storage.get(Storage.KEYS.PROJECT_PREFIX + projectId);
+            if (!projectState) {
+                UI.showError('Error', 'Project not found');
+                setTimeout(() => window.location.href = 'user-dashboard.html', 2000);
+                return;
+            }
+
+            currentProject = projectState.metadata;
+            testUserData = DummyData.getUserData(currentProject.testUserId);
+            
+            if (!testUserData) {
+                UI.showError('Error', 'Test user data not found');
+                return;
+            }
+
+            document.getElementById('projectTitle').textContent = currentProject.name;
+
+            // If step 1 not started, initialize it
+            if (!projectState.extractionData || projectState.extractionData.length === 0) {
+                await performStep1Extraction();
+            }
+
+            renderSteps();
+            renderCurrentStep();
+            setupMobileMenu();
+        }
+
+        // Setup mobile menu
+        function setupMobileMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.add('open');
+                overlay.classList.remove('hidden');
+            });
+
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+                overlay.classList.add('hidden');
+            });
+        }
+
+        // Perform Step 1 Extraction
+        async function performStep1Extraction() {
+            UI.showLoader('Extracting relevant facts from conversations...');
+            
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            const facts = Extraction.extractFacts(testUserData);
+            projectState.extractionData = facts;
+            projectState.completedSteps = [1];
+            projectState.currentStep = 1;
+            
+            saveProjectState();
+            UI.hideLoader();
+        }
+
+        // Render steps sidebar
+        function renderSteps() {
+            const steps = [
+                { num: 1, title: 'Data Extraction', desc: 'Extract relevant facts', icon: '📊' },
+                { num: 2, title: 'Conflict Detection', desc: 'Resolve contradictions', icon: '⚔️' },
+                { num: 3, title: 'Summary Review', desc: 'Review and edit summary', icon: '📝' },
+                { num: 4, title: 'BRD Document', desc: 'Generate final BRD', icon: '📄' }
+            ];
+
+            const html = steps.map(step => {
+                const isActive = projectState.currentStep === step.num;
+                const isCompleted = projectState.completedSteps.includes(step.num);
+                const isPending = !isActive && !isCompleted;
+
+                return `
+                    <div class="step-card ${isActive ? 'active' : ''}" onclick="viewStep(${step.num})">
+                        <div class="flex items-start gap-4">
+                            <div class="step-indicator ${isActive ? 'step-active' : isCompleted ? 'step-completed' : 'step-pending'}">
+                                ${isCompleted ? '✓' : step.num}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="font-semibold mb-1" style="color: ${isActive ? '#2563EB' : '#111827'};">
+                                    ${step.icon} ${step.title}
+                                </div>
+                                <div class="text-xs leading-relaxed" style="color: #6B7280;">${step.desc}</div>
+                                ${isCompleted ? `
+                                    <button onclick="event.stopPropagation(); previewStep(${step.num})" 
+                                            class="text-xs mt-2 px-2 py-1 rounded-md transition-colors" 
+                                            style="color: #2563EB; background-color: #EFF6FF;"
+                                            onmouseover="this.style.backgroundColor='#DBEAFE'"
+                                            onmouseout="this.style.backgroundColor='#EFF6FF'">
+                                        👁️ Preview
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('stepsList').innerHTML = html;
+        }
+
+        // View step (if allowed)
+        function viewStep(stepNum) {
+            if (stepNum > projectState.currentStep && !projectState.completedSteps.includes(stepNum)) {
+                UI.showError('Step Locked', 'Please complete previous steps first.');
+                return;
+            }
+            
+            projectState.currentStep = stepNum;
+            saveProjectState();
+            renderSteps();
+            renderCurrentStep();
+        }
+
+        // Preview completed step
+        function previewStep(stepNum) {
+            if (!projectState.completedSteps.includes(stepNum)) {
+                UI.showError('Not Available', 'This step has not been completed yet.');
+                return;
+            }
+            projectState.currentStep = stepNum;
+            renderCurrentStep();
+        }
+
+        // Render current step content
+        function renderCurrentStep() {
+            const stepContent = document.getElementById('stepContent');
+            
+            switch(projectState.currentStep) {
+                case 1:
+                    renderStep1();
+                    break;
+                case 2:
+                    renderStep2();
+                    break;
+                case 3:
+                    renderStep3();
+                    break;
+                case 4:
+                    renderStep4();
+                    break;
+            }
+        }
+
+        // ==================== STEP 1: EXTRACTION ====================
+        function renderStep1() {
+            const facts = projectState.extractionData || [];
+            
+            const html = `
+                <div class="max-w-4xl">
+                    <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Step 1: Data Extraction</h2>
+                    <p class="mb-6" style="color: #6B7280;">
+                        ${facts.length} relevant facts extracted from ${testUserData.name}'s conversations across WhatsApp, Slack, Gmail, and Meetings. 
+                        Review and delete any incorrect facts.
+                    </p>
+                    
+                    <div class="space-y-4" id="factsList">
+                        ${facts.map(fact => `
+                            <div class="bg-white rounded-xl shadow-sm p-6 border" style="border-color: #E5E7EB;">
+                                <div class="flex justify-between items-start mb-3">
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium" style="background-color: ${Extraction.getSourceColor(fact.source)}20; color: ${Extraction.getSourceColor(fact.source)};">
+                                        ${Extraction.getSourceIcon(fact.source)} ${fact.sourceLabel}
+                                    </span>
+                                    <button onclick="deleteFact('${fact.id}')" class="text-sm" style="color: #DC2626;">Delete</button>
+                                </div>
+                                <p class="mb-2 break-words" style="color: #111827;">${UI.escapeHtml(fact.content)}</p>
+                                <p class="text-sm" style="color: #6B7280;">${fact.speaker}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="mt-8 flex justify-end">
+                        <button onclick="completeStep1()" class="px-8 py-3 rounded-xl text-white font-medium shadow-sm" style="background-color: #2563EB;">
+                            Continue to Conflict Detection →
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('stepContent').innerHTML = html;
+        }
+
+        function deleteFact(factId) {
+            UI.showConfirmation(
+                'Delete Fact',
+                'Are you sure you want to delete this fact? This will affect conflict detection.',
+                () => {
+                    projectState.extractionData = Extraction.deleteFact(projectState.extractionData, factId);
+                    saveProjectState();
+                    renderStep1();
+                    UI.showSuccess('Deleted', 'Fact has been removed.');
+                }
+            );
+        }
+
+        async function completeStep1() {
+            UI.showLoader('Analyzing conversations and detecting conflicts...');
+            
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // Detect conflicts
+            const conflicts = Conflicts.detectConflicts(projectState.extractionData);
+            projectState.conflictsData = conflicts;
+            
+            if (!projectState.completedSteps.includes(1)) {
+                projectState.completedSteps.push(1);
+            }
+            projectState.currentStep = 2;
+            
+            saveProjectState();
+            UI.hideLoader();
+            renderSteps();
+            renderCurrentStep();
+        }
+
+        // ==================== STEP 2: CONFLICTS ====================
+        function renderStep2() {
+            const conflicts = projectState.conflictsData || [];
+            
+            if (conflicts.length === 0) {
+                UI.showSuccess('No Conflicts', 'No conflicts detected in the data. Moving to summary...');
+                setTimeout(() => completeStep2(), 1500);
+                return;
+            }
+
+            const allSelected = conflicts.every(c => c.selectedFactId !== null);
+            const unselectedCount = conflicts.filter(c => !c.selectedFactId).length;
+            
+            const html = `
+                <div class="max-w-4xl">
+                    <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Step 2: Conflict Detection</h2>
+                    <p class="mb-6" style="color: #6B7280;">
+                        ${conflicts.length} conflict${conflicts.length !== 1 ? 's' : ''} detected in your conversations. 
+                        Please select your preferred option for each conflict and provide reasoning.
+                    </p>
+                    
+                    <div class="space-y-6" id="conflictsList">
+                        ${conflicts.map((conflict, index) => `
+                            <div class="bg-white rounded-xl shadow-sm p-6 border" style="border-color: #E5E7EB;">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div>
+                                        <span class="px-3 py-1 rounded-full text-xs font-medium" style="background-color: ${Conflicts.getConflictTypeColor(conflict.type)}20; color: ${Conflicts.getConflictTypeColor(conflict.type)};">
+                                            ${conflict.description}
+                                        </span>
+                                    </div>
+                                    <span class="text-sm font-medium" style="color: #6B7280;">Conflict ${index + 1} of ${conflicts.length}</span>
+                                </div>
+
+                                <!-- Option A -->
+                                <div class="conflict-option mb-4 p-4 sm:p-5 rounded-xl border-2 ${conflict.selectedFactId === conflict.factA.id ? 'selected' : ''}" 
+                                     style="border-color: ${conflict.selectedFactId === conflict.factA.id ? '#2563EB' : '#E5E7EB'}; background-color: ${conflict.selectedFactId === conflict.factA.id ? '#EFF6FF' : 'white'};"
+                                     onclick="selectConflictOption('${conflict.id}', '${conflict.factA.id}')">
+                                    <div class="flex items-start gap-3">
+                                        <input type="radio" name="conflict_${conflict.id}" value="A" 
+                                               ${conflict.selectedFactId === conflict.factA.id ? 'checked' : ''}
+                                               class="mt-1 w-4 h-4">
+                                        <div class="flex-1 min-w-0">
+                                            <div class="text-sm font-medium mb-3" style="color: #6B7280;">
+                                                <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold" style="background-color: ${Extraction.getSourceColor(conflict.factA.source)}20; color: ${Extraction.getSourceColor(conflict.factA.source)};">
+                                                    ${Extraction.getSourceIcon(conflict.factA.source)} ${conflict.factA.sourceLabel}
+                                                </span>
+                                            </div>
+                                            <p class="break-words font-medium mb-2 leading-relaxed text-sm sm:text-base" style="color: #111827;">${UI.escapeHtml(conflict.factA.content)}</p>
+                                            <p class="text-xs sm:text-sm" style="color: #6B7280;">— ${conflict.factA.speaker}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Option B -->
+                                <div class="conflict-option mb-4 p-4 sm:p-5 rounded-xl border-2 ${conflict.selectedFactId === conflict.factB.id ? 'selected' : ''}" 
+                                     style="border-color: ${conflict.selectedFactId === conflict.factB.id ? '#2563EB' : '#E5E7EB'}; background-color: ${conflict.selectedFactId === conflict.factB.id ? '#EFF6FF' : 'white'};"
+                                     onclick="selectConflictOption('${conflict.id}', '${conflict.factB.id}')">
+                                    <div class="flex items-start gap-3">
+                                        <input type="radio" name="conflict_${conflict.id}" value="B" 
+                                               ${conflict.selectedFactId === conflict.factB.id ? 'checked' : ''}
+                                               class="mt-1 w-4 h-4">
+                                        <div class="flex-1 min-w-0">
+                                            <div class="text-sm font-medium mb-3" style="color: #6B7280;">
+                                                <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold" style="background-color: ${Extraction.getSourceColor(conflict.factB.source)}20; color: ${Extraction.getSourceColor(conflict.factB.source)};">
+                                                    ${Extraction.getSourceIcon(conflict.factB.source)} ${conflict.factB.sourceLabel}
+                                                </span>
+                                            </div>
+                                            <p class="break-words font-medium mb-2 leading-relaxed text-sm sm:text-base" style="color: #111827;">${UI.escapeHtml(conflict.factB.content)}</p>
+                                            <p class="text-xs sm:text-sm" style="color: #6B7280;">— ${conflict.factB.speaker}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Comment for this conflict -->
+                                <div>
+                                    <label class="block text-sm font-medium mb-2" style="color: #111827;">Decision Reasoning (Optional)</label>
+                                    <textarea id="comment_${conflict.id}" rows="2" class="w-full px-4 py-2 rounded-lg border" style="border-color: #E5E7EB;" placeholder="Why did you choose this option? This will be included in the BRD...">${conflict.comment || ''}</textarea>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <!-- Single Resolve Button (Better Mobile) -->
+                    <div class="mt-8 bg-white rounded-xl shadow-lg border" style="border-color: #E5E7EB; position: sticky; bottom: 1rem; z-index: 10;">
+                        <div class="p-4 sm:p-6">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                                <div class="flex-1">
+                                    <p class="font-semibold text-sm sm:text-base mb-1" style="color: #111827;">
+                                        ${allSelected ? '✅ All conflicts have selections' : `⚠️ ${unselectedCount} conflict${unselectedCount !== 1 ? 's' : ''} need${unselectedCount === 1 ? 's' : ''} selection`}
+                                    </p>
+                                    <p class="text-xs sm:text-sm" style="color: #6B7280;">Your decisions will be incorporated into the summary and final BRD</p>
+                                </div>
+                                <button onclick="resolveAllConflicts()" 
+                                        ${!allSelected ? 'disabled' : ''}
+                                        class="w-full sm:w-auto px-6 sm:px-8 py-3 rounded-xl text-white font-semibold shadow-sm transition-all text-sm sm:text-base whitespace-nowrap" 
+                                        style="background: ${allSelected ? 'linear-gradient(135deg, #16A34A 0%, #15803D 100%)' : '#9CA3AF'}; opacity: ${allSelected ? '1' : '0.6'}; cursor: ${allSelected ? 'pointer' : 'not-allowed'};">
+                                    ${allSelected ? '✓ Resolve All & Continue →' : 'Select All Options First'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('stepContent').innerHTML = html;
+        }
+
+        function selectConflictOption(conflictId, factId) {
+            const conflict = projectState.conflictsData.find(c => c.id === conflictId);
+            if (conflict) {
+                conflict.selectedFactId = factId;
+                saveProjectState();
+                renderStep2(); // Re-render to update button state
+            }
+        }
+
+        function resolveAllConflicts() {
+            const allSelected = projectState.conflictsData.every(c => c.selectedFactId !== null);
+            
+            if (!allSelected) {
+                UI.showError('Incomplete Selection', 'Please select an option for each conflict before continuing.');
+                return;
+            }
+
+            // Get comments from textareas
+            projectState.conflictsData.forEach(conflict => {
+                const commentEl = document.getElementById(`comment_${conflict.id}`);
+                if (commentEl) {
+                    conflict.comment = commentEl.value.trim();
+                }
+                conflict.resolved = true;
+                conflict.resolvedAt = new Date().toISOString();
+            });
+
+            saveProjectState();
+            UI.showSuccess('Conflicts Resolved', 'All conflicts have been resolved successfully!');
+            setTimeout(() => completeStep2(), 1000);
+        }
+
+        async function completeStep2() {
+            UI.showLoader('Generating structured summary from your decisions...');
+            
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // Generate summary
+            const summary = Summary.generateSummary(projectState.extractionData, projectState.conflictsData);
+            projectState.summaryData = summary;
+            
+            if (!projectState.completedSteps.includes(2)) {
+                projectState.completedSteps.push(2);
+            }
+            projectState.currentStep = 3;
+            
+            saveProjectState();
+            UI.hideLoader();
+            renderSteps();
+            renderCurrentStep();
+        }
+
+        // ==================== STEP 3: EDITABLE SUMMARY ====================
+        function renderStep3() {
+            const summary = projectState.summaryData;
+            
+            const html = `
+                <div class="max-w-4xl">
+                    <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Step 3: Summary Review & Edit</h2>
+                    <p class="mb-6" style="color: #6B7280;">
+                        Review the structured summary generated from your conversation data and resolved conflicts. 
+                        <strong>Click any text to edit it</strong> before generating the final BRD.
+                    </p>
+                    
+                    <!-- Key Decisions -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border mb-6" style="border-color: #E5E7EB;">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-bold" style="color: #111827;">Key Decisions</h3>
+                            <button onclick="addKeyDecision()" class="text-sm px-3 py-1 rounded-lg border" style="border-color: #E5E7EB; color: #2563EB;">+ Add Decision</button>
+                        </div>
+                        <div class="space-y-3" id="keyDecisionsList">
+                            ${(summary.keyDecisions || []).map((d, idx) => `
+                                <div class="p-4 rounded-lg" style="background-color: #F8FAFC;">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <input type="text" value="${UI.escapeHtml(d.title)}" 
+                                               onchange="updateDecision(${idx}, 'title', this.value)"
+                                               class="editable-field flex-1 font-medium" style="color: #111827;" 
+                                               placeholder="Decision title...">
+                                        <button onclick="removeDecision(${idx})" class="ml-2 text-sm" style="color: #DC2626;">×</button>
+                                    </div>
+                                    <textarea onchange="updateDecision(${idx}, 'description', this.value)"
+                                              class="editable-field w-full text-sm" style="color: #6B7280;" 
+                                              rows="2" placeholder="Decision description...">${UI.escapeHtml(d.description)}</textarea>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Risks -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border mb-6" style="border-color: #E5E7EB;">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-bold" style="color: #111827;">Identified Risks</h3>
+                            <button onclick="addRisk()" class="text-sm px-3 py-1 rounded-lg border" style="border-color: #E5E7EB; color: #2563EB;">+ Add Risk</button>
+                        </div>
+                        <div class="space-y-3" id="risksList">
+                            ${(summary.risks || []).map((r, idx) => `
+                                <div class="p-4 rounded-lg" style="background-color: #F8FAFC;">
+                                    <div class="flex justify-between items-start gap-2 mb-2">
+                                        <input type="text" value="${UI.escapeHtml(r.title)}" 
+                                               onchange="updateRisk(${idx}, 'title', this.value)"
+                                               class="editable-field flex-1 font-medium" style="color: #111827;"
+                                               placeholder="Risk title...">
+                                        <select onchange="updateRisk(${idx}, 'severity', this.value)" 
+                                                class="px-2 py-1 rounded text-xs font-medium" 
+                                                style="background-color: ${r.severity === 'High' ? '#FEE2E2' : r.severity === 'Medium' ? '#FEF3C7' : '#E5E7EB'}; color: ${r.severity === 'High' ? '#DC2626' : r.severity === 'Medium' ? '#EAB308' : '#6B7280'};">
+                                            <option value="High" ${r.severity === 'High' ? 'selected' : ''}>High</option>
+                                            <option value="Medium" ${r.severity === 'Medium' ? 'selected' : ''}>Medium</option>
+                                            <option value="Low" ${r.severity === 'Low' ? 'selected' : ''}>Low</option>
+                                        </select>
+                                        <button onclick="removeRisk(${idx})" class="text-sm" style="color: #DC2626;">×</button>
+                                    </div>
+                                    <textarea onchange="updateRisk(${idx}, 'description', this.value)"
+                                              class="editable-field w-full text-sm mb-2" style="color: #6B7280;" 
+                                              rows="2" placeholder="Risk description...">${UI.escapeHtml(r.description)}</textarea>
+                                    <textarea onchange="updateRisk(${idx}, 'mitigation', this.value)"
+                                              class="editable-field w-full text-sm" style="color: #6B7280;" 
+                                              rows="1" placeholder="Mitigation strategy...">${UI.escapeHtml(r.mitigation)}</textarea>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Requirements -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border mb-6" style="border-color: #E5E7EB;">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-bold" style="color: #111827;">Requirements</h3>
+                            <button onclick="addRequirement()" class="text-sm px-3 py-1 rounded-lg border" style="border-color: #E5E7EB; color: #2563EB;">+ Add Requirement</button>
+                        </div>
+                        <div class="space-y-3" id="requirementsList">
+                            ${(summary.requirements || []).map((r, idx) => `
+                                <div class="p-4 rounded-lg" style="background-color: #F8FAFC;">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <select onchange="updateRequirement(${idx}, 'type', this.value)" 
+                                                class="px-2 py-1 rounded text-xs font-medium" style="background-color: #E5E7EB; color: #6B7280;">
+                                            <option value="Functional" ${r.type === 'Functional' ? 'selected' : ''}>Functional</option>
+                                            <option value="Security" ${r.type === 'Security' ? 'selected' : ''}>Security</option>
+                                            <option value="Compliance" ${r.type === 'Compliance' ? 'selected' : ''}>Compliance</option>
+                                            <option value="Business" ${r.type === 'Business' ? 'selected' : ''}>Business</option>
+                                        </select>
+                                        <select onchange="updateRequirement(${idx}, 'priority', this.value)" 
+                                                class="px-2 py-1 rounded text-xs font-medium" 
+                                                style="background-color: ${r.priority === 'High' ? '#FEE2E2' : r.priority === 'Medium' ? '#FEF3C7' : '#E5E7EB'}; color: ${r.priority === 'High' ? '#DC2626' : r.priority === 'Medium' ? '#EAB308' : '#6B7280'};">
+                                            <option value="High" ${r.priority === 'High' ? 'selected' : ''}>High</option>
+                                            <option value="Medium" ${r.priority === 'Medium' ? 'selected' : ''}>Medium</option>
+                                            <option value="Low" ${r.priority === 'Low' ? 'selected' : ''}>Low</option>
+                                        </select>
+                                        <button onclick="removeRequirement(${idx})" class="ml-auto text-sm" style="color: #DC2626;">×</button>
+                                    </div>
+                                    <textarea onchange="updateRequirement(${idx}, 'description', this.value)"
+                                              class="editable-field w-full text-sm" style="color: #6B7280;" 
+                                              rows="2" placeholder="Requirement description...">${UI.escapeHtml(r.description)}</textarea>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Stakeholders -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border mb-6" style="border-color: #E5E7EB;">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-bold" style="color: #111827;">Stakeholders</h3>
+                            <button onclick="addStakeholder()" class="text-sm px-3 py-1 rounded-lg border" style="border-color: #E5E7EB; color: #2563EB;">+ Add Stakeholder</button>
+                        </div>
+                        <div class="space-y-3" id="stakeholdersList">
+                            ${(summary.stakeholders || []).map((s, idx) => `
+                                <div class="p-4 rounded-lg" style="background-color: #F8FAFC;">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <input type="text" value="${UI.escapeHtml(s.name)}" 
+                                               onchange="updateStakeholder(${idx}, 'name', this.value)"
+                                               class="editable-field flex-1 font-medium" style="color: #111827;"
+                                               placeholder="Stakeholder name...">
+                                        <button onclick="removeStakeholder(${idx})" class="ml-2 text-sm" style="color: #DC2626;">×</button>
+                                    </div>
+                                    <input type="text" value="${UI.escapeHtml(s.role)}" 
+                                           onchange="updateStakeholder(${idx}, 'role', this.value)"
+                                           class="editable-field w-full text-sm mb-1" style="color: #6B7280;"
+                                           placeholder="Role...">
+                                    <textarea onchange="updateStakeholder(${idx}, 'responsibility', this.value)"
+                                              class="editable-field w-full text-sm" style="color: #6B7280;" 
+                                              rows="1" placeholder="Responsibility...">${UI.escapeHtml(s.responsibility)}</textarea>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex justify-between items-center">
+                        <p class="text-sm" style="color: #6B7280;">💡 Tip: All your edits will be reflected in the final BRD</p>
+                        <button onclick="completeStep3()" class="px-8 py-3 rounded-xl text-white font-medium shadow-sm" style="background-color: #2563EB;">
+                            Generate BRD →
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('stepContent').innerHTML = html;
+        }
+
+        // Edit functions for Step 3
+        function updateDecision(idx, field, value) {
+            projectState.summaryData.keyDecisions[idx][field] = value;
+            saveProjectState();
+        }
+        function removeDecision(idx) {
+            projectState.summaryData.keyDecisions.splice(idx, 1);
+            saveProjectState();
+            renderStep3();
+        }
+        function addKeyDecision() {
+            projectState.summaryData.keyDecisions.push({ 
+                id: 'decision_new_' + Date.now(), 
+                title: 'New Decision', 
+                description: 'Add description here' 
+            });
+            saveProjectState();
+            renderStep3();
+        }
+
+        function updateRisk(idx, field, value) {
+            projectState.summaryData.risks[idx][field] = value;
+            saveProjectState();
+            if (field === 'severity') renderStep3(); // Re-render for color update
+        }
+        function removeRisk(idx) {
+            projectState.summaryData.risks.splice(idx, 1);
+            saveProjectState();
+            renderStep3();
+        }
+        function addRisk() {
+            projectState.summaryData.risks.push({ 
+                id: 'risk_new_' + Date.now(), 
+                title: 'New Risk', 
+                severity: 'Medium',
+                description: 'Add description here',
+                mitigation: 'Add mitigation strategy'
+            });
+            saveProjectState();
+            renderStep3();
+        }
+
+        function updateRequirement(idx, field, value) {
+            projectState.summaryData.requirements[idx][field] = value;
+            saveProjectState();
+            if (field === 'type' || field === 'priority') renderStep3(); // Re-render for color update
+        }
+        function removeRequirement(idx) {
+            projectState.summaryData.requirements.splice(idx, 1);
+            saveProjectState();
+            renderStep3();
+        }
+        function addRequirement() {
+            projectState.summaryData.requirements.push({ 
+                id: 'req_new_' + Date.now(), 
+                type: 'Functional',
+                priority: 'Medium',
+                description: 'Add requirement description here'
+            });
+            saveProjectState();
+            renderStep3();
+        }
+
+        function updateStakeholder(idx, field, value) {
+            projectState.summaryData.stakeholders[idx][field] = value;
+            saveProjectState();
+        }
+        function removeStakeholder(idx) {
+            projectState.summaryData.stakeholders.splice(idx, 1);
+            saveProjectState();
+            renderStep3();
+        }
+        function addStakeholder() {
+            projectState.summaryData.stakeholders.push({ 
+                id: 'stakeholder_new_' + Date.now(), 
+                name: 'New Stakeholder',
+                role: 'Role',
+                responsibility: 'Responsibility description'
+            });
+            saveProjectState();
+            renderStep3();
+        }
+
+        async function completeStep3() {
+            UI.showLoader('Generating Business Requirements Document...');
+            
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // Generate BRD using edited summary
+            const brd = BRD.generateBRD(projectState.summaryData, currentProject.name, testUserData);
+            projectState.brdData = brd;
+            
+            if (!projectState.completedSteps.includes(3)) {
+                projectState.completedSteps.push(3);
+            }
+            projectState.currentStep = 4;
+            
+            saveProjectState();
+            UI.hideLoader();
+            renderSteps();
+            renderCurrentStep();
+        }
+
+        // ==================== STEP 4: BRD DOCUMENT ====================
+        function renderStep4() {
+            const brd = projectState.brdData;
+            
+            const html = `
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-2" style="color: #111827;">Step 4: Business Requirements Document</h2>
+                    <p class="mb-6" style="color: #6B7280;">
+                        Your comprehensive, professional BRD has been generated based on your conversation data and decisions.
+                    </p>
+                    
+                    <!-- Edit Controls -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border mb-6" style="border-color: #E5E7EB;">
+                        <h3 class="text-lg font-bold mb-4" style="color: #111827;">Natural Language Edit</h3>
+                        <div class="flex flex-col sm:flex-row gap-3 items-start mb-3">
+                            <input type="text" id="editInstruction" placeholder="e.g., Add more detail to security requirements" 
+                                   class="flex-1 px-4 py-3 rounded-lg border" style="border-color: #E5E7EB;"
+                                   ${projectState.editCount >= 3 ? 'disabled' : ''}>
+                            <button onclick="regenerateBRD()" ${projectState.editCount >= 3 ? 'disabled' : ''} 
+                                    class="px-6 py-3 rounded-lg text-white font-medium whitespace-nowrap" 
+                                    style="background-color: ${projectState.editCount >= 3 ? '#6B7280' : '#2563EB'}; opacity: ${projectState.editCount >= 3 ? '0.5' : '1'}; cursor: ${projectState.editCount >= 3 ? 'not-allowed' : 'pointer'};">
+                                Regenerate BRD
+                            </button>
+                        </div>
+                        <div class="text-sm" style="color: ${projectState.editCount >= 3 ? '#DC2626' : '#6B7280'};">
+                            ${projectState.editCount >= 3 ? '❌ Maximum edits reached (3/3)' : `✏️ ${3 - projectState.editCount} edit${3 - projectState.editCount !== 1 ? 's' : ''} remaining (${projectState.editCount}/3 used)`}
+                        </div>
+                    </div>
+
+                    <!-- BRD Document -->
+                    <div class="bg-white rounded-xl shadow-sm p-8 lg:p-12 border" style="border-color: #E5E7EB;">
+                        <!-- Document Header -->
+                        <div class="border-b pb-6 mb-8" style="border-color: #E5E7EB;">
+                            <h1 class="text-4xl font-bold mb-4" style="color: #111827;">Business Requirements Document</h1>
+                            <div class="grid grid-cols-2 gap-4 text-sm" style="color: #6B7280;">
+                                <div><strong style="color: #111827;">Project:</strong> ${UI.escapeHtml(brd.metadata.projectName)}</div>
+                                <div><strong style="color: #111827;">Version:</strong> ${brd.metadata.version}</div>
+                                <div><strong style="color: #111827;">Author:</strong> ${UI.escapeHtml(brd.metadata.author)}</div>
+                                <div><strong style="color: #111827;">Date:</strong> ${UI.formatDate(brd.metadata.generatedDate)}</div>
+                                <div><strong style="color: #111827;">Role:</strong> ${UI.escapeHtml(brd.metadata.role)}</div>
+                                <div><strong style="color: #111827;">Status:</strong> <span class="px-2 py-1 rounded text-xs" style="background-color: #D1FAE5; color: #16A34A;">Final</span></div>
+                            </div>
+                        </div>
+
+                        <!-- 1. Executive Summary -->
+                        <section class="mb-10">
+                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
+                                1. ${brd.executiveSummary.title}
+                            </h2>
+                            <p class="whitespace-pre-line leading-relaxed" style="color: #374151;">${UI.escapeHtml(brd.executiveSummary.content)}</p>
+                        </section>
+
+                        <!-- 2. Business Objectives -->
+                        <section class="mb-10">
+                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
+                                2. ${brd.businessObjectives.title}
+                            </h2>
+                            
+                            <h3 class="text-xl font-bold mb-3 mt-6" style="color: #111827;">2.1 Primary Goals</h3>
+                            <div class="space-y-4">
+                                ${brd.businessObjectives.primaryGoals.map((g, i) => `
+                                    <div class="pl-6">
+                                        <div class="font-semibold mb-1" style="color: #111827;">${i + 1}. ${UI.escapeHtml(g.goal)}</div>
+                                        <p class="leading-relaxed" style="color: #374151;">${UI.escapeHtml(g.description)}</p>
+                                        <div class="mt-1 inline-block px-2 py-1 rounded text-xs" style="background-color: ${g.priority === 'Critical' ? '#FEE2E2' : '#FEF3C7'}; color: ${g.priority === 'Critical' ? '#DC2626' : '#EAB308'};">
+                                            Priority: ${g.priority}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            
+                            <h3 class="text-xl font-bold mb-3 mt-6" style="color: #111827;">2.2 Success Criteria</h3>
+                            <ul class="list-disc pl-10 space-y-2">
+                                ${brd.businessObjectives.successCriteria.map(c => `
+                                    <li class="leading-relaxed" style="color: #374151;">${UI.escapeHtml(c)}</li>
+                                `).join('')}
+                            </ul>
+                        </section>
+
+                        <!-- 3. Stakeholder Analysis -->
+                        <section class="mb-10">
+                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
+                                3. ${brd.stakeholderAnalysis.title}
+                            </h2>
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse">
+                                    <thead>
+                                        <tr style="background-color: #F9FAFB;">
+                                            <th class="border px-4 py-3 text-left font-bold" style="border-color: #E5E7EB; color: #111827;">Name</th>
+                                            <th class="border px-4 py-3 text-left font-bold" style="border-color: #E5E7EB; color: #111827;">Role</th>
+                                            <th class="border px-4 py-3 text-left font-bold" style="border-color: #E5E7EB; color: #111827;">Responsibility</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${brd.stakeholderAnalysis.stakeholders.map((s, i) => `
+                                            <tr style="background-color: ${i % 2 === 0 ? 'white' : '#F9FAFB'};">
+                                                <td class="border px-4 py-3" style="border-color: #E5E7EB; color: #374151;">${UI.escapeHtml(s.name)}</td>
+                                                <td class="border px-4 py-3" style="border-color: #E5E7EB; color: #374151;">${UI.escapeHtml(s.role)}</td>
+                                                <td class="border px-4 py-3" style="border-color: #E5E7EB; color: #374151;">${UI.escapeHtml(s.responsibility)}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- 4. Functional Requirements -->
+                        <section class="mb-10">
+                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
+                                4. ${brd.functionalRequirements.title}
+                            </h2>
+                            <div class="space-y-4">
+                                ${brd.functionalRequirements.requirements.map(r => `
+                                    <div class="pl-6 border-l-4" style="border-color: ${r.priority === 'High' ? '#DC2626' : '#EAB308'};">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="font-mono font-bold text-sm" style="color: #2563EB;">${r.id}</span>
+                                            <span class="px-2 py-1 rounded text-xs font-medium" style="background-color: ${r.priority === 'High' ? '#FEE2E2' : '#FEF3C7'}; color: ${r.priority === 'High' ? '#DC2626' : '#EAB308'};">
+                                                ${r.priority} Priority
+                                            </span>
+                                        </div>
+                                        <p class="leading-relaxed" style="color: #374151;">${UI.escapeHtml(r.description)}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </section>
+
+                        <!-- 5. Non-Functional Requirements -->
+                        <section class="mb-10">
+                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
+                                5. ${brd.nonFunctionalRequirements.title}
+                            </h2>
+                            
+                            ${brd.nonFunctionalRequirements.security.length > 0 ? `
+                                <h3 class="text-xl font-bold mb-3 mt-6" style="color: #111827;">5.1 Security Requirements</h3>
+                                <ul class="list-disc pl-10 space-y-2">
+                                    ${brd.nonFunctionalRequirements.security.map(s => `
+                                        <li class="leading-relaxed" style="color: #374151;">${UI.escapeHtml(s)}</li>
+                                    `).join('')}
+                                </ul>
+                            ` : ''}
+                            
+                            ${brd.nonFunctionalRequirements.compliance.length > 0 ? `
+                                <h3 class="text-xl font-bold mb-3 mt-6" style="color: #111827;">5.2 Compliance Requirements</h3>
+                                <ul class="list-disc pl-10 space-y-2">
+                                    ${brd.nonFunctionalRequirements.compliance.map(c => `
+                                        <li class="leading-relaxed" style="color: #374151;">${UI.escapeHtml(c)}</li>
+                                    `).join('')}
+                                </ul>
+                            ` : ''}
+                        </section>
+
+                        <!-- 6. Risk Management -->
+                        <section class="mb-10">
+                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
+                                6. ${brd.riskManagement.title}
+                            </h2>
+                            <div class="space-y-4">
+                                ${brd.riskManagement.risks.map(r => `
+                                    <div class="p-4 rounded-lg border" style="border-color: ${r.severity === 'High' ? '#FEE2E2' : '#FEF3C7'}; background-color: ${r.severity === 'High' ? '#FEF2F2' : '#FFFBEB'};">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <span class="font-mono text-sm font-bold" style="color: #DC2626;">${r.id}</span>
+                                            <span class="px-2 py-1 rounded text-xs font-medium" style="background-color: ${r.severity === 'High' ? '#DC2626' : '#EAB308'}; color: white;">
+                                                ${r.severity} Severity
+                                            </span>
+                                        </div>
+                                        <div class="font-semibold mb-2" style="color: #111827;">${UI.escapeHtml(r.title)}</div>
+                                        <p class="text-sm mb-2 leading-relaxed" style="color: #374151;"><strong>Description:</strong> ${UI.escapeHtml(r.description)}</p>
+                                        <p class="text-sm leading-relaxed" style="color: #374151;"><strong>Mitigation:</strong> ${UI.escapeHtml(r.mitigation)}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </section>
+
+                        <!-- 7. Timeline -->
+                        <section class="mb-10">
+                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
+                                7. ${brd.timeline.title}
+                            </h2>
+                            <div class="space-y-6">
+                                ${brd.timeline.phases.map((p, i) => `
+                                    <div class="pl-6 border-l-4" style="border-color: #2563EB;">
+                                        <div class="font-bold text-lg mb-1" style="color: #111827;">${UI.escapeHtml(p.phase)}</div>
+                                        <div class="text-sm mb-2" style="color: #6B7280;">Duration: <strong>${p.duration}</strong></div>
+                                        <div class="font-medium mb-2" style="color: #111827;">Deliverables:</div>
+                                        <ul class="list-disc pl-6 space-y-1">
+                                            ${p.deliverables.map(d => `<li style="color: #374151;">${UI.escapeHtml(d)}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </section>
+
+                        <!-- 8. Success Metrics -->
+                        <section class="mb-10">
+                            <h2 class="text-2xl font-bold mb-4 pb-2 border-b" style="color: #111827; border-color: #E5E7EB;">
+                                8. ${brd.successMetrics.title}
+                            </h2>
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse">
+                                    <thead>
+                                        <tr style="background-color: #F9FAFB;">
+                                            <th class="border px-4 py-3 text-left font-bold" style="border-color: #E5E7EB; color: #111827;">Metric</th>
+                                            <th class="border px-4 py-3 text-left font-bold" style="border-color: #E5E7EB; color: #111827;">Target</th>
+                                            <th class="border px-4 py-3 text-left font-bold" style="border-color: #E5E7EB; color: #111827;">Measurement Method</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${brd.successMetrics.kpis.map((k, i) => `
+                                            <tr style="background-color: ${i % 2 === 0 ? 'white' : '#F9FAFB'};">
+                                                <td class="border px-4 py-3 font-medium" style="border-color: #E5E7EB; color: #111827;">${UI.escapeHtml(k.metric)}</td>
+                                                <td class="border px-4 py-3" style="border-color: #E5E7EB; color: #374151;">${UI.escapeHtml(k.target)}</td>
+                                                <td class="border px-4 py-3" style="border-color: #E5E7EB; color: #374151;">${UI.escapeHtml(k.measurement)}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- Export Button -->
+                        <div class="mt-12 pt-8 border-t flex justify-center gap-4" style="border-color: #E5E7EB;">
+                            <button onclick="exportBRD()" class="px-8 py-3 rounded-xl text-white font-medium shadow-sm" style="background-color: #16A34A;">
+                                📥 Export BRD as PDF
+                            </button>
+                            <button onclick="window.print()" class="px-8 py-3 rounded-xl border font-medium" style="border-color: #E5E7EB; color: #6B7280;">
+                                🖨️ Print Document
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('stepContent').innerHTML = html;
+        }
+
+        async function regenerateBRD() {
+            const instruction = document.getElementById('editInstruction').value.trim();
+            
+            if (!instruction) {
+                UI.showError('Input Required', 'Please enter an editing instruction.');
+                return;
+            }
+
+            if (projectState.editCount >= 3) {
+                UI.showError('Limit Reached', 'Maximum edits reached (3/3).');
+                return;
+            }
+
+            UI.showLoader('Regenerating BRD with your changes...');
+            
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            projectState.editCount++;
+            saveProjectState();
+            
+            UI.hideLoader();
+            UI.showSuccess('BRD Updated', 'Your changes have been applied (simulated for demo).');
+            renderStep4();
+        }
+
+        function exportBRD() {
+            UI.showSuccess('Export Initiated', 'BRD export has been simulated. In production, this would download a PDF or DOCX file with your complete Business Requirements Document.');
+        }
+
+        // Save project state
+        function saveProjectState() {
+            currentProject.lastModified = new Date().toISOString();
+            currentProject.currentStep = projectState.currentStep;
+            currentProject.completedSteps = projectState.completedSteps;
+            
+            projectState.metadata = currentProject;
+            Storage.set(Storage.KEYS.PROJECT_PREFIX + currentProject.id, projectState);
+            
+            // Update in projects list
+            let projects = Storage.get(Storage.KEYS.USER_PROJECTS) || [];
+            const index = projects.findIndex(p => p.id === currentProject.id);
+            if (index >= 0) {
+                projects[index] = currentProject;
+                Storage.set(Storage.KEYS.USER_PROJECTS, projects);
+            }
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>

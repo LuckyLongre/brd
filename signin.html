@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - BRD Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen flex items-center justify-center px-4 py-12">
+        <div class="max-w-md w-full">
+            <!-- Logo -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold" style="color: #2563EB;">BRD Generator</h1>
+                <p class="mt-2" style="color: #6B7280;">Sign in to your account</p>
+            </div>
+
+            <!-- Sign In Form -->
+            <div class="bg-white rounded-xl shadow-sm p-8 border" style="border-color: #E5E7EB;">
+                <form id="signinForm">
+                    <div class="mb-6">
+                        <label for="email" class="block text-sm font-medium mb-2" style="color: #111827;">Email Address</label>
+                        <input 
+                            type="email" 
+                            value="test@example.com"
+                            id="email" 
+                            name="email"
+                            placeholder="test@example.com"
+                            class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2" 
+                            style="border-color: #E5E7EB; color: #111827;"
+                            onfocus="this.style.borderColor='#2563EB'; this.style.boxShadow='0 0 0 3px rgba(37, 99, 235, 0.1)'"
+                            onblur="this.style.borderColor='#E5E7EB'; this.style.boxShadow='none'"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="password" class="block text-sm font-medium mb-2" style="color: #111827;">Password</label>
+                        <input 
+                            type="password" 
+                            value="123456"
+                            id="password" 
+                            name="password"
+                            placeholder="••••••"
+                            class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2" 
+                            style="border-color: #E5E7EB; color: #111827;"
+                            onfocus="this.style.borderColor='#2563EB'; this.style.boxShadow='0 0 0 3px rgba(37, 99, 235, 0.1)'"
+                            onblur="this.style.borderColor='#E5E7EB'; this.style.boxShadow='none'"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-6">
+                        <button 
+                            type="submit" 
+                            id="signInBtn"
+                            class="w-full px-4 py-3 rounded-lg text-white font-medium shadow-sm transition-all duration-200"
+                            style="background-color: #2563EB;"
+                            onmouseover="if(!this.disabled) this.style.backgroundColor='#1E40AF'" 
+                            onmouseout="if(!this.disabled) this.style.backgroundColor='#2563EB'"
+                        >
+                            Sign In
+                        </button>
+                    </div>
+
+                    <div class="text-center">
+                        <p style="color: #6B7280;">Don't have an account? 
+                            <a href="signup.html" class="font-medium" style="color: #2563EB;" 
+                               onmouseover="this.style.textDecoration='underline'" 
+                               onmouseout="this.style.textDecoration='none'">
+                                Sign up
+                            </a>
+                        </p>
+                    </div>
+                </form>
+
+                <!-- Demo Credentials -->
+                <div class="mt-6 p-4 rounded-lg" style="background-color: #F8FAFC; border: 1px solid #E5E7EB;">
+                    <p class="text-sm font-medium mb-1" style="color: #111827;">Demo Credentials:</p>
+                    <p class="text-sm" style="color: #6B7280;">Email: test@example.com</p>
+                    <p class="text-sm" style="color: #6B7280;">Password: 123456</p>
+                </div>
+            </div>
+
+            <!-- Back to Home -->
+            <div class="text-center mt-6">
+                <a href="index.html" style="color: #6B7280;" 
+                   onmouseover="this.style.color='#111827'" 
+                   onmouseout="this.style.color='#6B7280'">
+                    ← Back to home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-sm p-8 max-w-sm w-full mx-4">
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mb-4" style="border-color: #2563EB; border-top-color: transparent;"></div>
+                <p class="text-lg font-medium" style="color: #111827;">Signing in...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-sm p-8 max-w-sm w-full mx-4">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mb-4" style="background-color: #FEE2E2;">
+                    <svg class="w-8 h-8" style="color: #DC2626;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold mb-2" style="color: #111827;">Sign In Failed</h3>
+                <p class="mb-6" style="color: #6B7280;" id="errorMessage">Invalid email or password. Please try again.</p>
+                <button 
+                    onclick="closeErrorModal()"
+                    class="px-6 py-2 rounded-lg text-white font-medium" 
+                    style="background-color: #2563EB;"
+                    onmouseover="this.style.backgroundColor='#1E40AF'" 
+                    onmouseout="this.style.backgroundColor='#2563EB'"
+                >
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Handle form submission
+        document.getElementById('signinForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const signInBtn = document.getElementById('signInBtn');
+            
+            // Disable button and show loading
+            signInBtn.disabled = true;
+            signInBtn.style.opacity = '0.5';
+            signInBtn.style.cursor = 'not-allowed';
+            document.getElementById('loadingModal').classList.remove('hidden');
+            
+            try {
+                // Attempt login (simulated with setTimeout)
+                await Auth.login(email, password);
+                
+                // Success - redirect to dashboard
+                window.location.href = 'user-dashboard.html';
+            } catch (error) {
+                // Hide loading modal
+                document.getElementById('loadingModal').classList.add('hidden');
+                
+                // Show error modal
+                document.getElementById('errorMessage').textContent = error.message;
+                document.getElementById('errorModal').classList.remove('hidden');
+                
+                // Re-enable button
+                signInBtn.disabled = false;
+                signInBtn.style.opacity = '1';
+                signInBtn.style.cursor = 'pointer';
+            }
+        });
+        
+        function closeErrorModal() {
+            document.getElementById('errorModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
