@@ -177,377 +177,377 @@ const DummyData = {
     },
 
     // USER 2: Sarah Johnson - FinSafe App Launch
-    {
-      user_id: "test2",
-      name: "Sarah Johnson",
-      role: "Marketing Lead",
-      project: "FinSafe App Launch",
-      data_vault: {
-        meetings: [
-          {
-            meeting_id: "mtg_marketing_sync_2024-02-06",
-            title: "Marketing & Security Launch Sync",
-            date: "Feb 06, 2024",
-            participants: ["Sarah Johnson (Marketing Lead)", "Michael Torres (Engineering)", "David (Backend)"],
-            minutes: [
-              {
-                timestamp: "00:04:30",
-                speaker: "Sarah Johnson",
-                text: "Our Friday launch is locked for investors. We need the app demo ready and secure."
-              },
-              {
-                timestamp: "00:05:10",
-                speaker: "Michael Torres",
-                text: "There's a race condition in the stock ticker API. High load could crash the app."
-              },
-              {
-                timestamp: "00:05:50",
-                speaker: "Sarah Johnson",
-                text: "Can we tag it as 'Beta' for the launch? Investors must see it Friday."
-              },
-              {
-                timestamp: "00:06:20",
-                speaker: "David (Backend)",
-                text: "Using cached data keeps it stable, but Marketing promised 'Live' updates in ads."
-              },
-              {
-                timestamp: "00:06:50",
-                speaker: "Sarah Johnson",
-                text: "I understand the risk, but launch is priority. Let's go with 'Beta' disclaimer."
-              }
-            ]
-          }
-        ],
-        whatsapp: [
-          {
-            thread_id: "wa_fin_launch",
-            name: "🚀 FinSafe Launch Squad",
-            is_relevant: true,
-            messages: [
-              {
-                sender: "Sarah Johnson",
-                text: "Team, Friday launch is non-negotiable. $2M investor pitch at 4 PM."
-              },
-              {
-                sender: "Michael Torres (Engineering)",
-                text: "Sarah, race condition in stock ticker. App may crash under 1000+ users."
-              },
-              {
-                sender: "Sarah Johnson",
-                text: "Tag it 'Beta'? Can't delay investors."
-              },
-              {
-                sender: "Michael Torres (Engineering)",
-                text: "'Beta' won't fix the crash. Need 10 days to refactor."
-              }
-            ]
-          },
-          {
-            thread_id: "wa_gym",
-            name: "Morning Yoga 🧘‍♀️",
-            is_relevant: false,
-            messages: [
-              {sender: "Instructor", text: "Class moved to 8 AM tomorrow!"}
-            ]
-          }
-        ],
-        slack: [
-          {
-            channel_id: "sl_fin_dev",
-            name: "#finsafe-engineering",
-            is_relevant: true,
-            messages: [
-              {
-                sender: "Michael Torres (Engineering)",
-                text: "Sarah is pushing for Friday. I've told her the API is unstable."
-              },
-              {
-                sender: "David (Backend)",
-                text: "If we switch to 'Cached Data' instead of 'Real-Time', it stays stable. But Marketing promised 'Live' data in the ads."
-              },
-              {
-                sender: "Michael Torres (Engineering)",
-                text: "Let's see if she'll compromise on 'Real-Time' for the launch. It saves the server."
-              }
-            ]
-          }
-        ],
-        gmail: [
-          {
-            thread_id: "gm_fin_001",
-            subject: "URGENT: Investor Pitch Deck Finalization",
-            from: "Alex Chen (CEO)",
-            content: "Sarah, I've told the VCs they can download the app LIVE during my speech this Friday. Do not let me down.",
-            is_relevant: true
-          },
-          {
-            thread_id: "gm_spam_01",
-            subject: "Flash Sale: 50% off Standing Desks!",
-            from: "OfficeDepot",
-            content: "Click here to upgrade your workspace today!",
-            is_relevant: false
-          }
-        ]
-      }
-    },
+    // {
+    //   user_id: "test2",
+    //   name: "Sarah Johnson",
+    //   role: "Marketing Lead",
+    //   project: "FinSafe App Launch",
+    //   data_vault: {
+    //     meetings: [
+    //       {
+    //         meeting_id: "mtg_marketing_sync_2024-02-06",
+    //         title: "Marketing & Security Launch Sync",
+    //         date: "Feb 06, 2024",
+    //         participants: ["Sarah Johnson (Marketing Lead)", "Michael Torres (Engineering)", "David (Backend)"],
+    //         minutes: [
+    //           {
+    //             timestamp: "00:04:30",
+    //             speaker: "Sarah Johnson",
+    //             text: "Our Friday launch is locked for investors. We need the app demo ready and secure."
+    //           },
+    //           {
+    //             timestamp: "00:05:10",
+    //             speaker: "Michael Torres",
+    //             text: "There's a race condition in the stock ticker API. High load could crash the app."
+    //           },
+    //           {
+    //             timestamp: "00:05:50",
+    //             speaker: "Sarah Johnson",
+    //             text: "Can we tag it as 'Beta' for the launch? Investors must see it Friday."
+    //           },
+    //           {
+    //             timestamp: "00:06:20",
+    //             speaker: "David (Backend)",
+    //             text: "Using cached data keeps it stable, but Marketing promised 'Live' updates in ads."
+    //           },
+    //           {
+    //             timestamp: "00:06:50",
+    //             speaker: "Sarah Johnson",
+    //             text: "I understand the risk, but launch is priority. Let's go with 'Beta' disclaimer."
+    //           }
+    //         ]
+    //       }
+    //     ],
+    //     whatsapp: [
+    //       {
+    //         thread_id: "wa_fin_launch",
+    //         name: "🚀 FinSafe Launch Squad",
+    //         is_relevant: true,
+    //         messages: [
+    //           {
+    //             sender: "Sarah Johnson",
+    //             text: "Team, Friday launch is non-negotiable. $2M investor pitch at 4 PM."
+    //           },
+    //           {
+    //             sender: "Michael Torres (Engineering)",
+    //             text: "Sarah, race condition in stock ticker. App may crash under 1000+ users."
+    //           },
+    //           {
+    //             sender: "Sarah Johnson",
+    //             text: "Tag it 'Beta'? Can't delay investors."
+    //           },
+    //           {
+    //             sender: "Michael Torres (Engineering)",
+    //             text: "'Beta' won't fix the crash. Need 10 days to refactor."
+    //           }
+    //         ]
+    //       },
+    //       {
+    //         thread_id: "wa_gym",
+    //         name: "Morning Yoga 🧘‍♀️",
+    //         is_relevant: false,
+    //         messages: [
+    //           {sender: "Instructor", text: "Class moved to 8 AM tomorrow!"}
+    //         ]
+    //       }
+    //     ],
+    //     slack: [
+    //       {
+    //         channel_id: "sl_fin_dev",
+    //         name: "#finsafe-engineering",
+    //         is_relevant: true,
+    //         messages: [
+    //           {
+    //             sender: "Michael Torres (Engineering)",
+    //             text: "Sarah is pushing for Friday. I've told her the API is unstable."
+    //           },
+    //           {
+    //             sender: "David (Backend)",
+    //             text: "If we switch to 'Cached Data' instead of 'Real-Time', it stays stable. But Marketing promised 'Live' data in the ads."
+    //           },
+    //           {
+    //             sender: "Michael Torres (Engineering)",
+    //             text: "Let's see if she'll compromise on 'Real-Time' for the launch. It saves the server."
+    //           }
+    //         ]
+    //       }
+    //     ],
+    //     gmail: [
+    //       {
+    //         thread_id: "gm_fin_001",
+    //         subject: "URGENT: Investor Pitch Deck Finalization",
+    //         from: "Alex Chen (CEO)",
+    //         content: "Sarah, I've told the VCs they can download the app LIVE during my speech this Friday. Do not let me down.",
+    //         is_relevant: true
+    //       },
+    //       {
+    //         thread_id: "gm_spam_01",
+    //         subject: "Flash Sale: 50% off Standing Desks!",
+    //         from: "OfficeDepot",
+    //         content: "Click here to upgrade your workspace today!",
+    //         is_relevant: false
+    //       }
+    //     ]
+    //   }
+    // },
 
-    // USER 3: Marcus Johnson - MediConnect HIPAA Portal
-    {
-      user_id: "test3",
-      name: "Marcus Johnson",
-      role: "Tech Lead",
-      project: "MediConnect HIPAA Portal",
-      data_vault: {
-        meetings: [
-          {
-            meeting_id: "mtg_hipaa_sprint5_2024-02-08",
-            title: "Sprint 5 Planning - HIPAA Compliance",
-            date: "Feb 08, 2024",
-            participants: ["Marcus Johnson (Tech Lead)", "Emma Wilson (Product Manager)", "Legal (Sarah)"],
-            minutes: [
-              {
-                timestamp: "00:03:00",
-                speaker: "Emma Wilson",
-                text: "Doctors are asking for Dark Mode and mobile app in Sprint 5."
-              },
-              {
-                timestamp: "00:03:30",
-                speaker: "Marcus Johnson",
-                text: "Sprint 5 is packed with HIPAA logging and encrypted file upload. Can't add more."
-              },
-              {
-                timestamp: "00:04:00",
-                speaker: "Legal (Sarah)",
-                text: "If audit trails aren't live by Sprint 5 EOD, we're in violation of HIPAA agreement."
-              },
-              {
-                timestamp: "00:04:30",
-                speaker: "Marcus Johnson",
-                text: "Exactly. I'm locking the scope. UI features are secondary to legal compliance."
-              }
-            ]
-          }
-        ],
-        whatsapp: [
-          {
-            thread_id: "wa_med_dev",
-            name: "🏥 MediConnect Core Team",
-            is_relevant: true,
-            messages: [
-              {
-                sender: "Emma Wilson (Product Manager)",
-                text: "Marcus, doctors want Dark Mode and mobile exploration in Sprint 5."
-              },
-              {
-                sender: "Marcus Johnson",
-                text: "Emma, Sprint 5 has HIPAA logging and encrypted file upload. We can't add more."
-              },
-              {
-                sender: "Emma Wilson (Product Manager)",
-                text: "It's just UI! Stakeholders say it's a dealbreaker."
-              },
-              {
-                sender: "Marcus Johnson",
-                text: "UI changes in medical portal require accessibility testing and security review. We are at capacity."
-              }
-            ]
-          },
-          {
-            thread_id: "wa_parking",
-            name: "Office Parking Updates 🚗",
-            is_relevant: false,
-            messages: [
-              {sender: "Security", text: "Gate 2 under maintenance. Use East entrance."}
-            ]
-          }
-        ],
-        slack: [
-          {
-            channel_id: "sl_hipaa_compliance",
-            name: "#compliance-and-security",
-            is_relevant: true,
-            messages: [
-              {
-                sender: "Marcus Johnson",
-                text: "Emma is trying to push Dark Mode into sprint. We haven't finished audit trails for patient data access."
-              },
-              {
-                sender: "Legal (Sarah)",
-                text: "If those audit trails aren't live by Sprint 5 EOD, we are in violation of our HIPAA agreement. UI features are secondary."
-              },
-              {
-                sender: "Marcus Johnson",
-                text: "Exactly. I'm locking the scope today."
-              }
-            ]
-          }
-        ],
-        gmail: [
-          {
-            thread_id: "gm_med_001",
-            subject: "Stakeholder Feedback - Pilot Phase",
-            from: "Emma Wilson (PM)",
-            content: "Marcus, the board specifically mentioned 'Modern Look and Feel' as top priority. They want Dark Mode demoed by next Tuesday. Can we swap out the file-upload backend for this?",
-            is_relevant: true
-          },
-          {
-            thread_id: "gm_hr_01",
-            subject: "Mandatory Security Training: Phishing",
-            from: "IT Security",
-            content: "Please complete your training modules by EOD to avoid account suspension.",
-            is_relevant: false
-          }
-        ]
-      }
-    },
+    // // USER 3: Marcus Johnson - MediConnect HIPAA Portal
+    // {
+    //   user_id: "test3",
+    //   name: "Marcus Johnson",
+    //   role: "Tech Lead",
+    //   project: "MediConnect HIPAA Portal",
+    //   data_vault: {
+    //     meetings: [
+    //       {
+    //         meeting_id: "mtg_hipaa_sprint5_2024-02-08",
+    //         title: "Sprint 5 Planning - HIPAA Compliance",
+    //         date: "Feb 08, 2024",
+    //         participants: ["Marcus Johnson (Tech Lead)", "Emma Wilson (Product Manager)", "Legal (Sarah)"],
+    //         minutes: [
+    //           {
+    //             timestamp: "00:03:00",
+    //             speaker: "Emma Wilson",
+    //             text: "Doctors are asking for Dark Mode and mobile app in Sprint 5."
+    //           },
+    //           {
+    //             timestamp: "00:03:30",
+    //             speaker: "Marcus Johnson",
+    //             text: "Sprint 5 is packed with HIPAA logging and encrypted file upload. Can't add more."
+    //           },
+    //           {
+    //             timestamp: "00:04:00",
+    //             speaker: "Legal (Sarah)",
+    //             text: "If audit trails aren't live by Sprint 5 EOD, we're in violation of HIPAA agreement."
+    //           },
+    //           {
+    //             timestamp: "00:04:30",
+    //             speaker: "Marcus Johnson",
+    //             text: "Exactly. I'm locking the scope. UI features are secondary to legal compliance."
+    //           }
+    //         ]
+    //       }
+    //     ],
+    //     whatsapp: [
+    //       {
+    //         thread_id: "wa_med_dev",
+    //         name: "🏥 MediConnect Core Team",
+    //         is_relevant: true,
+    //         messages: [
+    //           {
+    //             sender: "Emma Wilson (Product Manager)",
+    //             text: "Marcus, doctors want Dark Mode and mobile exploration in Sprint 5."
+    //           },
+    //           {
+    //             sender: "Marcus Johnson",
+    //             text: "Emma, Sprint 5 has HIPAA logging and encrypted file upload. We can't add more."
+    //           },
+    //           {
+    //             sender: "Emma Wilson (Product Manager)",
+    //             text: "It's just UI! Stakeholders say it's a dealbreaker."
+    //           },
+    //           {
+    //             sender: "Marcus Johnson",
+    //             text: "UI changes in medical portal require accessibility testing and security review. We are at capacity."
+    //           }
+    //         ]
+    //       },
+    //       {
+    //         thread_id: "wa_parking",
+    //         name: "Office Parking Updates 🚗",
+    //         is_relevant: false,
+    //         messages: [
+    //           {sender: "Security", text: "Gate 2 under maintenance. Use East entrance."}
+    //         ]
+    //       }
+    //     ],
+    //     slack: [
+    //       {
+    //         channel_id: "sl_hipaa_compliance",
+    //         name: "#compliance-and-security",
+    //         is_relevant: true,
+    //         messages: [
+    //           {
+    //             sender: "Marcus Johnson",
+    //             text: "Emma is trying to push Dark Mode into sprint. We haven't finished audit trails for patient data access."
+    //           },
+    //           {
+    //             sender: "Legal (Sarah)",
+    //             text: "If those audit trails aren't live by Sprint 5 EOD, we are in violation of our HIPAA agreement. UI features are secondary."
+    //           },
+    //           {
+    //             sender: "Marcus Johnson",
+    //             text: "Exactly. I'm locking the scope today."
+    //           }
+    //         ]
+    //       }
+    //     ],
+    //     gmail: [
+    //       {
+    //         thread_id: "gm_med_001",
+    //         subject: "Stakeholder Feedback - Pilot Phase",
+    //         from: "Emma Wilson (PM)",
+    //         content: "Marcus, the board specifically mentioned 'Modern Look and Feel' as top priority. They want Dark Mode demoed by next Tuesday. Can we swap out the file-upload backend for this?",
+    //         is_relevant: true
+    //       },
+    //       {
+    //         thread_id: "gm_hr_01",
+    //         subject: "Mandatory Security Training: Phishing",
+    //         from: "IT Security",
+    //         content: "Please complete your training modules by EOD to avoid account suspension.",
+    //         is_relevant: false
+    //       }
+    //     ]
+    //   }
+    // },
 
-    // USER 4: Thomas Xu - SecureStream Video Engine
-    {
-      user_id: "test4",
-      name: "Thomas Xu",
-      role: "Security Lead / CISO",
-      project: "SecureStream Video Engine",
-      data_vault: {
-        meetings: [
-          {
-            meeting_id: "mtg_security_review_2024-02-10",
-            title: "Video Engine Security Assessment",
-            date: "Feb 10, 2024",
-            participants: ["Thomas Xu (CISO)", "Alex Rodriguez (Junior Dev)", "CTO"],
-            minutes: [
-              {
-                timestamp: "00:02:00",
-                speaker: "Alex Rodriguez",
-                text: "FFmpeg OpenSource v4.2.1 makes rendering 10x faster. We need it for launch."
-              },
-              {
-                timestamp: "00:02:30",
-                speaker: "Thomas Xu",
-                text: "That version has two critical CVEs. We cannot use it. Use internal VideoProcessor API."
-              },
-              {
-                timestamp: "00:03:00",
-                speaker: "Alex Rodriguez",
-                text: "But the internal API is so slow! Users will complain about lag."
-              },
-              {
-                timestamp: "00:03:30",
-                speaker: "Thomas Xu",
-                text: "I'd rather have lag than a data breach. My decision is final."
-              }
-            ]
-          }
-        ],
-        slack: [
-          {
-            channel_id: "sl_sec_ops",
-            name: "#security-war-room",
-            is_relevant: true,
-            messages: [
-              {
-                sender: "Alex Rodriguez (Junior Dev)",
-                text: "Thomas, if we use FFmpeg-OpenSource v4.2.1, the video rendering is 10x faster. We need this for the launch."
-              },
-              {
-                sender: "Thomas Xu",
-                text: "Alex, that version has two critical CVEs (vulnerabilities). We cannot use it. Use the internal VideoProcessor API."
-              },
-              {
-                sender: "Alex Rodriguez (Junior Dev)",
-                text: "But the internal API is so slow! The users will complain about the lag."
-              },
-              {
-                sender: "Thomas Xu",
-                text: "I'd rather have lag than a data breach. My decision is final."
-              }
-            ]
-          }
-        ],
-        gmail: [
-          {
-            thread_id: "gm_sec_001",
-            subject: "CVE Alert - Action Required",
-            from: "CyberSecurity Monitor",
-            content: "Alert: FFmpeg v4.2.1 contains a buffer overflow vulnerability (CVE-2023-4847) that allows remote code execution.",
-            is_relevant: true
-          }
-        ]
-      }
-    },
+    // // USER 4: Thomas Xu - SecureStream Video Engine
+    // {
+    //   user_id: "test4",
+    //   name: "Thomas Xu",
+    //   role: "Security Lead / CISO",
+    //   project: "SecureStream Video Engine",
+    //   data_vault: {
+    //     meetings: [
+    //       {
+    //         meeting_id: "mtg_security_review_2024-02-10",
+    //         title: "Video Engine Security Assessment",
+    //         date: "Feb 10, 2024",
+    //         participants: ["Thomas Xu (CISO)", "Alex Rodriguez (Junior Dev)", "CTO"],
+    //         minutes: [
+    //           {
+    //             timestamp: "00:02:00",
+    //             speaker: "Alex Rodriguez",
+    //             text: "FFmpeg OpenSource v4.2.1 makes rendering 10x faster. We need it for launch."
+    //           },
+    //           {
+    //             timestamp: "00:02:30",
+    //             speaker: "Thomas Xu",
+    //             text: "That version has two critical CVEs. We cannot use it. Use internal VideoProcessor API."
+    //           },
+    //           {
+    //             timestamp: "00:03:00",
+    //             speaker: "Alex Rodriguez",
+    //             text: "But the internal API is so slow! Users will complain about lag."
+    //           },
+    //           {
+    //             timestamp: "00:03:30",
+    //             speaker: "Thomas Xu",
+    //             text: "I'd rather have lag than a data breach. My decision is final."
+    //           }
+    //         ]
+    //       }
+    //     ],
+    //     slack: [
+    //       {
+    //         channel_id: "sl_sec_ops",
+    //         name: "#security-war-room",
+    //         is_relevant: true,
+    //         messages: [
+    //           {
+    //             sender: "Alex Rodriguez (Junior Dev)",
+    //             text: "Thomas, if we use FFmpeg-OpenSource v4.2.1, the video rendering is 10x faster. We need this for the launch."
+    //           },
+    //           {
+    //             sender: "Thomas Xu",
+    //             text: "Alex, that version has two critical CVEs (vulnerabilities). We cannot use it. Use the internal VideoProcessor API."
+    //           },
+    //           {
+    //             sender: "Alex Rodriguez (Junior Dev)",
+    //             text: "But the internal API is so slow! The users will complain about the lag."
+    //           },
+    //           {
+    //             sender: "Thomas Xu",
+    //             text: "I'd rather have lag than a data breach. My decision is final."
+    //           }
+    //         ]
+    //       }
+    //     ],
+    //     gmail: [
+    //       {
+    //         thread_id: "gm_sec_001",
+    //         subject: "CVE Alert - Action Required",
+    //         from: "CyberSecurity Monitor",
+    //         content: "Alert: FFmpeg v4.2.1 contains a buffer overflow vulnerability (CVE-2023-4847) that allows remote code execution.",
+    //         is_relevant: true
+    //       }
+    //     ]
+    //   }
+    // },
 
-    // USER 5: Diana Nguyen - SwiftDelivery Logistics Platform
-    {
-      user_id: "test5",
-      name: "Diana Nguyen",
-      role: "Operations Head",
-      project: "SwiftDelivery Logistics Platform",
-      data_vault: {
-        meetings: [
-          {
-            meeting_id: "mtg_logistics_budget_2024-02-12",
-            title: "Maps Vendor Selection Meeting",
-            date: "Feb 12, 2024",
-            participants: ["Diana Nguyen (Operations)", "Robert Zhao (Finance)", "Tech Lead"],
-            minutes: [
-              {
-                timestamp: "00:01:30",
-                speaker: "Diana Nguyen",
-                text: "We need to finalize maps vendor. Google Maps is quoting $42k/year."
-              },
-              {
-                timestamp: "00:02:00",
-                speaker: "Robert Zhao",
-                text: "$42k is insane. Use OpenStreetMap. It's free."
-              },
-              {
-                timestamp: "00:02:30",
-                speaker: "Diana Nguyen",
-                text: "OpenStreetMap lacks real-time traffic data. Will cost us more in late deliveries."
-              },
-              {
-                timestamp: "00:03:00",
-                speaker: "Robert Zhao",
-                text: "The budget is the budget. Find a way to make the free version work."
-              }
-            ]
-          }
-        ],
-        whatsapp: [
-          {
-            thread_id: "wa_ops_logistics",
-            name: "🚚 Delivery Fleet HQ",
-            is_relevant: true,
-            messages: [
-              {
-                sender: "Diana Nguyen",
-                text: "We need to finalize the maps vendor. Google Maps is quoting us $42,000/year based on our volume."
-              },
-              {
-                sender: "Robert Zhao (Finance)",
-                text: "Diana, $42k is insane. Use OpenStreetMap. It's free."
-              },
-              {
-                sender: "Diana Nguyen",
-                text: "Robert, OpenStreetMap doesn't have real-time traffic data for the drivers. It will cost us more in late deliveries."
-              },
-              {
-                sender: "Robert Zhao (Finance)",
-                text: "The budget is the budget. Find a way to make the free version work."
-              }
-            ]
-          }
-        ],
-        gmail: [
-          {
-            thread_id: "gm_ops_001",
-            subject: "Google Maps Enterprise Quote",
-            from: "Google Cloud Sales",
-            content: "Your customized quote for the Logistics API suite is $42,000 per annum, billed monthly.",
-            is_relevant: true
-          }
-        ]
-      }
-    }
+    // // USER 5: Diana Nguyen - SwiftDelivery Logistics Platform
+    // {
+    //   user_id: "test5",
+    //   name: "Diana Nguyen",
+    //   role: "Operations Head",
+    //   project: "SwiftDelivery Logistics Platform",
+    //   data_vault: {
+    //     meetings: [
+    //       {
+    //         meeting_id: "mtg_logistics_budget_2024-02-12",
+    //         title: "Maps Vendor Selection Meeting",
+    //         date: "Feb 12, 2024",
+    //         participants: ["Diana Nguyen (Operations)", "Robert Zhao (Finance)", "Tech Lead"],
+    //         minutes: [
+    //           {
+    //             timestamp: "00:01:30",
+    //             speaker: "Diana Nguyen",
+    //             text: "We need to finalize maps vendor. Google Maps is quoting $42k/year."
+    //           },
+    //           {
+    //             timestamp: "00:02:00",
+    //             speaker: "Robert Zhao",
+    //             text: "$42k is insane. Use OpenStreetMap. It's free."
+    //           },
+    //           {
+    //             timestamp: "00:02:30",
+    //             speaker: "Diana Nguyen",
+    //             text: "OpenStreetMap lacks real-time traffic data. Will cost us more in late deliveries."
+    //           },
+    //           {
+    //             timestamp: "00:03:00",
+    //             speaker: "Robert Zhao",
+    //             text: "The budget is the budget. Find a way to make the free version work."
+    //           }
+    //         ]
+    //       }
+    //     ],
+    //     whatsapp: [
+    //       {
+    //         thread_id: "wa_ops_logistics",
+    //         name: "🚚 Delivery Fleet HQ",
+    //         is_relevant: true,
+    //         messages: [
+    //           {
+    //             sender: "Diana Nguyen",
+    //             text: "We need to finalize the maps vendor. Google Maps is quoting us $42,000/year based on our volume."
+    //           },
+    //           {
+    //             sender: "Robert Zhao (Finance)",
+    //             text: "Diana, $42k is insane. Use OpenStreetMap. It's free."
+    //           },
+    //           {
+    //             sender: "Diana Nguyen",
+    //             text: "Robert, OpenStreetMap doesn't have real-time traffic data for the drivers. It will cost us more in late deliveries."
+    //           },
+    //           {
+    //             sender: "Robert Zhao (Finance)",
+    //             text: "The budget is the budget. Find a way to make the free version work."
+    //           }
+    //         ]
+    //       }
+    //     ],
+    //     gmail: [
+    //       {
+    //         thread_id: "gm_ops_001",
+    //         subject: "Google Maps Enterprise Quote",
+    //         from: "Google Cloud Sales",
+    //         content: "Your customized quote for the Logistics API suite is $42,000 per annum, billed monthly.",
+    //         is_relevant: true
+    //       }
+    //     ]
+    //   }
+    // }
   ],
 
   /**
